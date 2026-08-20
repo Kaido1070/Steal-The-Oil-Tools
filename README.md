@@ -10,7 +10,7 @@ I made this to keep the calculations I use for **STEAL THE OIL TYCOON** in one p
 
 The calculators update as you change the values, and your settings stay saved in your browser.
 
-I tested the main calculator logic with **30,000 randomized cases**. If the game changes any values or mechanics, the results may need to be updated too.
+If the game changes any values or mechanics, the results may need to be updated too.
 
 This is a community-made tool and is not official.
 
