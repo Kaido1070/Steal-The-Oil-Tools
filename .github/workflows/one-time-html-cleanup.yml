@@ -1,0 +1,58 @@
+name: One-time HTML cleanup
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/one-time-html-cleanup.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix-html:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply HTML fixes
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          s = path.read_text(encoding='utf-8')
+
+          replacements = [
+              ('border:1px solid var(--border);', 'border:1px solid var(--stroke);'),
+              ('.pinkfill{fill:rgba(255,85,199,.12);stroke:#ff55c7;stroke-linejoin:round}\n', '.pinkfill{fill:rgba(255,85,199,.12);stroke:#ff55c7;stroke-linejoin:round}\n    .goldfill{fill:#ffd166;stroke:none}\n'),
+              ('<input id="productionHours" type="number" value="1" min="0" max="20" step="0.1" inputmode="decimal" autocomplete="off" aria-label="Production Time in Hours" aria-describedby="productionHoursError" />', '<input id="productionHours" type="text" value="1" inputmode="decimal" autocomplete="off" aria-label="Production Time in Hours" aria-describedby="productionHoursError" />'),
+              ('<input id="drillHours" type="number" value="1" min="0" max="20" step="0.1" inputmode="decimal" autocomplete="off" aria-label="Run Time in Hours" aria-describedby="drillHoursError" />', '<input id="drillHours" type="text" value="1" inputmode="decimal" autocomplete="off" aria-label="Run Time in Hours" aria-describedby="drillHoursError" />'),
+              ('<strong id="shareTotal">5.88Qa</strong>', '<strong id="shareTotal">—</strong>'),
+              ('<div class="share-detail"><span>Oil to Sell</span><strong id="shareOil">25T</strong></div>', '<div class="share-detail"><span>Oil to Sell</span><strong id="shareOil">—</strong></div>'),
+              ('<div class="share-detail accent"><span>Cash per Oil</span><strong id="shareCashPerOil">235.00</strong></div>', '<div class="share-detail accent"><span>Cash per Oil</span><strong id="shareCashPerOil">—</strong></div>'),
+              ('<div class="share-detail"><span>Current Sell Rate</span><strong id="shareMarket">50</strong></div>', '<div class="share-detail"><span>Current Sell Rate</span><strong id="shareMarket">—</strong></div>'),
+              ('<div class="share-detail"><span>Cash Boost</span><strong id="shareCashBoost">420%</strong></div>', '<div class="share-detail"><span>Cash Boost</span><strong id="shareCashBoost">—</strong></div>'),
+              ('<div class="share-detail"><span>Friend Boost</span><strong id="shareFriendBoost">50%</strong></div>', '<div class="share-detail"><span>Friend Boost</span><strong id="shareFriendBoost">—</strong></div>'),
+          ]
+
+          for old, new in replacements:
+              if old not in s:
+                  raise SystemExit(f'Expected text not found: {old[:90]}')
+              s = s.replace(old, new, 1)
+
+          path.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit changes
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Fix CSS and input UX issues"
+          git push
