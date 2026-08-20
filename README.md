@@ -1,6 +1,6 @@
 # STEAL THE OIL TYCOON — Community Tools
 
-A mobile-friendly collection of community calculators for **STEAL THE OIL TYCOON**.
+A collection of community calculators and tools for **STEAL THE OIL TYCOON**.
 
 ## Tools
 
@@ -21,7 +21,7 @@ Estimate **Final Rate**, **Total Oil**, and **Growth Each Second** using:
 
 ## Features
 
-- Built for mobile and desktop
+- Responsive layout across different screen sizes
 - Live calculations as values change
 - Normal / K / M / B / T number support where applicable
 - 20-hour limit for manually entered run-time calculations
