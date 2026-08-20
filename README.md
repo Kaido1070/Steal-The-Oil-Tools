@@ -12,7 +12,7 @@ The calculators update as you change the values, and your settings stay saved in
 
 If the game changes any values or mechanics, the results may need to be updated too.
 
-This is a community-made tool and is not official.
+This is a community made tool and is not official.
 
 Made by **1yono**.
 
