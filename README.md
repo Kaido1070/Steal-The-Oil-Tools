@@ -1,48 +1,25 @@
 # STEAL THE OIL TYCOON — Community Tools
 
-A collection of community calculators and tools for **STEAL THE OIL TYCOON**.
+I made this to keep the calculations I use for **STEAL THE OIL TYCOON** in one place.
 
-## Tools
+## What's here
 
-### Sale Calculator
-Estimate how much cash you will receive when selling oil using your current **Sell Rate**, **Cash Boost**, and **Friend Boost**.
+- **Sale Calculator** — calculate your sale using Sell Rate, Cash Boost, and Friend Boost.
+- **Oil / Hour** — check how much oil you can make in a set amount of time, or how long it will take to reach a target.
+- **Clock Drill** — calculate Final Rate, Total Oil, and Growth Each Second for different Clock Drill tiers and production multipliers.
 
-### Oil / Hour
-Two calculation modes in one tool:
-- **Time → Oil** — see how much oil you can produce in a selected amount of time.
-- **Oil → Time** — enter a target oil amount and see how long it will take to reach it.
+The calculators update as you change the values, and your settings stay saved in your browser.
 
-### Clock Drill
-Estimate **Final Rate**, **Total Oil**, and **Growth Each Second** using:
-- Clock Drill tier
-- Number of drills
-- Production Multiplier
-- Run time
+I tested the main calculator logic with **30,000 randomized cases**. If the game changes any values or mechanics, the results may need to be updated too.
 
-## Features
-
-- Responsive layout across different screen sizes
-- Live calculations as values change
-- Normal / K / M / B / T number support where applicable
-- 20-hour limit for manually entered run-time calculations
-- Copy and share-friendly results
-- Settings are saved locally in your browser
-- Contextual help for each calculator
-
-## Testing
-
-The core calculator logic has been stress-tested with **30,000 randomized calculation cases** across Sale, Oil / Hour, and Clock Drill calculations.
-
-## Notes
-
-This is a **community made tool**. Game values and mechanics may change with future updates, so calculator results should be treated as estimates based on the values currently used by the tool.
+This is a community-made tool and is not official.
 
 Made by **1yono**.
 
 ## Source Code
 
-The repository is public so the project can be viewed and reviewed by the community.
+The repo is public so anyone can look through the code and see how the calculations work.
 
 **Copyright © 2026 1yono. All rights reserved.**
 
-No license is granted to copy, modify, redistribute, republish, or reuse this source code in another project without permission from the author.
+No permission is granted to copy, modify, redistribute, republish, or reuse this source code in another project without permission from the author.
