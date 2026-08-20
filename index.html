@@ -62,6 +62,7 @@
     .purple{stroke:#8b7cff;fill:none;stroke-linecap:round;stroke-linejoin:round}
     .softfill{fill:rgba(255,209,102,.13);stroke:#ffd166;stroke-linejoin:round}
     .pinkfill{fill:rgba(255,85,199,.12);stroke:#ff55c7;stroke-linejoin:round}
+    .goldfill{fill:#ffd166;stroke:none}
     .labels{min-width:0}
     .labels strong{display:block;font-size:13px;line-height:1.05;white-space:nowrap}
     .labels small{display:block;margin-top:2px;color:var(--muted);font-size:8.8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -299,7 +300,7 @@
       gap:4px;
       margin:0 0 8px;
       padding:4px;
-      border:1px solid var(--border);
+      border:1px solid var(--stroke);
       border-radius:12px;
       background:rgba(13,17,28,.78);
     }
@@ -464,7 +465,7 @@
           <div class="labels"><strong>Hours</strong><small>Quick options or enter up to 20 hours</small></div>
         </div>
         <div class="input-wrap">
-          <input id="productionHours" type="number" value="1" min="0" max="20" step="0.1" inputmode="decimal" autocomplete="off" aria-label="Production Time in Hours" aria-describedby="productionHoursError" />
+          <input id="productionHours" type="text" value="1" inputmode="decimal" autocomplete="off" aria-label="Production Time in Hours" aria-describedby="productionHoursError" />
           <span class="input-suffix">h</span>
         </div>
         <div class="presets hours-grid" aria-label="Production time presets">
@@ -574,7 +575,7 @@
           <div class="labels"><strong>Run Time</strong><small>Choose a preset or type up to 20 hours</small></div>
         </div>
         <div class="input-wrap">
-          <input id="drillHours" type="number" value="1" min="0" max="20" step="0.1" inputmode="decimal" autocomplete="off" aria-label="Run Time in Hours" aria-describedby="drillHoursError" />
+          <input id="drillHours" type="text" value="1" inputmode="decimal" autocomplete="off" aria-label="Run Time in Hours" aria-describedby="drillHoursError" />
           <span class="input-suffix">h</span>
         </div>
         <div class="presets hours-grid" aria-label="Hour presets">
@@ -622,16 +623,16 @@
       <div class="share-hero">
         <div class="share-stat highlight">
           <span>Estimated Cash</span>
-          <strong id="shareTotal">5.88Qa</strong>
+          <strong id="shareTotal">—</strong>
         </div>
       </div>
 
       <div class="share-details">
-        <div class="share-detail"><span>Oil to Sell</span><strong id="shareOil">25T</strong></div>
-        <div class="share-detail accent"><span>Cash per Oil</span><strong id="shareCashPerOil">235.00</strong></div>
-        <div class="share-detail"><span>Current Sell Rate</span><strong id="shareMarket">50</strong></div>
-        <div class="share-detail"><span>Cash Boost</span><strong id="shareCashBoost">420%</strong></div>
-        <div class="share-detail"><span>Friend Boost</span><strong id="shareFriendBoost">50%</strong></div>
+        <div class="share-detail"><span>Oil to Sell</span><strong id="shareOil">—</strong></div>
+        <div class="share-detail accent"><span>Cash per Oil</span><strong id="shareCashPerOil">—</strong></div>
+        <div class="share-detail"><span>Current Sell Rate</span><strong id="shareMarket">—</strong></div>
+        <div class="share-detail"><span>Cash Boost</span><strong id="shareCashBoost">—</strong></div>
+        <div class="share-detail"><span>Friend Boost</span><strong id="shareFriendBoost">—</strong></div>
       </div>
     </div>
 
