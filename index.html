@@ -1,30 +1,1874 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b0d14">
-<title>STEAL THE OIL TYCOON</title>
-<style>
-html,body{margin:0;min-height:100%;background:#0b0d14;color:#fff;font-family:system-ui,-apple-system,sans-serif}
-#loading{min-height:100vh;display:grid;place-items:center;text-align:center;padding:24px;box-sizing:border-box}
-#loading strong{font-size:18px}#loading small{display:block;margin-top:8px;color:#9aa4b8}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0d14" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="STEAL THE OIL TYCOON" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2064%2064%27%3E%0A%3Crect%20width%3D%2764%27%20height%3D%2764%27%20rx%3D%2716%27%20fill%3D%27%23111520%27%2F%3E%0A%3Cpath%20d%3D%27M32%209C24%2021%2018%2030%2018%2039a14%2014%200%200%200%2028%200c0-9-6-18-14-30Z%27%20fill%3D%27%23ff4fc3%27%2F%3E%0A%3Cpath%20d%3D%27M25%2040c1%205%204%208%209%209%27%20fill%3D%27none%27%20stroke%3D%27%23ffd166%27%20stroke-width%3D%274%27%20stroke-linecap%3D%27round%27%2F%3E%0A%3C%2Fsvg%3E" />
+  <title>STEAL THE OIL TYCOON — Calculator</title>
+  <style>
+    :root{
+      --bg:#0b0d14;--stroke:#2f374d;--text:#f7f8fb;--muted:#9ea7b9;
+      --cyan:#5fe1cc;--shadow:0 16px 44px rgba(0,0,0,.32);
+    }
+    *{box-sizing:border-box}
+
+    button:focus-visible,
+    input:focus-visible{
+      outline:2px solid #c783ff;
+      outline-offset:2px;
+      box-shadow:0 0 0 4px rgba(199,131,255,.16);
+    }
+    html,body{margin:0;min-height:100%;background:var(--bg)}
+    body{
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(420px 180px at 12% -3%,rgba(255,79,195,.14),transparent 65%),
+        radial-gradient(460px 220px at 100% 10%,rgba(123,108,255,.10),transparent 62%),
+        linear-gradient(180deg,#0b0d14 0%,#101420 100%);
+      padding:max(7px,env(safe-area-inset-top)) 10px max(9px,env(safe-area-inset-bottom));
+    }
+    .app{width:min(560px,100%);margin:0 auto}
+
+    .header{display:flex;align-items:center;justify-content:center;gap:8px;padding:5px 42px 8px;position:relative;min-height:54px}
+    .header-main{text-align:center;min-width:0;max-width:100%}
+    .title-row{display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;max-width:100%}
+    .header h1{margin:0;font-size:clamp(17px,4.7vw,22px);line-height:1;font-weight:1000;letter-spacing:.2px;text-shadow:0 0 18px rgba(255,79,195,.15);white-space:nowrap}
+    .calc-badge{display:inline-flex;align-items:center;min-height:20px;padding:0 7px;border-radius:999px;border:1px solid #4a3d61;background:linear-gradient(180deg,rgba(255,79,195,.12),rgba(123,108,255,.10));color:#d9d4e8;font-size:8px;font-weight:950;letter-spacing:.65px;text-transform:uppercase;white-space:nowrap}
+    .header p{margin:5px 0 0;color:#aeb5c7;font-size:10px;font-weight:800}
+    .help-btn{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:10px;border:1px solid #3a435b;background:#141927;color:#fff;font-size:15px;font-weight:1000;display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow)}
+    .help-btn:hover{border-color:#6e65da;background:#171d2c}
+
+    .panel{background:linear-gradient(180deg,rgba(21,25,37,.98),rgba(17,21,32,.97));border:1px solid var(--stroke);border-radius:17px;box-shadow:var(--shadow)}
+    .step{padding:7px;margin-bottom:6px}
+    .step-head{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+    .step-head h2{margin:0;font-size:11px;font-weight:950;letter-spacing:.25px}
+    .step-head span{margin-left:auto;color:#7f899c;font-size:9px;font-weight:800}
+
+    .field{
+      background:linear-gradient(180deg,#1a1f2e,#171c29);border:1px solid #30384c;border-radius:13px;
+      padding:6px;display:grid;grid-template-columns:minmax(0,1fr) 122px;gap:5px 7px;align-items:center;
+    }
+    .field + .field{margin-top:5px}
+    .field-head{display:flex;align-items:center;gap:7px;min-width:0}
+    .icon{width:27px;height:27px;border-radius:9px;flex:0 0 auto;display:grid;place-items:center;background:#11151f;border:1px solid #353d52;overflow:hidden;padding:2px}
+    .icon svg{width:100%;height:100%;display:block;overflow:visible;filter:drop-shadow(0 0 4px rgba(255,79,195,.18))}
+    .gold{stroke:#ffd166;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    .pink{stroke:#ff55c7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    .purple{stroke:#8b7cff;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    .softfill{fill:rgba(255,209,102,.13);stroke:#ffd166;stroke-linejoin:round}
+    .pinkfill{fill:rgba(255,85,199,.12);stroke:#ff55c7;stroke-linejoin:round}
+    .labels{min-width:0}
+    .labels strong{display:block;font-size:13px;line-height:1.05;white-space:nowrap}
+    .labels small{display:block;margin-top:2px;color:var(--muted);font-size:8.8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+    input{width:100%;height:34px;border-radius:10px;border:1px solid #3b445d;background:#0d1119;color:var(--text);outline:none;padding:0 10px;text-align:right;font-size:17px;font-weight:950;font-variant-numeric:tabular-nums}
+    input:focus{border-color:#7b6cff;box-shadow:0 0 0 2px rgba(123,108,255,.12)}
+    input.invalid{border-color:#ff7a96}
+    .input-wrap{position:relative;width:100%;grid-column:2;grid-row:1}
+    .input-wrap input{padding-right:28px}
+    .input-suffix{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#7f899c;font-size:12px;font-weight:900;pointer-events:none}
+
+    .presets{grid-column:1/-1;display:grid;gap:4px}
+    .units{grid-template-columns:repeat(5,minmax(0,1fr))}
+    .prices{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .percent{grid-template-columns:repeat(6,minmax(0,1fr))}
+    .chip{appearance:none;width:100%;min-height:25px;border-radius:8px;border:1px solid #394056;background:#111520;color:#d5dbea;font-size:10.5px;font-weight:900;padding:3px;cursor:pointer;touch-action:manipulation}
+    .chip.active{
+      background:linear-gradient(180deg,rgba(255,79,195,.34),rgba(123,108,255,.30));
+      border-color:#a979ff;
+      color:#fff;
+      box-shadow:0 0 0 1px rgba(169,121,255,.28),0 0 14px rgba(123,108,255,.16);
+    }
+    .chip.secondary-chip.active{
+      background:linear-gradient(180deg,rgba(123,108,255,.38),rgba(91,76,201,.28));
+      border-color:#9b8cff;
+      color:#fff;
+      box-shadow:0 0 0 1px rgba(155,140,255,.24),0 0 14px rgba(123,108,255,.15);
+    }
+
+
+    .field-error{
+      display:none;
+      grid-column:1/-1;
+      margin-top:1px;
+      padding:5px 7px;
+      border-radius:8px;
+      border:1px solid rgba(255,112,139,.22);
+      background:rgba(255,112,139,.07);
+      color:#ff9db0;
+      font-size:8.8px;
+      font-weight:850;
+      line-height:1.3;
+    }
+    .field-error.show{display:block}
+
+    .result{padding:8px;position:relative;overflow:hidden}
+    .result::before{content:"";position:absolute;right:-60px;bottom:-90px;width:190px;height:190px;border-radius:50%;background:radial-gradient(circle,rgba(255,79,195,.16),transparent 68%);pointer-events:none}
+    .result-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+    .result-head h2{margin:0;font-size:11px;font-weight:950;letter-spacing:.45px}
+    .result-head span{color:#7f899c;font-size:9px;font-weight:800}
+    .live-status{display:inline-flex;align-items:center;gap:5px;color:#8de7bd!important}
+    .live-status::before{content:"";width:6px;height:6px;border-radius:50%;background:#35e29d;box-shadow:0 0 8px rgba(53,226,157,.8)}
+    .result-main{background:linear-gradient(135deg,rgba(255,79,195,.16),rgba(123,108,255,.15) 58%,rgba(18,23,34,.95));border:1px solid #51466a;border-radius:13px;padding:9px 10px}
+    .result-main span{display:block;color:#f2b8db;font-size:8.5px;font-weight:900;letter-spacing:.8px;text-transform:uppercase}
+    .result-main strong{display:block;margin-top:3px;font-size:30px;line-height:1;font-weight:1000;letter-spacing:-1px}
+    .result-mini{display:grid;grid-template-columns:1fr;gap:5px;margin-top:6px}
+    .metric{background:#121722;border:1px solid #30374a;border-radius:10px;padding:6px}
+    .metric span{display:block;color:#94a4ac;font-size:8px;font-weight:900;letter-spacing:.55px;text-transform:uppercase}
+    .metric strong{display:block;margin-top:3px;color:var(--cyan);font-size:16px;line-height:1;font-weight:950}
+
+    .actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px}
+    button.action{min-height:36px;border-radius:11px;border:1px solid transparent;font-size:11.5px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;padding:0 10px;white-space:nowrap}
+    .primary{background:linear-gradient(180deg,#727dff,#5d69f4);color:#fff;box-shadow:0 8px 20px rgba(99,112,247,.22)}
+    .share{background:linear-gradient(180deg,#e052bd,#a55ef0);border-color:#9c5cc9!important;color:#fff;box-shadow:0 8px 20px rgba(224,82,189,.18)}
+    .reset{background:linear-gradient(180deg,#232938,#1a1f2c);border-color:#4a556f!important;color:#cdd5e3}
+    .community-note{text-align:center;margin-top:7px;color:#697487;font-size:9px;font-weight:700;letter-spacing:.1px}
+    .toast{position:fixed;left:50%;bottom:max(16px,env(safe-area-inset-bottom));transform:translate(-50%,10px);background:#eef2fb;color:#0f1420;padding:9px 13px;border-radius:999px;font-size:11px;font-weight:900;opacity:0;pointer-events:none;transition:.2s ease;z-index:20}
+
+    .help-modal{position:fixed;inset:0;background:rgba(8,10,16,.78);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:18px;z-index:30}
+    .help-modal.show{display:flex}
+    .help-card{width:min(440px,100%);max-height:88vh;overflow:auto;background:linear-gradient(180deg,#161a27,#111520);border:1px solid #364059;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.45);padding:14px}
+    .help-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+    .help-top h3{margin:0;font-size:15px;font-weight:1000}
+    .close-help{width:30px;height:30px;border-radius:10px;border:1px solid #394259;background:#151a27;color:#fff;font-size:18px;line-height:1;cursor:pointer}
+    .help-card p{margin:0 0 10px;color:#cbd3e1;font-size:12px;line-height:1.55}
+    .help-list{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+    .help-list li{background:#121722;border:1px solid #2f374b;border-radius:12px;padding:10px 11px;color:#dbe2ef;font-size:11.5px;line-height:1.45}
+    .help-list b{color:#fff}
+
+
+
+    .share-modal{position:fixed;inset:0;background:rgba(6,8,13,.88);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:18px;z-index:40}
+    .share-modal.show{display:flex}
+    .share-shell{width:min(430px,100%);display:grid;gap:10px}
+    .share-card{
+      position:relative;overflow:hidden;border-radius:24px;padding:18px;
+      background:
+        radial-gradient(260px 180px at 85% 0%,rgba(255,79,195,.24),transparent 65%),
+        radial-gradient(240px 200px at 10% 100%,rgba(123,108,255,.22),transparent 70%),
+        linear-gradient(145deg,#161a27 0%,#111521 54%,#171426 100%);
+      border:1px solid #4d4568;
+      box-shadow:0 24px 70px rgba(0,0,0,.48),0 0 42px rgba(255,79,195,.08);
+    }
+    .share-card::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 25%,rgba(255,255,255,.03) 47%,transparent 68%)}
+    .share-top{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .share-brand small{display:block;color:#aeb6c9;font-size:10px;font-weight:900;letter-spacing:.7px;text-transform:uppercase}
+    .share-brand h3{margin:4px 0 0;font-size:23px;line-height:1;font-weight:1000;letter-spacing:-.3px}
+    .share-credit{color:#aeb6c9;font-size:9.5px;font-weight:800;text-align:right;white-space:nowrap}
+    .share-credit b{color:#fff}
+    .share-hero{position:relative;z-index:1;display:grid;grid-template-columns:1fr;gap:9px;margin-top:16px}
+    .share-stat{border:1px solid #393f56;background:rgba(15,19,29,.76);border-radius:17px;padding:12px;min-width:0}
+    .share-stat.highlight{background:linear-gradient(135deg,rgba(255,79,195,.18),rgba(123,108,255,.18));border-color:#654f81}
+    .share-stat span{display:block;color:#aab4c6;font-size:8.5px;font-weight:900;letter-spacing:.8px;text-transform:uppercase}
+    .share-stat strong{display:block;margin-top:7px;font-size:26px;line-height:1;font-weight:1000;letter-spacing:-.8px;overflow-wrap:anywhere}
+    .share-stat.highlight strong{font-size:38px;color:#fff;text-shadow:0 0 22px rgba(255,79,195,.18)}
+    .share-details{position:relative;z-index:1;display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:9px}
+    .share-detail{background:rgba(14,18,27,.72);border:1px solid #30374a;border-radius:13px;padding:9px 10px}
+    .share-detail span{display:block;color:#8f99ab;font-size:7.8px;font-weight:900;letter-spacing:.65px;text-transform:uppercase}
+    .share-detail strong{display:block;margin-top:4px;color:#eef2f9;font-size:14px;font-weight:950}
+    .share-detail.accent strong{color:var(--cyan)}
+    .share-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .share-actions button{min-height:38px;border-radius:11px;font-size:12px;font-weight:900;cursor:pointer}
+    .share-close{background:#141826;border:1px solid #38425b;color:#e5eaf3}
+    .share-copy{border:0;background:linear-gradient(180deg,#727dff,#5d69f4);color:#fff}
+
+    .toast.show{opacity:1;transform:translate(-50%,0)}
+
+    @media(max-width:390px){
+      .actions{grid-template-columns:1fr 1fr 1fr}
+      .field{grid-template-columns:minmax(0,1fr) 114px}
+      .percent{gap:3px}.percent .chip{font-size:9.7px;padding-inline:0}
+    }
+    @media(max-height:720px){
+      body{padding-top:4px;padding-bottom:6px}
+      .header{padding:3px 38px 5px;min-height:48px}.header h1{font-size:18px}.calc-badge{font-size:7px;min-height:18px;padding-inline:6px}.header p{display:block;margin-top:3px;font-size:9px}
+      .help-btn{width:28px;height:28px;font-size:14px}
+      .step{padding:6px;margin-bottom:4px}.step-head{margin-bottom:4px}.step-head span,.labels small{display:none}
+      .field{padding:5px;gap:4px 6px}.field + .field{margin-top:4px}
+      .icon{width:24px;height:24px}input{height:31px;font-size:16px}
+      .chip{min-height:23px;font-size:10px;padding-block:2px}
+      .result{padding:6px}.result-head{margin-bottom:5px}.result-main{padding:7px 9px}.result-main strong{font-size:26px}
+      .metric{padding:5px}.metric strong{font-size:15px}.actions{margin-top:5px}button.action{min-height:32px;font-size:10.5px;padding:0 6px}
+    }
+
+    @media (max-width:520px){
+      .header{padding-left:38px;padding-right:38px}
+      .title-row{display:grid;grid-template-columns:1fr;justify-items:center;gap:5px}
+      .header h1{font-size:clamp(17px,5.7vw,20px);white-space:nowrap}
+      .calc-badge{font-size:7px;min-height:18px;padding:0 7px}
+      .header p{margin-top:4px}
+      .help-btn{right:3px}
+    }
+    @media (max-width:360px){
+      .header h1{font-size:16px}
+      .calc-badge{font-size:6.5px}
+    }
+
+
+    .tool-tabs{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:5px;
+      margin-bottom:6px;
+      padding:4px;
+      background:rgba(15,19,29,.88);
+      border:1px solid #2d3548;
+      border-radius:13px;
+      box-shadow:0 10px 28px rgba(0,0,0,.18);
+    }
+    .tool-tab{
+      min-height:32px;
+      border-radius:9px;
+      border:1px solid transparent;
+      background:transparent;
+      color:#8f99ab;
+      font-size:9.5px;
+      font-weight:950;
+      cursor:pointer;
+      padding:4px 5px;
+      white-space:nowrap;
+    }
+    .tool-tab.active{
+      color:#fff;
+      border-color:#57466f;
+      background:linear-gradient(180deg,rgba(255,79,195,.17),rgba(123,108,255,.15));
+      box-shadow:0 7px 18px rgba(123,108,255,.08);
+    }
+    .tool-page{display:none}
+    .tool-page.active{display:block}
+    .rate-units{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .tier-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+    .tier-chip{
+      min-height:38px;
+      display:grid;
+      place-items:center;
+      align-content:center;
+      gap:2px;
+      line-height:1;
+    }
+    .tier-chip small{
+      color:#7f899c;
+      font-size:7.5px;
+      font-weight:950;
+    }
+    .tier-chip.active small{color:#d9d4e8}
+    .hours-grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+    .result-mini.dual{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .metric strong.compact{font-size:14px}
+    .actions.two{grid-template-columns:1fr 1fr}
+    .formula-note{
+      margin-top:6px;
+      color:#778296;
+      font-size:8.5px;
+      font-weight:750;
+      line-height:1.35;
+      text-align:center;
+    }
+    .tool-intro{
+      margin:-1px 0 6px;
+      color:#788397;
+      font-size:8.8px;
+      font-weight:750;
+      line-height:1.35;
+      text-align:center;
+    }
+    @media(max-width:390px){
+      .tool-tab{font-size:8.7px}
+      .tier-grid{gap:3px}
+      .tier-chip{font-size:8.8px;padding-inline:1px}
+      .tier-chip small{font-size:6.8px}
+      .hours-grid{gap:3px}
+      .hours-grid .chip{font-size:9px;padding-inline:0}
+    }
+
+
+    .clock-production-grid{
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:5px;
+    }
+
+
+    .mode-switch{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:4px;
+      margin:0 0 8px;
+      padding:4px;
+      border:1px solid var(--border);
+      border-radius:12px;
+      background:rgba(13,17,28,.78);
+    }
+    .mode-option{
+      min-height:34px;
+      border:1px solid transparent;
+      border-radius:9px;
+      background:transparent;
+      color:var(--muted);
+      font-size:10px;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .mode-option.active{
+      color:#fff;
+      border-color:#8e67d8;
+      background:linear-gradient(180deg,rgba(255,79,195,.23),rgba(123,108,255,.23));
+      box-shadow:0 0 12px rgba(123,108,255,.10);
+    }
+    .mode-option:focus-visible{
+      outline:2px solid #c783ff;
+      outline-offset:2px;
+    }
+    .target-units{
+      grid-template-columns:repeat(5,minmax(0,1fr));
+    }
+
+  </style>
 </head>
 <body>
-<div id="loading"><div><strong>STEAL THE OIL TYCOON</strong><small>Loading community tools…</small></div></div>
+<main class="app">
+  <header class="header">
+    <div class="header-main">
+      <div class="title-row">
+        <h1>STEAL THE OIL TYCOON</h1>
+        <span class="calc-badge" id="calcBadge">Sale Calculator</span>
+      </div>
+      <p>Made by 1yono</p>
+    </div>
+    <button class="help-btn" id="helpBtn" aria-label="How to use">?</button>
+  </header>
+
+  <nav class="tool-tabs" aria-label="Calculators">
+    <button class="tool-tab active" type="button" data-tool="sale">Sale</button>
+    <button class="tool-tab" type="button" data-tool="oil-hour">Oil / Hour</button>
+    <button class="tool-tab" type="button" data-tool="clock-drill">Clock Drill</button>
+  </nav>
+
+  <div class="tool-page active" data-tool-page="sale">
+  <section class="panel step">
+    <div class="step-head"><h2>Your Oil</h2><span>Amount + unit</span></div>
+    <label class="field">
+      <div class="field-head">
+        <div class="icon" aria-label="Oil icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 6h10l3 3-4 4H9z" class="softfill" stroke-width="1.7"/><path d="M8 12l10 8-2.5 2.5-9-9z" class="pink" stroke-width="1.7"/><path d="M12.5 23.2c0 2-1.7 3.3-3.4 3.3s-3.4-1.3-3.4-3.3c0-1.8 3.4-5.2 3.4-5.2s3.4 3.4 3.4 5.2Z" class="pinkfill" stroke-width="1.5"/></svg></div>
+        <div class="labels"><strong>Oil to Sell</strong><small>Normal / K / M / B / T</small></div>
+      </div>
+      <input id="oil" value="50" inputmode="decimal" autocomplete="off" aria-label="Oil" aria-describedby="oilError" />
+      <div class="presets units" aria-label="Oil units">
+        <button class="chip secondary-chip active" type="button" data-unit="">Normal</button>
+        <button class="chip secondary-chip" type="button" data-unit="K">K</button>
+        <button class="chip secondary-chip" type="button" data-unit="M">M</button>
+        <button class="chip secondary-chip" type="button" data-unit="B">B</button>
+        <button class="chip secondary-chip" type="button" data-unit="T">T</button>
+      </div>
+      <div class="field-error" id="oilError" role="status" aria-live="polite"></div>
+    </label>
+  </section>
+
+  <section class="panel step">
+    <div class="step-head"><h2>Boosts</h2><span>Your active bonuses</span></div>
+
+    <label class="field">
+      <div class="field-head">
+        <div class="icon" aria-label="Cash icon"><svg viewBox="0 0 32 32" aria-hidden="true"><ellipse cx="12" cy="21" rx="6" ry="2.6" class="softfill" stroke-width="1.4"/><path d="M6 21v3c0 1.4 2.7 2.6 6 2.6s6-1.2 6-2.6v-3" class="gold" stroke-width="1.4"/><path d="M18 5l-6 10h5l-2 9 8-12h-5z" class="pinkfill" stroke-width="1.7"/></svg></div>
+        <div class="labels"><strong>Cash Boost</strong><small>Enter the Cash Boost shown in game</small></div>
+      </div>
+      <div class="input-wrap"><input id="cashBoost" value="420" inputmode="decimal" autocomplete="off" aria-label="Cash Boost" aria-describedby="cashBoostError" /><span class="input-suffix">%</span></div>
+      <div class="field-error" id="cashBoostError" role="status" aria-live="polite"></div>
+    </label>
+
+    
+
+    <label class="field">
+      <div class="field-head">
+        <div class="icon" aria-label="Friend icon"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="11" cy="11" r="4" class="softfill" stroke-width="1.4"/><circle cx="21" cy="12" r="3.5" class="pinkfill" stroke-width="1.4"/><path d="M5 25c.8-5 3.2-7 6-7s5.2 2 6 7" class="gold" stroke-width="1.6"/><path d="M17 24c.7-3.8 2.2-5.5 4.5-5.5 1.6 0 3 .9 4 2.8" class="pink" stroke-width="1.5"/><path d="M24 7v5M21.5 9.5h5" class="purple" stroke-width="1.7"/></svg></div>
+        <div class="labels"><strong>Friend Boost</strong><small>Choose your current Friend Boost</small></div>
+      </div>
+      <div class="presets percent" aria-label="Friend Boost presets">
+        <button class="chip" data-friend="0">0%</button><button class="chip" data-friend="10">10%</button><button class="chip" data-friend="20">20%</button><button class="chip" data-friend="30">30%</button><button class="chip" data-friend="40">40%</button><button class="chip active" data-friend="50">50%</button>
+      </div>
+    </label>
+  </section>
+
+  <section class="panel step">
+    <div class="step-head"><h2>Sell Rate</h2><span>Current in-game price</span></div>
+    <label class="field">
+      <div class="field-head">
+        <div class="icon" aria-label="Market icon"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="6" width="22" height="20" rx="4" class="pinkfill" stroke-width="1.4"/><path d="M9 22V18M14 22v-7M19 22v-10" class="gold" stroke-width="2"/><path d="M8 16l5-4 4 2 7-7" class="pink" stroke-width="2"/><path d="M20 7h4v4" class="pink" stroke-width="2"/></svg></div>
+        <div class="labels"><strong>Current Sell Rate</strong><small>Pick 15, 20 or 50</small></div>
+      </div>
+      <input id="market" value="50" inputmode="decimal" autocomplete="off" aria-label="Current Sell Rate" aria-describedby="marketError" />
+      <div class="presets prices" aria-label="Sale rate presets">
+        <button class="chip" data-market="15">15</button>
+        <button class="chip" data-market="20">20</button>
+        <button class="chip active" data-market="50">50</button>
+      </div>
+      <div class="field-error" id="marketError" role="status" aria-live="polite"></div>
+    </label>
+  </section>
+
+  <section class="panel result">
+    <div class="result-head"><h2>Sale estimate</h2><span id="status" class="live-status">Live</span></div>
+    <div class="result-main"><span>Estimated Cash</span><strong id="totalCash">5.88Qa</strong></div>
+    <div class="result-mini">
+      <div class="metric"><span>Cash per Oil</span><strong id="cashPerOil">235.00</strong></div>
+    </div>
+    <div class="actions"><button id="copyBtn" class="action primary">Copy</button><button id="shareBtn" class="action share">Share</button><button id="resetBtn" class="action reset">Reset</button></div>
+  </section>
+
+  </div>
+
+  <div class="tool-page" data-tool-page="oil-hour">
+    <div class="tool-intro">Enter how much oil you produce each second.</div>
+
+    <div class="mode-switch" role="group" aria-label="Oil per Hour calculation mode">
+      <button class="mode-option active" type="button" data-production-mode="time-to-oil">Time → Oil</button>
+      <button class="mode-option" type="button" data-production-mode="oil-to-time">Oil → Time</button>
+    </div>
+
+    <section class="panel step">
+      <div class="step-head"><h2>Production Rate</h2><span>Oil generated each second</span></div>
+      <label class="field">
+        <div class="field-head">
+          <div class="icon" aria-label="Oil rate icon">
+            <svg viewBox="0 0 32 32" aria-hidden="true">
+              <path d="M16 5s-6 7-6 12a6 6 0 0 0 12 0c0-5-6-12-6-12Z" class="pinkfill" stroke-width="1.6"/>
+              <path d="M8 25h16M21 8l4-3M23 12h4" class="gold" stroke-width="1.6"/>
+            </svg>
+          </div>
+          <div class="labels"><strong>Oil per Second</strong><small>Example: 2.6 + M</small></div>
+        </div>
+        <input id="productionRate" value="1M" inputmode="decimal" autocomplete="off" aria-label="Oil per Second" aria-describedby="productionRateError" />
+        <div class="presets rate-units" aria-label="Production rate units">
+          <button class="chip secondary-chip" type="button" data-rate-unit="">Normal</button>
+          <button class="chip secondary-chip" type="button" data-rate-unit="K">K</button>
+          <button class="chip secondary-chip active" type="button" data-rate-unit="M">M</button>
+        </div>
+        <div class="field-error" id="productionRateError" role="status" aria-live="polite"></div>
+      </label>
+    </section>
+
+    <section class="panel step" id="productionTimeSection">
+      <div class="step-head"><h2>Time</h2><span>Choose or type any duration</span></div>
+      <label class="field">
+        <div class="field-head">
+          <div class="icon" aria-label="Production time icon">
+            <svg viewBox="0 0 32 32" aria-hidden="true">
+              <circle cx="16" cy="16" r="10" class="pinkfill" stroke-width="1.6"/>
+              <path d="M16 9v7h6" class="gold" stroke-width="1.8"/>
+            </svg>
+          </div>
+          <div class="labels"><strong>Hours</strong><small>Quick options or enter up to 20 hours</small></div>
+        </div>
+        <div class="input-wrap">
+          <input id="productionHours" type="number" value="1" min="0" max="20" step="0.1" inputmode="decimal" autocomplete="off" aria-label="Production Time in Hours" aria-describedby="productionHoursError" />
+          <span class="input-suffix">h</span>
+        </div>
+        <div class="presets hours-grid" aria-label="Production time presets">
+          <button class="chip active" type="button" data-production-hours="1">1h</button>
+          <button class="chip" type="button" data-production-hours="2">2h</button>
+          <button class="chip" type="button" data-production-hours="4">4h</button>
+          <button class="chip" type="button" data-production-hours="8">8h</button>
+          <button class="chip" type="button" data-production-hours="12">12h</button>
+        </div>
+        <div class="field-error" id="productionHoursError" role="status" aria-live="polite"></div>
+      </label>
+    </section>
+
+    <section class="panel step" id="productionTargetSection" hidden>
+      <div class="step-head"><h2>Target Oil</h2><span>How much oil you want to reach</span></div>
+      <label class="field">
+        <div class="field-head">
+          <div class="icon" aria-label="Target oil icon">
+            <svg viewBox="0 0 32 32" aria-hidden="true">
+              <circle cx="16" cy="16" r="10" class="softfill" stroke-width="1.6"/>
+              <circle cx="16" cy="16" r="5" class="pinkfill" stroke-width="1.5"/>
+              <circle cx="16" cy="16" r="1.8" class="goldfill"/>
+            </svg>
+          </div>
+          <div class="labels"><strong>Oil Target</strong><small>Example: 300 + B</small></div>
+        </div>
+        <input id="productionTarget" value="300B" inputmode="decimal" autocomplete="off" aria-label="Target Oil" aria-describedby="productionTargetError" />
+        <div class="presets target-units" aria-label="Target oil units">
+          <button class="chip secondary-chip" type="button" data-target-unit="">Normal</button>
+          <button class="chip secondary-chip" type="button" data-target-unit="K">K</button>
+          <button class="chip secondary-chip" type="button" data-target-unit="M">M</button>
+          <button class="chip secondary-chip active" type="button" data-target-unit="B">B</button>
+          <button class="chip secondary-chip" type="button" data-target-unit="T">T</button>
+        </div>
+        <div class="field-error" id="productionTargetError" role="status" aria-live="polite"></div>
+      </label>
+    </section>
+
+    <section class="panel result">
+      <div class="result-head"><h2>Production estimate</h2><span class="live-status">Live</span></div>
+      <div class="result-main">
+        <span id="productionTotalLabel">Oil in 1 Hour</span>
+        <strong id="productionTotal">3.6B</strong>
+      </div>
+      <div class="result-mini dual">
+        <div class="metric"><span id="productionMetricOneLabel">Per Hour</span><strong id="productionPerHour">3.6B</strong></div>
+        <div class="metric"><span id="productionMetricTwoLabel">Per Minute</span><strong id="productionPerMinute">60M</strong></div>
+      </div>
+      <div class="actions two">
+        <button id="copyProductionBtn" class="action primary">Copy</button>
+        <button id="resetProductionBtn" class="action reset">Reset</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="tool-page" data-tool-page="clock-drill">
+    <div class="tool-intro">Choose the drill tier, how many you own, and how long they run.</div>
+
+    <section class="panel step">
+      <div class="step-head"><h2>Clock Drill Tier</h2><span>Growth multiplier</span></div>
+      <div class="presets tier-grid" aria-label="Clock Drill tier">
+        <button class="chip tier-chip active" type="button" data-drill-tier="basic" data-multiplier="1">Basic<small>×1</small></button>
+        <button class="chip tier-chip" type="button" data-drill-tier="gold" data-multiplier="2">Gold<small>×2</small></button>
+        <button class="chip tier-chip" type="button" data-drill-tier="diamond" data-multiplier="3">Diamond<small>×3</small></button>
+        <button class="chip tier-chip" type="button" data-drill-tier="rainbow" data-multiplier="5">Rainbow<small>×5</small></button>
+        <button class="chip tier-chip" type="button" data-drill-tier="galaxy" data-multiplier="10">Galaxy<small>×10</small></button>
+      </div>
+    </section>
+
+    <section class="panel step">
+      <div class="step-head"><h2>Production Multiplier</h2><span>Area production bonus</span></div>
+      <div class="presets clock-production-grid" aria-label="Clock Drill Production Multiplier">
+        <button class="chip tier-chip active" type="button" data-clock-production="1">×1<small>Standard</small></button>
+        <button class="chip tier-chip" type="button" data-clock-production="2">×2<small>Production</small></button>
+        <button class="chip tier-chip" type="button" data-clock-production="3">×3<small>Production</small></button>
+        <button class="chip tier-chip" type="button" data-clock-production="5">×5<small>Production</small></button>
+        <button class="chip tier-chip" type="button" data-clock-production="6">×6<small>Production</small></button>
+        <button class="chip tier-chip" type="button" data-clock-production="10">×10<small>Production</small></button>
+      </div>
+    </section>
+
+    <section class="panel step">
+      <div class="step-head"><h2>Setup</h2><span>Drills + running time</span></div>
+
+      <label class="field">
+        <div class="field-head">
+          <div class="icon" aria-label="Clock Drill count icon">
+            <svg viewBox="0 0 32 32" aria-hidden="true">
+              <circle cx="16" cy="16" r="10" class="softfill" stroke-width="1.6"/>
+              <path d="M16 10v7l5 3M7 25l4-4M25 25l-4-4" class="pink" stroke-width="1.7"/>
+            </svg>
+          </div>
+          <div class="labels"><strong>Drills Owned</strong><small>How many of this tier</small></div>
+        </div>
+        <input id="drillCount" value="1" inputmode="numeric" autocomplete="off" aria-label="Drills Owned" aria-describedby="drillCountError" />
+        <div class="field-error" id="drillCountError" role="status" aria-live="polite"></div>
+      </label>
+
+      <label class="field">
+        <div class="field-head">
+          <div class="icon" aria-label="Hours icon">
+            <svg viewBox="0 0 32 32" aria-hidden="true">
+              <circle cx="16" cy="16" r="10" class="pinkfill" stroke-width="1.6"/>
+              <path d="M16 9v7h6" class="gold" stroke-width="1.8"/>
+            </svg>
+          </div>
+          <div class="labels"><strong>Run Time</strong><small>Choose a preset or type up to 20 hours</small></div>
+        </div>
+        <div class="input-wrap">
+          <input id="drillHours" type="number" value="1" min="0" max="20" step="0.1" inputmode="decimal" autocomplete="off" aria-label="Run Time in Hours" aria-describedby="drillHoursError" />
+          <span class="input-suffix">h</span>
+        </div>
+        <div class="presets hours-grid" aria-label="Hour presets">
+          <button class="chip active" type="button" data-drill-hours="1">1h</button>
+          <button class="chip" type="button" data-drill-hours="3">3h</button>
+          <button class="chip" type="button" data-drill-hours="5">5h</button>
+          <button class="chip" type="button" data-drill-hours="7">7h</button>
+          <button class="chip" type="button" data-drill-hours="9">9h</button>
+        </div>
+        <div class="field-error" id="drillHoursError" role="status" aria-live="polite"></div>
+      </label>
+    </section>
+
+    <section class="panel result">
+      <div class="result-head"><h2>Clock Drill estimate</h2><span class="live-status">Live</span></div>
+      <div class="result-main">
+        <span>Final Rate</span>
+        <strong id="drillFinalRate">3.6K/s</strong>
+      </div>
+      <div class="result-mini dual">
+        <div class="metric"><span>Total Oil</span><strong id="drillTotalOil">6.48M</strong></div>
+        <div class="metric"><span>Growth Each Second</span><strong id="drillGrowth">+1/s</strong></div>
+      </div>
+      <div class="actions two">
+        <button id="copyDrillBtn" class="action primary">Copy</button>
+        <button id="resetDrillBtn" class="action reset">Reset</button>
+      </div>
+      <div class="formula-note">Assumption: each Basic Clock Drill starts at 1 oil/s, then gains +1 oil/s every second. Tier, drill count, and Production Multiplier scale the displayed production.</div>
+    </section>
+  </div>
+
+  <div class="community-note">Community made tool • Game values may change with updates • Last updated Aug 20 2026</div>
+</main>
+<div class="share-modal" id="shareModal" aria-hidden="true">
+  <div class="share-shell">
+    <div class="share-card">
+      <div class="share-top">
+        <div class="share-brand">
+          <small>Sale calculator</small>
+          <h3>STEAL THE OIL TYCOON</h3>
+        </div>
+        <div class="share-credit">Made by <b>1yono</b></div>
+      </div>
+
+      <div class="share-hero">
+        <div class="share-stat highlight">
+          <span>Estimated Cash</span>
+          <strong id="shareTotal">5.88Qa</strong>
+        </div>
+      </div>
+
+      <div class="share-details">
+        <div class="share-detail"><span>Oil to Sell</span><strong id="shareOil">25T</strong></div>
+        <div class="share-detail accent"><span>Cash per Oil</span><strong id="shareCashPerOil">235.00</strong></div>
+        <div class="share-detail"><span>Current Sell Rate</span><strong id="shareMarket">50</strong></div>
+        <div class="share-detail"><span>Cash Boost</span><strong id="shareCashBoost">420%</strong></div>
+        <div class="share-detail"><span>Friend Boost</span><strong id="shareFriendBoost">50%</strong></div>
+      </div>
+    </div>
+
+    <div class="share-actions">
+      <button class="share-copy" id="shareCopyBtn">Copy Summary</button>
+      <button class="share-close" id="shareCloseBtn">Close</button>
+    </div>
+  </div>
+</div>
+<div class="help-modal" id="helpModal" aria-hidden="true">
+  <div class="help-card" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <div class="help-top">
+      <h3 id="helpTitle">Sale Calculator Guide</h3>
+      <button class="close-help" id="closeHelp" aria-label="Close">×</button>
+    </div>
+    <p id="helpIntro">Use this page to estimate how much cash you will get when you sell your oil.</p>
+    <ul class="help-list" id="helpList"></ul>
+  </div>
+</div>
+<div class="toast" id="toast">Copied</div>
 <script>
-(async()=>{
-try{
-const data="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";
-const bytes=Uint8Array.from(atob(data),c=>c.charCodeAt(0));
-const stream=new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));
-const html=await new Response(stream).text();
-document.open();document.write(html);document.close();
-}catch(error){
-document.getElementById("loading").innerHTML="<div><strong>Unable to load the tools.</strong><small>Please use a modern browser and refresh the page.</small></div>";
-console.error(error);
-}
+(() => {
+  const OUTPUT_UNITS = [
+    ["Dc", 1e33], ["No", 1e30], ["Oc", 1e27], ["Sp", 1e24],
+    ["Sx", 1e21], ["Qi", 1e18], ["Qa", 1e15], ["T", 1e12],
+    ["B", 1e9], ["M", 1e6], ["K", 1e3],
+  ];
+
+  const SALE_INPUT_UNITS = [["T", 1e12], ["B", 1e9], ["M", 1e6], ["K", 1e3]];
+  const RATE_INPUT_UNITS = [["M", 1e6], ["K", 1e3]];
+  const TARGET_INPUT_UNITS = OUTPUT_UNITS;
+
+  const SALE_STORAGE_KEY = "stealTheOilTycoonSaleStateV37";
+  const SALE_OIL_DEFAULT_KEY = "stealTheOilTycoonSaleOilDefaultV54";
+  const PRODUCTION_STORAGE_KEY = "stealTheOilTycoonProductionStateV37";
+  const DRILL_STORAGE_KEY = "stealTheOilTycoonDrillStateV37";
+  const TOOL_STORAGE_KEY = "stealTheOilTycoonActiveTool";
+
+  const els = {
+    calcBadge: document.getElementById("calcBadge"),
+    toast: document.getElementById("toast"),
+
+    oil: document.getElementById("oil"),
+    market: document.getElementById("market"),
+    cashBoost: document.getElementById("cashBoost"),
+    cashPerOil: document.getElementById("cashPerOil"),
+    totalCash: document.getElementById("totalCash"),
+    status: document.getElementById("status"),
+
+    oilError: document.getElementById("oilError"),
+    cashBoostError: document.getElementById("cashBoostError"),
+    marketError: document.getElementById("marketError"),
+
+    productionRate: document.getElementById("productionRate"),
+    productionHours: document.getElementById("productionHours"),
+    productionTarget: document.getElementById("productionTarget"),
+    productionTimeSection: document.getElementById("productionTimeSection"),
+    productionTargetSection: document.getElementById("productionTargetSection"),
+    productionTotalLabel: document.getElementById("productionTotalLabel"),
+    productionTotal: document.getElementById("productionTotal"),
+    productionPerHour: document.getElementById("productionPerHour"),
+    productionPerMinute: document.getElementById("productionPerMinute"),
+    productionMetricOneLabel: document.getElementById("productionMetricOneLabel"),
+    productionMetricTwoLabel: document.getElementById("productionMetricTwoLabel"),
+    productionRateError: document.getElementById("productionRateError"),
+    productionHoursError: document.getElementById("productionHoursError"),
+    productionTargetError: document.getElementById("productionTargetError"),
+
+    drillCount: document.getElementById("drillCount"),
+    drillHours: document.getElementById("drillHours"),
+    drillFinalRate: document.getElementById("drillFinalRate"),
+    drillTotalOil: document.getElementById("drillTotalOil"),
+    drillGrowth: document.getElementById("drillGrowth"),
+    drillCountError: document.getElementById("drillCountError"),
+    drillHoursError: document.getElementById("drillHoursError"),
+
+    helpBtn: document.getElementById("helpBtn"),
+    helpModal: document.getElementById("helpModal"),
+    closeHelp: document.getElementById("closeHelp"),
+    helpTitle: document.getElementById("helpTitle"),
+    helpIntro: document.getElementById("helpIntro"),
+    helpList: document.getElementById("helpList"),
+
+    shareBtn: document.getElementById("shareBtn"),
+    shareModal: document.getElementById("shareModal"),
+    shareCloseBtn: document.getElementById("shareCloseBtn"),
+    shareCopyBtn: document.getElementById("shareCopyBtn"),
+
+    shareOil: document.getElementById("shareOil"),
+    shareTotal: document.getElementById("shareTotal"),
+    shareMarket: document.getElementById("shareMarket"),
+    shareCashBoost: document.getElementById("shareCashBoost"),
+    shareFriendBoost: document.getElementById("shareFriendBoost"),
+    shareCashPerOil: document.getElementById("shareCashPerOil"),
+  };
+
+  let activeTool = "sale";
+  let productionMode = "time-to-oil";
+  let drillTier = "basic";
+  let drillMultiplier = 1;
+  let clockProductionMultiplier = 1;
+  let friendBoostValue = 50;
+  let toastTimer = null;
+  let lastFocusedElement = null;
+
+  function normalize(value) {
+    return String(value ?? "").trim().replace(/\s+/g, "").replace(",", ".");
+  }
+
+  function parsePlain(value) {
+    const normalized = normalize(value);
+    if (!normalized) return NaN;
+
+    const number = Number(normalized);
+    return Number.isFinite(number) ? number : NaN;
+  }
+
+  function parseValueWithUnit(value, units, allowNormal = true) {
+    const raw = normalize(value);
+    if (!raw) return NaN;
+
+    const match = raw.match(/^([+-]?(?:\d+(?:\.\d+)?|\.\d+))([a-zA-Z]{0,2})$/);
+    if (!match) return NaN;
+
+    const number = Number(match[1]);
+    if (!Number.isFinite(number)) return NaN;
+
+    const suffix = match[2].toLowerCase();
+    if (!suffix) return allowNormal ? number : NaN;
+
+    const unit = units.find(([name]) => name.toLowerCase() === suffix);
+    return unit ? number * unit[1] : NaN;
+  }
+
+  function getValueParts(rawValue) {
+    const value = String(rawValue ?? "").trim();
+    const match = value.match(/^([+-]?(?:\d+(?:[\.,]\d+)?|\.\d+)?)([a-zA-Z]{0,2})$/);
+
+    if (!match) {
+      return { number: value.replace(/[a-zA-Z]/g, ""), suffix: "" };
+    }
+
+    return { number: match[1] || "", suffix: match[2] || "" };
+  }
+
+  function trimZeros(value) {
+    return value.replace(/\.0+$/, "").replace(/(\.\d*?[1-9])0+$/, "$1");
+  }
+
+  function formatCompact(number) {
+    if (!Number.isFinite(number)) return "—";
+
+    const absolute = Math.abs(number);
+
+    for (let index = 0; index < OUTPUT_UNITS.length; index += 1) {
+      const [unit, factor] = OUTPUT_UNITS[index];
+
+      if (absolute < factor) continue;
+
+      const value = number / factor;
+      const decimals =
+        Math.abs(value) >= 100 ? 0 :
+        Math.abs(value) >= 10 ? 1 : 2;
+
+      const rounded = Number(value.toFixed(decimals));
+
+      if (Math.abs(rounded) >= 1000 && index > 0) {
+        const [largerUnit, largerFactor] = OUTPUT_UNITS[index - 1];
+        const largerValue = number / largerFactor;
+        const largerDecimals =
+          Math.abs(largerValue) >= 100 ? 0 :
+          Math.abs(largerValue) >= 10 ? 1 : 2;
+
+        return trimZeros(
+          largerValue.toFixed(largerDecimals)
+        ) + largerUnit;
+      }
+
+      return trimZeros(rounded.toFixed(decimals)) + unit;
+    }
+
+    return trimZeros(number.toFixed(absolute >= 100 ? 0 : 2));
+  }
+
+  function formatNumber(number, decimals = 2) {
+    if (!Number.isFinite(number)) return "—";
+
+    return number.toLocaleString("en-US", {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    });
+  }
+
+
+  function setFieldError(input, errorElement, message = "") {
+    if (!input || !errorElement) return;
+
+    const hasError = Boolean(message);
+
+    input.setAttribute("aria-invalid", hasError ? "true" : "false");
+    errorElement.textContent = message;
+    errorElement.classList.toggle("show", hasError);
+  }
+
+  function showToast(message) {
+    els.toast.textContent = message;
+    els.toast.classList.add("show");
+
+    if (toastTimer) {
+      clearTimeout(toastTimer);
+    }
+
+    toastTimer = setTimeout(() => {
+      els.toast.classList.remove("show");
+      toastTimer = null;
+    }, 1300);
+  }
+
+  async function copyText(text, successMessage) {
+    try {
+      await navigator.clipboard.writeText(text);
+      showToast(successMessage);
+    } catch {
+      showToast("Copy unavailable");
+    }
+  }
+
+
+  const HELP_CONTENT = {
+    sale: {
+      title: "Sale Calculator Guide",
+      intro:
+        "Use this page to estimate how much cash you will get when you sell your oil.",
+      items: [
+        [
+          "Oil to Sell",
+          "Enter your oil amount and choose <b>Normal</b>, <b>K</b>, <b>M</b>, <b>B</b>, or <b>T</b>. <b>Normal</b> means a plain number with no abbreviation, <b>K</b> means thousands, <b>M</b> millions, <b>B</b> billions, and <b>T</b> trillions."
+        ],
+        [
+          "Cash Boost",
+          "Enter the <b>Cash Boost</b> value shown in game. This field is entered manually."
+        ],
+        [
+          "Friend Boost",
+          "Choose your current Friend Boost using the percentage buttons. This value is selection only and is not entered manually."
+        ],
+        [
+          "Current Sell Rate",
+          "Choose <b>15</b>, <b>20</b>, or <b>50</b>, or type another sell rate manually."
+        ],
+        [
+          "Result",
+          "<b>Estimated Cash</b> is your expected sale total. <b>Cash per Oil</b> shows the value of each oil after your active bonuses."
+        ],
+        [
+          "Copy / Share / Reset",
+          "<b>Copy</b> saves the result as text. <b>Share</b> opens the screenshot card. <b>Reset</b> returns Cash Boost to <b>100%</b>, Friend Boost to <b>0%</b>, Current Sell Rate to <b>15</b>, and Oil to <b>50</b>."
+        ]
+      ]
+    },
+
+    "oil-hour": {
+      title: "Oil / Hour Guide",
+      intro:
+        "Use either direction: calculate how much oil you make in a set time, or how long it takes to reach a target.",
+      items: [
+        [
+          "Time → Oil",
+          "Enter your oil-per-second rate and a duration to see how much oil you will produce. The time you enter is limited to <b>20 hours</b>."
+        ],
+        [
+          "Oil → Time",
+          "Enter your oil-per-second rate and a <b>Target Oil</b> amount to calculate how long it takes to reach that target. The calculated time can be more than 20 hours because it is a result, not a manual time input."
+        ],
+        [
+          "Oil per Second",
+          "Enter the production rate you currently make every second. <b>Normal</b> is a plain number, <b>K</b> is thousands, and <b>M</b> is millions."
+        ],
+        [
+          "Target Oil",
+          "In Oil → Time mode, enter the amount you want to reach. The quick unit buttons are <b>Normal / K / M / B / T</b>. Larger supported suffixes can also be typed manually."
+        ],
+        [
+          "Results",
+          "Time → Oil shows your total oil plus per-hour and per-minute production. Oil → Time shows the required time, total hours, and your hourly production."
+        ],
+        [
+          "Copy / Reset",
+          "<b>Copy</b> saves the result for the active mode. <b>Reset</b> resets the Oil / Hour values while keeping the mode you selected."
+        ]
+      ]
+    },
+
+    "clock-drill": {
+      title: "Clock Drill Guide",
+      intro:
+        "Use this page to estimate how fast your Clock Drills will become and how much oil they generate while growing.",
+      items: [
+        [
+          "Drill Tier",
+          "Choose the Clock Drill version you own: <b>Basic ×1</b>, <b>Gold ×2</b>, <b>Diamond ×3</b>, <b>Rainbow ×5</b>, or <b>Galaxy ×10</b>."
+        ],
+        [
+          "How the Growth Works",
+          "<b>Assumption used by this calculator:</b> one Basic Clock Drill starts at <b>1 oil/s</b> immediately, then gains <b>+1 oil/s every second</b>. The selected tier, drill count, and Production Multiplier scale that rate. Total Oil is the sum of the production generated during the selected time."
+        ],
+        [
+          "Production Multiplier",
+          "Choose the multiplier for the area you are in: <b>×1 Standard</b>, <b>×2</b>, <b>×3</b>, <b>×5</b>, <b>×6</b>, or <b>×10</b>. This multiplier scales the Clock Drill production shown in Final Rate, Total Oil, and Growth Each Second."
+        ],
+        [
+          "Drills Owned",
+          "Enter how many drills of the selected tier you have. More drills multiply the combined growth."
+        ],
+        [
+          "Run Time",
+          "Choose <b>1h</b>, <b>3h</b>, <b>5h</b>, <b>7h</b>, or <b>9h</b> as a quick option, or type the time manually. The maximum allowed time is <b>20 hours</b>."
+        ],
+        [
+          "Final Rate",
+          "This is the combined oil-per-second rate your selected drills reach at the end of the chosen time."
+        ],
+        [
+          "Total Oil",
+          "This is the total oil generated while the drill rate is increasing throughout the selected time."
+        ],
+        [
+          "Growth Each Second",
+          "This shows how much the combined rate increases every second after applying the tier multiplier and drill count."
+        ],
+        [
+          "Copy / Reset",
+          "<b>Copy</b> saves the Clock Drill estimate as text. <b>Reset</b> returns the Clock Drill calculator to <b>Basic</b>, <b>×1 Standard</b>, <b>1 drill</b>, and <b>1 hour</b>."
+        ]
+      ]
+    }
+  };
+
+  function updateHelpContent() {
+    const content = HELP_CONTENT[activeTool] || HELP_CONTENT.sale;
+
+    els.helpTitle.textContent = content.title;
+    els.helpIntro.textContent = content.intro;
+    els.helpList.innerHTML = content.items
+      .map(
+        ([title, text]) =>
+          `<li><b>${title}</b><br>${text}</li>`
+      )
+      .join("");
+
+    els.helpBtn.setAttribute(
+      "aria-label",
+      `${content.title} help`
+    );
+  }
+
+  function setTool(tool) {
+    const validTools = ["sale", "oil-hour", "clock-drill"];
+    activeTool = validTools.includes(tool) ? tool : "sale";
+
+    document.querySelectorAll("[data-tool]").forEach((button) => {
+      button.classList.toggle("active", button.dataset.tool === activeTool);
+    });
+
+    document.querySelectorAll("[data-tool-page]").forEach((page) => {
+      page.classList.toggle("active", page.dataset.toolPage === activeTool);
+    });
+
+    const labels = {
+      sale: "Sale Calculator",
+      "oil-hour": "Oil / Hour",
+      "clock-drill": "Clock Drill",
+    };
+
+    els.calcBadge.textContent = labels[activeTool];
+    document.title = `STEAL THE OIL TYCOON — ${labels[activeTool]}`;
+    updateHelpContent();
+    localStorage.setItem(TOOL_STORAGE_KEY, activeTool);
+  }
+
+  // Sale Calculator
+  function setSaleOilUnit(unit) {
+    const parts = getValueParts(els.oil.value);
+    els.oil.value = (parts.number || "0") + unit;
+    calculateSale();
+  }
+
+  function syncSaleButtons() {
+    const oilSuffix = getValueParts(els.oil.value).suffix.toLowerCase();
+
+    document.querySelectorAll("[data-unit]").forEach((button) => {
+      button.classList.toggle(
+        "active",
+        button.dataset.unit.toLowerCase() === oilSuffix
+      );
+    });
+
+    document.querySelectorAll("[data-market]").forEach((button) => {
+      button.classList.toggle("active", els.market.value.trim() === button.dataset.market);
+    });
+
+    document.querySelectorAll("[data-friend]").forEach((button) => {
+      button.classList.toggle(
+        "active",
+        String(friendBoostValue) === button.dataset.friend
+      );
+    });
+
+
+  }
+
+  function calculateSale() {
+    const oil = parseValueWithUnit(els.oil.value, SALE_INPUT_UNITS, true);
+    const sellRate = parsePlain(els.market.value);
+    const cashBoost = parsePlain(els.cashBoost.value);
+    const friendBoost = friendBoostValue;
+
+    const values = [oil, sellRate, cashBoost];
+    const inputs = [els.oil, els.market, els.cashBoost];
+
+    let oilMessage = "";
+    if (!normalize(els.oil.value)) {
+      oilMessage = "Enter an oil amount.";
+    } else if (!Number.isFinite(oil)) {
+      oilMessage = "Use a valid number with Normal, K, M, B, or T.";
+    } else if (oil < 0) {
+      oilMessage = "Oil amount cannot be negative.";
+    }
+
+    let marketMessage = "";
+    if (!normalize(els.market.value)) {
+      marketMessage = "Enter a sell rate.";
+    } else if (!Number.isFinite(sellRate)) {
+      marketMessage = "Enter a valid sell rate.";
+    } else if (sellRate < 0) {
+      marketMessage = "Sell rate cannot be negative.";
+    }
+
+    let cashBoostMessage = "";
+    if (!normalize(els.cashBoost.value)) {
+      cashBoostMessage = "Enter your Cash Boost.";
+    } else if (!Number.isFinite(cashBoost)) {
+      cashBoostMessage = "Enter a valid Cash Boost.";
+    } else if (cashBoost < 0) {
+      cashBoostMessage = "Cash Boost cannot be negative.";
+    }
+
+    setFieldError(els.oil, els.oilError, oilMessage);
+    setFieldError(els.market, els.marketError, marketMessage);
+    setFieldError(els.cashBoost, els.cashBoostError, cashBoostMessage);
+
+    inputs.forEach((input, index) => {
+      input.classList.toggle(
+        "invalid",
+        !Number.isFinite(values[index]) || values[index] < 0
+      );
+    });
+
+    if (oilMessage || marketMessage || cashBoostMessage) {
+      els.cashPerOil.textContent = "—";
+      els.totalCash.textContent = "—";
+      els.status.textContent = "Check inputs";
+      syncSaleButtons();
+      return;
+    }
+
+    const combinedBonus = (cashBoost + friendBoost) / 100;
+    const cashPerOil = sellRate * combinedBonus;
+    const estimatedCash = oil * cashPerOil;
+
+    els.cashPerOil.textContent = formatNumber(cashPerOil, 2);
+    els.totalCash.textContent = formatCompact(estimatedCash);
+    els.status.textContent = "Live";
+
+    localStorage.setItem(
+      SALE_STORAGE_KEY,
+      JSON.stringify({
+        oil: els.oil.value,
+        market: els.market.value,
+        cashBoost: els.cashBoost.value,
+        friendBoost: friendBoostValue,
+      })
+    );
+
+    syncSaleButtons();
+  }
+
+  function saleSummary() {
+    return [
+      `Oil to Sell: ${els.oil.value}`,
+      `Cash Boost: ${els.cashBoost.value}%`,
+      `Friend Boost: ${friendBoostValue}%`,
+      `Current Sell Rate: ${els.market.value}`,
+      `Cash per Oil: ${els.cashPerOil.textContent}`,
+      `Estimated Cash: ${els.totalCash.textContent}`,
+    ].join("\n");
+  }
+
+  function shareSummary() {
+    return [
+      "STEAL THE OIL TYCOON — Sale Calculator",
+      `Estimated Cash: ${els.totalCash.textContent}`,
+      `Oil to Sell: ${els.oil.value}`,
+      `Cash per Oil: ${els.cashPerOil.textContent}`,
+      `Current Sell Rate: ${els.market.value}`,
+      `Cash Boost: ${els.cashBoost.value}%`,
+      `Friend Boost: ${friendBoostValue}%`,
+      "Made by 1yono",
+    ].join("\n");
+  }
+
+  function updateShareCard() {
+    els.shareOil.textContent = els.oil.value || "0";
+    els.shareTotal.textContent = els.totalCash.textContent;
+    els.shareMarket.textContent = els.market.value || "0";
+    els.shareCashBoost.textContent = (els.cashBoost.value || "0") + "%";
+    els.shareFriendBoost.textContent = friendBoostValue + "%";
+    els.shareCashPerOil.textContent = els.cashPerOil.textContent;
+  }
+
+  // Oil / Hour
+  function setProductionUnit(unit) {
+    const parts = getValueParts(els.productionRate.value);
+    els.productionRate.value = (parts.number || "0") + unit;
+    calculateProduction();
+  }
+
+  function setProductionTargetUnit(unit) {
+    const parts = getValueParts(els.productionTarget.value);
+    els.productionTarget.value = (parts.number || "0") + unit;
+    calculateProduction();
+  }
+
+  function setProductionMode(mode) {
+    productionMode =
+      mode === "oil-to-time" ? "oil-to-time" : "time-to-oil";
+
+    const isTargetMode = productionMode === "oil-to-time";
+
+    els.productionTimeSection.hidden = isTargetMode;
+    els.productionTargetSection.hidden = !isTargetMode;
+
+    document.querySelectorAll("[data-production-mode]").forEach((button) => {
+      const active = button.dataset.productionMode === productionMode;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+
+    calculateProduction();
+  }
+
+  function syncProductionButtons() {
+    const suffix = getValueParts(els.productionRate.value).suffix.toUpperCase();
+
+    document.querySelectorAll("[data-rate-unit]").forEach((button) => {
+      button.classList.toggle(
+        "active",
+        button.dataset.rateUnit.toUpperCase() === suffix
+      );
+    });
+
+    const targetSuffix =
+      getValueParts(els.productionTarget.value).suffix.toUpperCase();
+
+    document.querySelectorAll("[data-target-unit]").forEach((button) => {
+      button.classList.toggle(
+        "active",
+        button.dataset.targetUnit.toUpperCase() === targetSuffix
+      );
+    });
+
+    document.querySelectorAll("[data-production-hours]").forEach((button) => {
+      button.classList.toggle(
+        "active",
+        els.productionHours.value.trim() === button.dataset.productionHours
+      );
+    });
+
+    document.querySelectorAll("[data-production-mode]").forEach((button) => {
+      const active = button.dataset.productionMode === productionMode;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+  }
+
+  function formatRequiredTime(totalSeconds) {
+    if (!Number.isFinite(totalSeconds) || totalSeconds < 0) return "—";
+    if (totalSeconds === 0) return "0s";
+
+    const roundedSeconds = Math.ceil(totalSeconds);
+    const hours = Math.floor(roundedSeconds / 3600);
+    const minutes = Math.floor((roundedSeconds % 3600) / 60);
+    const seconds = roundedSeconds % 60;
+
+    const parts = [];
+
+    if (hours > 0) parts.push(`${formatCompact(hours)}h`);
+    if (minutes > 0) parts.push(`${minutes}m`);
+    if (seconds > 0 && hours < 1000) parts.push(`${seconds}s`);
+
+    return parts.join(" ") || "0s";
+  }
+
+  function calculateProduction() {
+    const rate = parseValueWithUnit(
+      els.productionRate.value,
+      RATE_INPUT_UNITS,
+      true
+    );
+
+    const hours = parsePlain(els.productionHours.value);
+    const target = parseValueWithUnit(
+      els.productionTarget.value,
+      TARGET_INPUT_UNITS,
+      true
+    );
+
+    let rateMessage = "";
+    if (!normalize(els.productionRate.value)) {
+      rateMessage = "Enter an oil-per-second rate.";
+    } else if (!Number.isFinite(rate)) {
+      rateMessage = "Use a valid number with Normal, K, or M.";
+    } else if (rate < 0) {
+      rateMessage = "Production rate cannot be negative.";
+    } else if (productionMode === "oil-to-time" && rate === 0) {
+      rateMessage = "Production rate must be greater than 0 to calculate time.";
+    }
+
+    let productionHoursMessage = "";
+    if (productionMode === "time-to-oil") {
+      if (!normalize(els.productionHours.value)) {
+        productionHoursMessage = "Enter the number of hours.";
+      } else if (!Number.isFinite(hours)) {
+        productionHoursMessage = "Enter a valid number of hours.";
+      } else if (hours < 0) {
+        productionHoursMessage = "Time cannot be negative.";
+      } else if (hours > 20) {
+        productionHoursMessage = "Time cannot exceed 20 hours.";
+      }
+    }
+
+    let targetMessage = "";
+    if (productionMode === "oil-to-time") {
+      if (!normalize(els.productionTarget.value)) {
+        targetMessage = "Enter the oil amount you want to reach.";
+      } else if (!Number.isFinite(target)) {
+        targetMessage = "Use a valid oil amount.";
+      } else if (target < 0) {
+        targetMessage = "Target Oil cannot be negative.";
+      }
+    }
+
+    const rateInvalid = Boolean(rateMessage);
+    const hoursInvalid = Boolean(productionHoursMessage);
+    const targetInvalid = Boolean(targetMessage);
+
+    els.productionRate.classList.toggle("invalid", rateInvalid);
+    els.productionHours.classList.toggle("invalid", hoursInvalid);
+    els.productionTarget.classList.toggle("invalid", targetInvalid);
+
+    setFieldError(
+      els.productionRate,
+      els.productionRateError,
+      rateMessage
+    );
+    setFieldError(
+      els.productionHours,
+      els.productionHoursError,
+      productionHoursMessage
+    );
+    setFieldError(
+      els.productionTarget,
+      els.productionTargetError,
+      targetMessage
+    );
+
+    if (rateInvalid || hoursInvalid || targetInvalid) {
+      els.productionTotal.textContent = "—";
+      els.productionPerHour.textContent = "—";
+      els.productionPerMinute.textContent = "—";
+      syncProductionButtons();
+      return;
+    }
+
+    if (productionMode === "time-to-oil") {
+      const totalOil = rate * hours * 3600;
+      const displayHours = trimZeros(String(hours));
+
+      els.productionTotalLabel.textContent =
+        hours === 1 ? "Oil in 1 Hour" : `Oil in ${displayHours} Hours`;
+
+      els.productionTotal.textContent = formatCompact(totalOil);
+      els.productionMetricOneLabel.textContent = "Per Hour";
+      els.productionPerHour.textContent = formatCompact(rate * 3600);
+      els.productionMetricTwoLabel.textContent = "Per Minute";
+      els.productionPerMinute.textContent = formatCompact(rate * 60);
+    } else {
+      const totalSeconds = target / rate;
+      const totalHours = totalSeconds / 3600;
+
+      els.productionTotalLabel.textContent = "Time Required";
+      els.productionTotal.textContent = formatRequiredTime(totalSeconds);
+
+      els.productionMetricOneLabel.textContent = "Total Hours";
+      els.productionPerHour.textContent =
+        trimZeros(totalHours.toFixed(totalHours >= 100 ? 1 : 2)) + "h";
+
+      els.productionMetricTwoLabel.textContent = "Per Hour";
+      els.productionPerMinute.textContent = formatCompact(rate * 3600);
+    }
+
+    localStorage.setItem(
+      PRODUCTION_STORAGE_KEY,
+      JSON.stringify({
+        rate: els.productionRate.value,
+        hours: els.productionHours.value,
+        target: els.productionTarget.value,
+        mode: productionMode,
+      })
+    );
+
+    syncProductionButtons();
+  }
+
+  function productionSummary() {
+    if (productionMode === "oil-to-time") {
+      return [
+        "STEAL THE OIL TYCOON — Oil / Hour",
+        "Mode: Oil → Time",
+        `Oil per Second: ${els.productionRate.value}`,
+        `Target Oil: ${els.productionTarget.value}`,
+        `Time Required: ${els.productionTotal.textContent}`,
+        `Total Hours: ${els.productionPerHour.textContent}`,
+        "Made by 1yono",
+      ].join("\n");
+    }
+
+    return [
+      "STEAL THE OIL TYCOON — Oil / Hour",
+      "Mode: Time → Oil",
+      `Oil per Second: ${els.productionRate.value}`,
+      `Time: ${els.productionHours.value}h`,
+      `Total Oil: ${els.productionTotal.textContent}`,
+      `Per Hour: ${els.productionPerHour.textContent}`,
+      `Per Minute: ${els.productionPerMinute.textContent}`,
+      "Made by 1yono",
+    ].join("\n");
+  }
+
+  // Clock Drill
+  function setDrillTier(tier, multiplier) {
+    drillTier = tier;
+    drillMultiplier = Number(multiplier);
+
+    document.querySelectorAll("[data-drill-tier]").forEach((button) => {
+      button.classList.toggle("active", button.dataset.drillTier === drillTier);
+    });
+
+    calculateDrill();
+  }
+
+  function syncDrillHourButtons() {
+    document.querySelectorAll("[data-drill-hours]").forEach((button) => {
+      button.classList.toggle(
+        "active",
+        els.drillHours.value.trim() === button.dataset.drillHours
+      );
+    });
+
+    document.querySelectorAll("[data-clock-production]").forEach((button) => {
+      button.classList.toggle(
+        "active",
+        Number(button.dataset.clockProduction) === clockProductionMultiplier
+      );
+    });
+  }
+
+  function calculateDrill() {
+    const count = parsePlain(els.drillCount.value);
+    const hours = parsePlain(els.drillHours.value);
+
+    let countMessage = "";
+    if (!normalize(els.drillCount.value)) {
+      countMessage = "Enter how many drills you own.";
+    } else if (!Number.isFinite(count)) {
+      countMessage = "Enter a valid drill count.";
+    } else if (count < 0) {
+      countMessage = "Drill count cannot be negative.";
+    } else if (!Number.isInteger(count)) {
+      countMessage = "Drill count must be a whole number.";
+    }
+
+    let drillHoursMessage = "";
+    if (!normalize(els.drillHours.value)) {
+      drillHoursMessage = "Enter the run time in hours.";
+    } else if (!Number.isFinite(hours)) {
+      drillHoursMessage = "Enter a valid number of hours.";
+    } else if (hours < 0) {
+      drillHoursMessage = "Run time cannot be negative.";
+    } else if (hours > 20) {
+      drillHoursMessage = "Run time cannot exceed 20 hours.";
+    }
+
+    const countInvalid = Boolean(countMessage);
+    const hoursInvalid = Boolean(drillHoursMessage);
+
+    els.drillCount.classList.toggle("invalid", countInvalid);
+    els.drillHours.classList.toggle("invalid", hoursInvalid);
+
+    setFieldError(
+      els.drillCount,
+      els.drillCountError,
+      countMessage
+    );
+    setFieldError(
+      els.drillHours,
+      els.drillHoursError,
+      drillHoursMessage
+    );
+
+    if (countInvalid || hoursInvalid) {
+      els.drillFinalRate.textContent = "—";
+      els.drillTotalOil.textContent = "—";
+      els.drillGrowth.textContent = "—";
+      syncDrillHourButtons();
+      return;
+    }
+
+    const seconds = Math.max(0, Math.floor(hours * 3600));
+
+    const drillGrowthPerSecond = count * drillMultiplier;
+    const effectiveGrowthPerSecond =
+      drillGrowthPerSecond * clockProductionMultiplier;
+
+    // Clock Drill starts at its first production step immediately.
+    // Basic = 1/s at t=0, then gains +1/s every second.
+    const finalRate =
+      effectiveGrowthPerSecond * (seconds + 1);
+
+    const totalOil =
+      effectiveGrowthPerSecond * seconds * (seconds + 1) / 2;
+
+    els.drillFinalRate.textContent = formatCompact(finalRate) + "/s";
+    els.drillTotalOil.textContent = formatCompact(totalOil);
+    els.drillGrowth.textContent =
+      "+" + formatCompact(effectiveGrowthPerSecond) + "/s";
+
+    localStorage.setItem(
+      DRILL_STORAGE_KEY,
+      JSON.stringify({
+        tier: drillTier,
+        multiplier: drillMultiplier,
+        productionMultiplier: clockProductionMultiplier,
+        count: els.drillCount.value,
+        hours: els.drillHours.value,
+      })
+    );
+
+    syncDrillHourButtons();
+  }
+
+  function drillSummary() {
+    const tierLabel =
+      drillTier.charAt(0).toUpperCase() + drillTier.slice(1);
+
+    return [
+      "STEAL THE OIL TYCOON — Clock Drill",
+      `Tier: ${tierLabel} ×${drillMultiplier}`,
+      `Production Multiplier: ×${clockProductionMultiplier}`,
+      `Drills Owned: ${els.drillCount.value}`,
+      `Run Time: ${els.drillHours.value}h`,
+      `Growth Each Second: ${els.drillGrowth.textContent}`,
+      `Final Rate: ${els.drillFinalRate.textContent}`,
+      `Total Oil: ${els.drillTotalOil.textContent}`,
+      "Made by 1yono",
+    ].join("\n");
+  }
+
+  // State
+  function restoreState() {
+    try {
+      const sale = JSON.parse(localStorage.getItem(SALE_STORAGE_KEY) || "null");
+      if (sale) {
+        for (const key of ["oil", "market", "cashBoost"]) {
+          if (sale[key] != null) els[key].value = sale[key];
+        }
+
+        const savedFriendBoost = Number(sale.friendBoost);
+        if ([0, 10, 20, 30, 40, 50].includes(savedFriendBoost)) {
+          friendBoostValue = savedFriendBoost;
+        }
+      }
+
+      // Apply the new Oil to Sell default once for everyone on V54.
+      if (!localStorage.getItem(SALE_OIL_DEFAULT_KEY)) {
+        els.oil.value = "50";
+        localStorage.setItem(SALE_OIL_DEFAULT_KEY, "1");
+      }
+
+      const production = JSON.parse(
+        localStorage.getItem(PRODUCTION_STORAGE_KEY) || "null"
+      );
+
+      if (production) {
+        if (production.rate != null) {
+          els.productionRate.value = production.rate;
+        }
+
+        if (production.hours != null) {
+          els.productionHours.value =
+            Math.min(20, Number(production.hours) || 0);
+        }
+
+        if (production.target != null) {
+          els.productionTarget.value = production.target;
+        }
+
+        if (
+          production.mode === "time-to-oil" ||
+          production.mode === "oil-to-time"
+        ) {
+          productionMode = production.mode;
+        }
+      }
+
+      const drill = JSON.parse(localStorage.getItem(DRILL_STORAGE_KEY) || "null");
+
+      if (drill) {
+        if (drill.count != null) els.drillCount.value = drill.count;
+        if (drill.hours != null) {
+          els.drillHours.value =
+            Math.min(20, Number(drill.hours) || 0);
+        }
+
+        if (drill.tier && Number.isFinite(Number(drill.multiplier))) {
+          drillTier = drill.tier;
+          drillMultiplier = Number(drill.multiplier);
+        }
+
+        const savedProductionMultiplier =
+          Number(drill.productionMultiplier);
+
+        if ([1, 2, 3, 5, 6, 10].includes(savedProductionMultiplier)) {
+          clockProductionMultiplier = savedProductionMultiplier;
+        }
+      }
+
+      setDrillTier(drillTier, drillMultiplier);
+      setTool(localStorage.getItem(TOOL_STORAGE_KEY) || "sale");
+    } catch {
+      setTool("sale");
+    }
+  }
+
+
+  function getFocusableElements(container) {
+    return Array.from(
+      container.querySelectorAll(
+        'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )
+    ).filter((element) => {
+      const style = window.getComputedStyle(element);
+      return (
+        style.display !== "none" &&
+        style.visibility !== "hidden" &&
+        !element.hasAttribute("hidden")
+      );
+    });
+  }
+
+  function getOpenModal() {
+    if (els.helpModal.classList.contains("show")) {
+      return els.helpModal;
+    }
+
+    if (els.shareModal.classList.contains("show")) {
+      return els.shareModal;
+    }
+
+    return null;
+  }
+
+  function rememberFocus() {
+    const active = document.activeElement;
+
+    if (active && active !== document.body) {
+      lastFocusedElement = active;
+    }
+  }
+
+  function focusFirstElement(modal) {
+    const focusable = getFocusableElements(modal);
+
+    if (focusable.length) {
+      focusable[0].focus();
+    }
+  }
+
+  function restorePreviousFocus() {
+    if (
+      lastFocusedElement &&
+      typeof lastFocusedElement.focus === "function" &&
+      document.contains(lastFocusedElement)
+    ) {
+      lastFocusedElement.focus();
+    }
+
+    lastFocusedElement = null;
+  }
+
+  function trapModalFocus(event) {
+    if (event.key !== "Tab") {
+      return;
+    }
+
+    const modal = getOpenModal();
+    if (!modal) {
+      return;
+    }
+
+    const focusable = getFocusableElements(modal);
+
+    if (!focusable.length) {
+      event.preventDefault();
+      return;
+    }
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    const active = document.activeElement;
+
+    if (event.shiftKey && (active === first || !modal.contains(active))) {
+      event.preventDefault();
+      last.focus();
+      return;
+    }
+
+    if (!event.shiftKey && (active === last || !modal.contains(active))) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+
+  // Modals
+  function openHelp() {
+    rememberFocus();
+    updateHelpContent();
+    els.helpModal.classList.add("show");
+    els.helpModal.setAttribute("aria-hidden", "false");
+
+    requestAnimationFrame(() => {
+      focusFirstElement(els.helpModal);
+    });
+  }
+
+  function closeHelp() {
+    const wasOpen = els.helpModal.classList.contains("show");
+
+    els.helpModal.classList.remove("show");
+    els.helpModal.setAttribute("aria-hidden", "true");
+
+    if (wasOpen) {
+      restorePreviousFocus();
+    }
+  }
+
+  function openShare() {
+    rememberFocus();
+    updateShareCard();
+    els.shareModal.classList.add("show");
+    els.shareModal.setAttribute("aria-hidden", "false");
+
+    requestAnimationFrame(() => {
+      focusFirstElement(els.shareModal);
+    });
+  }
+
+  function closeShare() {
+    const wasOpen = els.shareModal.classList.contains("show");
+
+    els.shareModal.classList.remove("show");
+    els.shareModal.setAttribute("aria-hidden", "true");
+
+    if (wasOpen) {
+      restorePreviousFocus();
+    }
+  }
+
+
+  function clampHoursInput(input, calculate) {
+    const value = parsePlain(input.value);
+
+    if (Number.isFinite(value) && value > 20) {
+      input.value = "20";
+    }
+
+    calculate();
+  }
+
+  // Events
+  document.querySelectorAll("[data-tool]").forEach((button) => {
+    button.addEventListener("click", () => setTool(button.dataset.tool));
+  });
+
+  [els.oil, els.market, els.cashBoost].forEach((input) => {
+    input.addEventListener("input", calculateSale);
+  });
+
+  els.productionRate.addEventListener("input", calculateProduction);
+  els.productionTarget.addEventListener("input", calculateProduction);
+
+  els.productionHours.addEventListener("input", () => {
+    clampHoursInput(els.productionHours, calculateProduction);
+  });
+
+  els.drillCount.addEventListener("input", calculateDrill);
+
+  els.drillHours.addEventListener("input", () => {
+    clampHoursInput(els.drillHours, calculateDrill);
+  });
+
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest("button");
+    if (!button) return;
+
+    if (button.dataset.unit != null) setSaleOilUnit(button.dataset.unit);
+
+    if (button.dataset.market != null) {
+      els.market.value = button.dataset.market;
+      calculateSale();
+    }
+
+    if (button.dataset.friend != null) {
+      friendBoostValue = Number(button.dataset.friend);
+      calculateSale();
+    }
+
+    if (button.dataset.rateUnit != null) {
+      setProductionUnit(button.dataset.rateUnit);
+    }
+
+    if (button.dataset.productionMode != null) {
+      setProductionMode(button.dataset.productionMode);
+    }
+
+    if (button.dataset.targetUnit != null) {
+      setProductionTargetUnit(button.dataset.targetUnit);
+    }
+
+    if (button.dataset.productionHours != null) {
+      els.productionHours.value = button.dataset.productionHours;
+      calculateProduction();
+    }
+
+    if (button.dataset.drillTier != null) {
+      setDrillTier(button.dataset.drillTier, button.dataset.multiplier);
+    }
+
+    if (button.dataset.clockProduction != null) {
+      clockProductionMultiplier =
+        Number(button.dataset.clockProduction);
+      calculateDrill();
+    }
+
+    if (button.dataset.drillHours != null) {
+      els.drillHours.value = button.dataset.drillHours;
+      calculateDrill();
+    }
+  });
+
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    els.oil.value = "50";
+    els.market.value = "15";
+    els.cashBoost.value = "100";
+    friendBoostValue = 0;
+    calculateSale();
+  });
+
+  document.getElementById("copyBtn").addEventListener("click", () => {
+    copyText(saleSummary(), "Result copied");
+  });
+
+  document.getElementById("resetProductionBtn").addEventListener("click", () => {
+    els.productionRate.value = "50";
+    els.productionHours.value = "1";
+    els.productionTarget.value = "300B";
+    calculateProduction();
+  });
+
+  document.getElementById("copyProductionBtn").addEventListener("click", () => {
+    copyText(productionSummary(), "Production copied");
+  });
+
+  document.getElementById("resetDrillBtn").addEventListener("click", () => {
+    els.drillCount.value = "1";
+    els.drillHours.value = "1";
+    clockProductionMultiplier = 1;
+    setDrillTier("basic", 1);
+  });
+
+  document.getElementById("copyDrillBtn").addEventListener("click", () => {
+    copyText(drillSummary(), "Drill result copied");
+  });
+
+  els.shareBtn.addEventListener("click", openShare);
+  els.shareCloseBtn.addEventListener("click", closeShare);
+  els.shareCopyBtn.addEventListener("click", () => {
+    copyText(shareSummary(), "Summary copied");
+  });
+
+  els.helpBtn.addEventListener("click", openHelp);
+  els.closeHelp.addEventListener("click", closeHelp);
+
+  els.shareModal.addEventListener("click", (event) => {
+    if (event.target === els.shareModal) closeShare();
+  });
+
+  els.helpModal.addEventListener("click", (event) => {
+    if (event.target === els.helpModal) closeHelp();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    trapModalFocus(event);
+
+    if (event.key === "Escape") {
+      if (els.helpModal.classList.contains("show")) {
+        closeHelp();
+      } else if (els.shareModal.classList.contains("show")) {
+        closeShare();
+      }
+    }
+  });
+
+  restoreState();
+  calculateSale();
+  setProductionMode(productionMode);
+  calculateDrill();
 })();
 </script>
 </body>
