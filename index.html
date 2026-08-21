@@ -356,7 +356,7 @@
     <label class="field">
       <div class="field-head">
         <div class="icon" aria-label="Oil icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 6h10l3 3-4 4H9z" class="softfill" stroke-width="1.7"/><path d="M8 12l10 8-2.5 2.5-9-9z" class="pink" stroke-width="1.7"/><path d="M12.5 23.2c0 2-1.7 3.3-3.4 3.3s-3.4-1.3-3.4-3.3c0-1.8 3.4-5.2 3.4-5.2s3.4 3.4 3.4 5.2Z" class="pinkfill" stroke-width="1.5"/></svg></div>
-        <div class="labels"><strong>Oil to Sell</strong><small>x1 / K / M / B / T</small></div>
+        <div class="labels"><strong>Oil Amount</strong><small>x1 / K / M / B / T</small></div>
       </div>
       <input id="oil" value="50" inputmode="decimal" autocomplete="off" aria-label="Oil" aria-describedby="oilError" />
       <div class="presets units" aria-label="Oil units">
@@ -629,7 +629,7 @@
       </div>
 
       <div class="share-details">
-        <div class="share-detail"><span>Oil to Sell</span><strong id="shareOil">—</strong></div>
+        <div class="share-detail"><span>Oil Amount</span><strong id="shareOil">—</strong></div>
         <div class="share-detail accent"><span>Cash per Oil</span><strong id="shareCashPerOil">—</strong></div>
         <div class="share-detail"><span>Sell Price</span><strong id="shareMarket">—</strong></div>
         <div class="share-detail"><span>Cash Boost</span><strong id="shareCashBoost">—</strong></div>
@@ -869,7 +869,7 @@
         "Use this page to estimate how much cash you will get when you sell your oil.",
       items: [
         [
-          "Oil to Sell",
+          "Oil Amount",
           "Enter your oil amount and choose <b>x1</b>, <b>K</b>, <b>M</b>, <b>B</b>, or <b>T</b>. <b>x1</b> means a plain number with no abbreviation, <b>K</b> means thousands, <b>M</b> millions, <b>B</b> billions, and <b>T</b> trillions."
         ],
         [
@@ -1123,7 +1123,7 @@
 
   function saleSummary() {
     return [
-      `Oil to Sell: ${els.oil.value}`,
+      `Oil Amount: ${els.oil.value}`,
       `Cash Boost: ${els.cashBoost.value}%`,
       `Friend Boost: ${friendBoostValue}%`,
       `Sell Price: ${els.market.value}`,
@@ -1136,7 +1136,7 @@
     return [
       "STEAL THE OIL TYCOON — Sale Calculator",
       `Sale Value: ${els.totalCash.textContent}`,
-      `Oil to Sell: ${els.oil.value}`,
+      `Oil Amount: ${els.oil.value}`,
       `Cash per Oil: ${els.cashPerOil.textContent}`,
       `Sell Price: ${els.market.value}`,
       `Cash Boost: ${els.cashBoost.value}%`,
@@ -1534,7 +1534,7 @@
         }
       }
 
-      // Apply the new Oil to Sell default once for everyone on V54.
+      // Apply the new Oil Amount default once for everyone on V54.
       if (!localStorage.getItem(SALE_OIL_DEFAULT_KEY)) {
         els.oil.value = "50";
         localStorage.setItem(SALE_OIL_DEFAULT_KEY, "1");
