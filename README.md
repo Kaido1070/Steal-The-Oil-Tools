@@ -1,20 +1,20 @@
 # STEAL THE OIL TYCOON — Community Tools
 
-I made this to keep the calculations I use for **STEAL THE OIL TYCOON** in one place.
+I created this to keep the tools I use for **STEAL THE OIL TYCOON** in one place and make them available to other players.
 
 ## What's here
 
-- **Sale Calculator** — calculate your sale using Sell Rate, Cash Boost, and Friend Boost.
-- **Oil / Hour** — check how much oil you can make in a set amount of time, or how long it will take to reach a target.
-- **Clock Drill** — calculate Final Rate, Total Oil, and Growth Each Second for different Clock Drill tiers and production multipliers.
+- **Sale Calculator** — calculate your Sell Value using Oil Amount, Sell Price, Cash Boost, and Friend Boost.
+- **Oil / Hour** — see how much oil you can make over time or how long it takes to reach a Target Oil amount.
+- **Clock Drill** — calculate your Clock Drill rate over time and Total Oil using different tiers, production multipliers, and drill counts.
 
-The calculators update as you change the values, and your settings stay saved in your browser.
+Results update as you change the values, and your settings are saved in your browser.
 
-If the game changes any values or mechanics, the results may need to be updated too.
+Game values may change with updates, so results may need to be updated too.
 
-This is a community made tool and is not official.
+This is a community-made tool and is not official.
 
-Made by **1yono**.
+Created by **1yono**.
 
 ## Source Code
 
