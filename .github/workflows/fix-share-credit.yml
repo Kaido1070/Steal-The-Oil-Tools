@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Move Share credit to card footer
+      - name: Fix Share credit placement only
         shell: bash
         run: |
           python3 - <<'PY'
@@ -22,39 +22,21 @@ jobs:
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
 
-          old_css = '.share-credit{position:absolute;right:0;bottom:-13px;color:#778195;font-size:7px;font-weight:750;text-align:right;white-space:nowrap;opacity:.78}'
-          new_css = '.share-credit{margin-top:8px;color:#778195;font-size:7px;font-weight:750;text-align:right;white-space:nowrap;opacity:.78;line-height:1.2}'
+          old_top = '.share-top{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}'
+          new_top = '.share-top{position:relative;z-index:1;display:block}'
 
-          old_html = '''        <div class="share-credit">Created by <b>1yono</b><span class="share-domain">StealOilTools.xyz</span></div>
-      </div>
-
-      <div class="share-hero">'''
-          new_html = '''      </div>
-
-      <div class="share-hero">'''
-
-          anchor = '''      <div class="share-details">
-        <div class="share-detail"><span>Oil Amount</span><strong id="shareOil">—</strong></div>
-        <div class="share-detail accent"><span>Cash per Oil</span><strong id="shareCashPerOil">—</strong></div>
-        <div class="share-detail"><span>Sell Price</span><strong id="shareMarket">—</strong></div>
-        <div class="share-detail"><span>Cash Boost</span><strong id="shareCashBoost">—</strong></div>
-        <div class="share-detail"><span>Friend Boost</span><strong id="shareFriendBoost">—</strong></div>
-      </div>'''
-          replacement = anchor + '''
-      <div class="share-credit">Created by <b>1yono</b><span class="share-domain">StealOilTools.xyz</span></div>'''
+          old_credit = '.share-credit{position:absolute;right:0;bottom:-13px;color:#778195;font-size:7px;font-weight:750;text-align:right;white-space:nowrap;opacity:.78}'
+          new_credit = '.share-credit{margin-top:7px;color:#778195;font-size:7px;font-weight:750;text-align:right;white-space:nowrap;opacity:.78;line-height:1.2}'
 
           checks = {
-              'old CSS': s.count(old_css),
-              'old credit location': s.count(old_html),
-              'details anchor': s.count(anchor),
+              'share-top': s.count(old_top),
+              'share-credit': s.count(old_credit),
           }
-          bad = {k:v for k,v in checks.items() if v != 1}
-          if bad:
-              raise SystemExit(f'No changes made; expected one exact match each: {checks}')
+          if any(v != 1 for v in checks.values()):
+              raise SystemExit(f'No changes made; exact-match check failed: {checks}')
 
-          s = s.replace(old_css, new_css, 1)
-          s = s.replace(old_html, new_html, 1)
-          s = s.replace(anchor, replacement, 1)
+          s = s.replace(old_top, new_top, 1)
+          s = s.replace(old_credit, new_credit, 1)
           p.write_text(s, encoding='utf-8')
           PY
       - name: Commit
