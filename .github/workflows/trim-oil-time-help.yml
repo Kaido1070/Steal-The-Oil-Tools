@@ -1,0 +1,41 @@
+name: Trim Oil Time help copy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/trim-oil-time-help.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-copy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Remove unnecessary Oil to Time note
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          s = path.read_text(encoding='utf-8')
+          old = '"Enter your oil-per-second rate and a <b>Target Oil</b> amount to see the <b>Time Needed</b> to reach it. The calculated time can be more than 20 hours because it is a result, not a manual time input."'
+          new = '"Enter your oil-per-second rate and a <b>Target Oil</b> amount to see the <b>Time Needed</b> to reach it."'
+          if old not in s:
+              raise SystemExit('Expected Oil to Time help text not found')
+          s = s.replace(old, new, 1)
+          path.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit changes
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Trim Oil to Time help copy"
+          git push
