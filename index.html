@@ -506,7 +506,7 @@
     </section>
 
     <section class="panel result">
-      <div class="result-head"><h2>Production estimate</h2><span class="live-status">Live</span></div>
+      <div class="result-head"><h2 id="productionResultHeading">Oil Gain</h2><span class="live-status">Live</span></div>
       <div class="result-main">
         <span id="productionTotalLabel">Oil in 1 Hour</span>
         <strong id="productionTotal">3.6B</strong>
@@ -1175,6 +1175,13 @@
 
     els.productionTimeSection.hidden = isTargetMode;
     els.productionTargetSection.hidden = !isTargetMode;
+
+    const productionResultHeading =
+      document.getElementById("productionResultHeading");
+    if (productionResultHeading) {
+      productionResultHeading.textContent =
+        isTargetMode ? "Time Needed" : "Oil Gain";
+    }
 
     document.querySelectorAll("[data-production-mode]").forEach((button) => {
       const active = button.dataset.productionMode === productionMode;
