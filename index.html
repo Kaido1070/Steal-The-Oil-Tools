@@ -521,10 +521,10 @@
   </div>
 
   <div class="tool-page" data-tool-page="clock-drill">
-    <div class="tool-intro">Choose the drill tier, how many you own, and how long they run.</div>
+    <div class="tool-intro">Choose your Clock Drill setup.</div>
 
     <section class="panel step">
-      <div class="step-head"><h2>Clock Drill Tier</h2><span>Growth multiplier</span></div>
+      <div class="step-head"><h2>Drill Tier</h2><span>Growth multiplier</span></div>
       <div class="presets tier-grid" aria-label="Clock Drill tier">
         <button class="chip tier-chip active" type="button" data-drill-tier="basic" data-multiplier="1">Basic<small>×1</small></button>
         <button class="chip tier-chip" type="button" data-drill-tier="gold" data-multiplier="2">Gold<small>×2</small></button>
@@ -557,9 +557,9 @@
               <path d="M16 10v7l5 3M7 25l4-4M25 25l-4-4" class="pink" stroke-width="1.7"/>
             </svg>
           </div>
-          <div class="labels"><strong>Drills Owned</strong></div>
+          <div class="labels"><strong>Drill Count</strong></div>
         </div>
-        <input id="drillCount" value="1" inputmode="numeric" autocomplete="off" aria-label="Drills Owned" aria-describedby="drillCountError" />
+        <input id="drillCount" value="1" inputmode="numeric" autocomplete="off" aria-label="Drill Count" aria-describedby="drillCountError" />
         <div class="field-error" id="drillCountError" role="status" aria-live="polite"></div>
       </label>
 
@@ -589,7 +589,7 @@
     </section>
 
     <section class="panel result">
-      <div class="result-head"><h2>Clock Drill estimate</h2><span class="live-status">Live</span></div>
+      <div class="result-head"><h2>Clock Drill Result</h2><span class="live-status">Live</span></div>
       <div class="result-main">
         <span>Final Rate</span>
         <strong id="drillFinalRate">3.6K/s</strong>
@@ -602,7 +602,6 @@
         <button id="copyDrillBtn" class="action primary">Copy</button>
         <button id="resetDrillBtn" class="action reset">Reset</button>
       </div>
-      <div class="formula-note">Basic starts at 1 oil/s and gains +1 oil/s each second. Tier, drill count, and Production Multiplier scale it.</div>
     </section>
   </div>
 
@@ -935,7 +934,7 @@
           "Choose your area Production Multiplier. It scales the Clock Drill production."
         ],
         [
-          "Drills Owned",
+          "Drill Count",
           "Enter how many drills of the selected tier you have. More drills multiply the combined growth."
         ],
         [
@@ -956,7 +955,7 @@
         ],
         [
           "Copy / Reset",
-          "<b>Copy</b> copies the Clock Drill estimate to your clipboard. <b>Reset</b> returns the Clock Drill calculator to <b>Basic</b>, <b>×1 Standard</b>, <b>1 drill</b>, and <b>1 hour</b>."
+          "<b>Copy</b> copies the Clock Drill result to your clipboard. <b>Reset</b> returns the Clock Drill calculator to <b>Basic</b>, <b>×1 Standard</b>, <b>1 drill</b>, and <b>1 hour</b>."
         ]
       ]
     }
@@ -1414,7 +1413,7 @@
 
     let countMessage = "";
     if (!normalize(els.drillCount.value)) {
-      countMessage = "Enter how many drills you own.";
+      countMessage = "Enter a drill count.";
     } else if (!Number.isFinite(count)) {
       countMessage = "Enter a valid drill count.";
     } else if (count < 0) {
@@ -1500,7 +1499,7 @@
       "STEAL THE OIL TYCOON — Clock Drill",
       `Tier: ${tierLabel} ×${drillMultiplier}`,
       `Production Multiplier: ×${clockProductionMultiplier}`,
-      `Drills Owned: ${els.drillCount.value}`,
+      `Drill Count: ${els.drillCount.value}`,
       `Run Time: ${els.drillHours.value}h`,
       `Growth per Second: ${els.drillGrowth.textContent}`,
       `Final Rate: ${els.drillFinalRate.textContent}`,
