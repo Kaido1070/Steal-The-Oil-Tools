@@ -1128,12 +1128,10 @@
 
   function saleSummary() {
     return [
-      `Oil Amount: ${els.oil.value}`,
-      `Cash Boost: ${els.cashBoost.value}%`,
-      `Friend Boost: ${friendBoostValue}%`,
+      "Sale",
+      `Oil: ${els.oil.value}`,
       `Sell Price: ${els.market.value}`,
-      `Cash per Oil: ${els.cashPerOil.textContent}`,
-      `Sale Value: ${els.totalCash.textContent}`,
+      `Sell Value: ${els.totalCash.textContent}`,
     ].join("\n");
   }
 
@@ -1373,25 +1371,18 @@
   function productionSummary() {
     if (productionMode === "oil-to-time") {
       return [
-        "STEAL THE OIL TYCOON — Oil / Hour",
-        "Mode: Oil → Time",
-        `Oil per Second: ${els.productionRate.value}`,
-        `Target Oil: ${els.productionTarget.value}`,
+        "Oil / Hour",
+        `Rate: ${els.productionRate.value}/s`,
+        `Target: ${els.productionTarget.value}`,
         `Time Needed: ${els.productionTotal.textContent}`,
-        `Total Hours: ${els.productionPerHour.textContent}`,
-        "Created by 1yono",
       ].join("\n");
     }
 
     return [
-      "STEAL THE OIL TYCOON — Oil / Hour",
-      "Mode: Time → Oil",
-      `Oil per Second: ${els.productionRate.value}`,
+      "Oil / Hour",
+      `Rate: ${els.productionRate.value}/s`,
       `Time: ${els.productionHours.value}h`,
       `Oil Gain: ${els.productionTotal.textContent}`,
-      `Per Hour: ${els.productionPerHour.textContent}`,
-      `Per Minute: ${els.productionPerMinute.textContent}`,
-      "Created by 1yono",
     ].join("\n");
   }
 
@@ -1514,15 +1505,12 @@
       drillTier.charAt(0).toUpperCase() + drillTier.slice(1);
 
     return [
-      "STEAL THE OIL TYCOON — Clock Drill",
-      `Tier: ${tierLabel} ×${drillMultiplier}`,
-      `Production Multiplier: ×${clockProductionMultiplier}`,
-      `Number of Drills: ${els.drillCount.value}`,
+      "Clock Drill",
+      `${tierLabel} ×${drillMultiplier}`,
+      `Drills: ${els.drillCount.value}`,
       `Run Time: ${els.drillHours.value}h`,
-      `Growth per Second: ${els.drillGrowth.textContent}`,
       `Rate After ${trimZeros(String(parsePlain(els.drillHours.value)))}H: ${els.drillFinalRate.textContent}`,
       `Total Oil: ${els.drillTotalOil.textContent}`,
-      "Created by 1yono",
     ].join("\n");
   }
 
