@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/trim-ui-copy.yml'
+      - '.trigger-ui-copy'
 
 permissions:
   contents: write
