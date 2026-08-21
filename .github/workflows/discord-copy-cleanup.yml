@@ -1,19 +1,20 @@
 name: One-time Discord copy cleanup
 
 on:
-  push:
-    branches: [discord-copy-cleanup]
-    paths:
-      - '.trigger-discord-copy-cleanup'
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: write
 
 jobs:
   update:
+    if: github.head_ref == 'discord-copy-cleanup'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
       - name: Update copy summaries only
         shell: bash
         run: |
@@ -130,7 +131,6 @@ jobs:
               s = s.replace(old, new, 1)
 
           p.write_text(s, encoding='utf-8')
-          print('Updated copy summaries only')
           PY
       - name: Commit change
         shell: bash
@@ -139,4 +139,4 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           git diff --cached --quiet || git commit -m "Make copy output Discord-friendly"
-          git push
+          git push origin HEAD:${{ github.head_ref }}
