@@ -414,7 +414,7 @@
 
   <section class="panel result">
     <div class="result-head"><h2>Sale estimate</h2><span id="status" class="live-status">Live</span></div>
-    <div class="result-main"><span>Estimated Cash</span><strong id="totalCash">5.88Qa</strong></div>
+    <div class="result-main"><span>Sale Value</span><strong id="totalCash">5.88Qa</strong></div>
     <div class="result-mini">
       <div class="metric"><span>Cash per Oil</span><strong id="cashPerOil">235.00</strong></div>
     </div>
@@ -623,7 +623,7 @@
 
       <div class="share-hero">
         <div class="share-stat highlight">
-          <span>Estimated Cash</span>
+          <span>Sale Value</span>
           <strong id="shareTotal">—</strong>
         </div>
       </div>
@@ -886,7 +886,7 @@
         ],
         [
           "Result",
-          "<b>Estimated Cash</b> is your expected sale total. <b>Cash per Oil</b> shows the value of each oil after your active bonuses."
+          "<b>Sale Value</b> is your expected sale total. <b>Cash per Oil</b> shows the value of each oil after your active bonuses."
         ],
         [
           "Copy / Share / Reset",
@@ -1128,14 +1128,14 @@
       `Friend Boost: ${friendBoostValue}%`,
       `Current Sell Rate: ${els.market.value}`,
       `Cash per Oil: ${els.cashPerOil.textContent}`,
-      `Estimated Cash: ${els.totalCash.textContent}`,
+      `Sale Value: ${els.totalCash.textContent}`,
     ].join("\n");
   }
 
   function shareSummary() {
     return [
       "STEAL THE OIL TYCOON — Sale Calculator",
-      `Estimated Cash: ${els.totalCash.textContent}`,
+      `Sale Value: ${els.totalCash.textContent}`,
       `Oil to Sell: ${els.oil.value}`,
       `Cash per Oil: ${els.cashPerOil.textContent}`,
       `Current Sell Rate: ${els.market.value}`,
