@@ -14,7 +14,7 @@ Results update as you change the values, and your settings are saved in your bro
 
 Game values may change with updates, so results may need to be updated too.
 
-This is a community-made tool and is not official.
+This is a community made tool and is not official.
 
 Created by **1yono**.
 
