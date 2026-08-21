@@ -717,6 +717,7 @@
     drillHours: document.getElementById("drillHours"),
     drillFinalRate: document.getElementById("drillFinalRate"),
     drillRateLabel: document.getElementById("drillRateLabel"),
+    drillRateLabel: document.getElementById("drillRateLabel"),
     drillTotalOil: document.getElementById("drillTotalOil"),
     drillGrowth: document.getElementById("drillGrowth"),
     drillCountError: document.getElementById("drillCountError"),
@@ -1487,6 +1488,8 @@
     const totalOil =
       effectiveGrowthPerSecond * seconds * (seconds + 1) / 2;
 
+    const displayHours = trimZeros(String(hours));
+    els.drillRateLabel.textContent = `Rate After ${displayHours}H`;
     const displayHours = trimZeros(String(hours));
     els.drillRateLabel.textContent = `Rate After ${displayHours}H`;
     els.drillFinalRate.textContent = formatCompact(finalRate) + "/s";
