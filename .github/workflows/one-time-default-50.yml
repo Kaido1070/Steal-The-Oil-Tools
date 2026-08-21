@@ -1,11 +1,10 @@
-# trigger
 name: One-time default 50 x1
 
 on:
   push:
     branches: [main]
     paths:
-      - '.github/workflows/one-time-default-50.yml'
+      - '.trigger-default-50'
 
 permissions:
   contents: write
@@ -49,11 +48,12 @@ jobs:
           path.write_text(s, encoding='utf-8')
           PY
 
-      - name: Commit changes
+      - name: Commit changes and cleanup
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .trigger-default-50 .github/workflows/one-time-default-50.yml
           git add index.html
           git commit -m "Set Oil Hour default to 50 x1"
           git push
