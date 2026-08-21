@@ -1,0 +1,67 @@
+name: One-time fix share credit layout
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.trigger-fix-share-credit'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Move Share credit to card footer
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          old_css = '.share-credit{position:absolute;right:0;bottom:-13px;color:#778195;font-size:7px;font-weight:750;text-align:right;white-space:nowrap;opacity:.78}'
+          new_css = '.share-credit{margin-top:8px;color:#778195;font-size:7px;font-weight:750;text-align:right;white-space:nowrap;opacity:.78;line-height:1.2}'
+
+          old_html = '''        <div class="share-credit">Created by <b>1yono</b><span class="share-domain">StealOilTools.xyz</span></div>
+      </div>
+
+      <div class="share-hero">'''
+          new_html = '''      </div>
+
+      <div class="share-hero">'''
+
+          anchor = '''      <div class="share-details">
+        <div class="share-detail"><span>Oil Amount</span><strong id="shareOil">—</strong></div>
+        <div class="share-detail accent"><span>Cash per Oil</span><strong id="shareCashPerOil">—</strong></div>
+        <div class="share-detail"><span>Sell Price</span><strong id="shareMarket">—</strong></div>
+        <div class="share-detail"><span>Cash Boost</span><strong id="shareCashBoost">—</strong></div>
+        <div class="share-detail"><span>Friend Boost</span><strong id="shareFriendBoost">—</strong></div>
+      </div>'''
+          replacement = anchor + '''
+      <div class="share-credit">Created by <b>1yono</b><span class="share-domain">StealOilTools.xyz</span></div>'''
+
+          checks = {
+              'old CSS': s.count(old_css),
+              'old credit location': s.count(old_html),
+              'details anchor': s.count(anchor),
+          }
+          bad = {k:v for k,v in checks.items() if v != 1}
+          if bad:
+              raise SystemExit(f'No changes made; expected one exact match each: {checks}')
+
+          s = s.replace(old_css, new_css, 1)
+          s = s.replace(old_html, new_html, 1)
+          s = s.replace(anchor, replacement, 1)
+          p.write_text(s, encoding='utf-8')
+          PY
+      - name: Commit
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet || git commit -m "Fix Share creator credit placement"
+          git push
