@@ -1,0 +1,41 @@
+name: Capitalize share domain display
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/capitalize-share-domain.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-copy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update share domain display
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          s = path.read_text(encoding='utf-8')
+          old = '<span class="share-domain">stealoiltools.xyz</span>'
+          new = '<span class="share-domain">StealOilTools.xyz</span>'
+          if old not in s:
+              raise SystemExit('Share domain display not found')
+          s = s.replace(old, new, 1)
+          path.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit changes
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Improve share domain readability"
+          git push
