@@ -1,0 +1,49 @@
+name: Rename Oil Hour result heading
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/rename-production-heading.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update-copy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add dynamic Oil Hour result heading
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          s = path.read_text(encoding='utf-8')
+
+          old_heading = '<div class="result-head"><h2>Production estimate</h2><span class="live-status">Live</span></div>'
+          new_heading = '<div class="result-head"><h2 id="productionResultHeading">Oil Gain</h2><span class="live-status">Live</span></div>'
+          if old_heading not in s:
+              raise SystemExit('Production estimate heading not found')
+          s = s.replace(old_heading, new_heading, 1)
+
+          old_mode = '''    els.productionTimeSection.hidden = isTargetMode;\n    els.productionTargetSection.hidden = !isTargetMode;\n'''
+          new_mode = '''    els.productionTimeSection.hidden = isTargetMode;\n    els.productionTargetSection.hidden = !isTargetMode;\n\n    const productionResultHeading =\n      document.getElementById("productionResultHeading");\n    if (productionResultHeading) {\n      productionResultHeading.textContent =\n        isTargetMode ? "Time Needed" : "Oil Gain";\n    }\n'''
+          if old_mode not in s:
+              raise SystemExit('Production mode section not found')
+          s = s.replace(old_mode, new_mode, 1)
+
+          path.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit changes
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Use gaming-style Oil Hour result headings"
+          git push
