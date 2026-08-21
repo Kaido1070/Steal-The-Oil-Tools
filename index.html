@@ -352,7 +352,7 @@
 
   <div class="tool-page active" data-tool-page="sale">
   <section class="panel step">
-    <div class="step-head"><h2>Your Oil</h2><span>Amount + unit</span></div>
+    <div class="step-head"><h2>Your Oil</h2></div>
     <label class="field">
       <div class="field-head">
         <div class="icon" aria-label="Oil icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 6h10l3 3-4 4H9z" class="softfill" stroke-width="1.7"/><path d="M8 12l10 8-2.5 2.5-9-9z" class="pink" stroke-width="1.7"/><path d="M12.5 23.2c0 2-1.7 3.3-3.4 3.3s-3.4-1.3-3.4-3.3c0-1.8 3.4-5.2 3.4-5.2s3.4 3.4 3.4 5.2Z" class="pinkfill" stroke-width="1.5"/></svg></div>
@@ -376,7 +376,7 @@
     <label class="field">
       <div class="field-head">
         <div class="icon" aria-label="Cash icon"><svg viewBox="0 0 32 32" aria-hidden="true"><ellipse cx="12" cy="21" rx="6" ry="2.6" class="softfill" stroke-width="1.4"/><path d="M6 21v3c0 1.4 2.7 2.6 6 2.6s6-1.2 6-2.6v-3" class="gold" stroke-width="1.4"/><path d="M18 5l-6 10h5l-2 9 8-12h-5z" class="pinkfill" stroke-width="1.7"/></svg></div>
-        <div class="labels"><strong>Cash Boost</strong><small>Enter the Cash Boost shown in game</small></div>
+        <div class="labels"><strong>Cash Boost</strong></div>
       </div>
       <div class="input-wrap"><input id="cashBoost" value="420" inputmode="decimal" autocomplete="off" aria-label="Cash Boost" aria-describedby="cashBoostError" /><span class="input-suffix">%</span></div>
       <div class="field-error" id="cashBoostError" role="status" aria-live="polite"></div>
@@ -387,7 +387,7 @@
     <label class="field">
       <div class="field-head">
         <div class="icon" aria-label="Friend icon"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="11" cy="11" r="4" class="softfill" stroke-width="1.4"/><circle cx="21" cy="12" r="3.5" class="pinkfill" stroke-width="1.4"/><path d="M5 25c.8-5 3.2-7 6-7s5.2 2 6 7" class="gold" stroke-width="1.6"/><path d="M17 24c.7-3.8 2.2-5.5 4.5-5.5 1.6 0 3 .9 4 2.8" class="pink" stroke-width="1.5"/><path d="M24 7v5M21.5 9.5h5" class="purple" stroke-width="1.7"/></svg></div>
-        <div class="labels"><strong>Friend Boost</strong><small>Choose your current Friend Boost</small></div>
+        <div class="labels"><strong>Friend Boost</strong></div>
       </div>
       <div class="presets percent" aria-label="Friend Boost presets">
         <button class="chip" data-friend="0">0%</button><button class="chip" data-friend="10">10%</button><button class="chip" data-friend="20">20%</button><button class="chip" data-friend="30">30%</button><button class="chip" data-friend="40">40%</button><button class="chip active" data-friend="50">50%</button>
@@ -424,8 +424,6 @@
   </div>
 
   <div class="tool-page" data-tool-page="oil-hour">
-    <div class="tool-intro">Enter how much oil you produce each second.</div>
-
     <div class="mode-switch" role="group" aria-label="Oil per Hour calculation mode">
       <button class="mode-option active" type="button" data-production-mode="time-to-oil">Time → Oil</button>
       <button class="mode-option" type="button" data-production-mode="oil-to-time">Oil → Time</button>
@@ -454,7 +452,7 @@
     </section>
 
     <section class="panel step" id="productionTimeSection">
-      <div class="step-head"><h2>Time</h2><span>Choose a preset or enter up to 20 hours</span></div>
+      <div class="step-head"><h2>Time</h2><span>Up to 20 hours</span></div>
       <label class="field">
         <div class="field-head">
           <div class="icon" aria-label="Production time icon">
@@ -463,7 +461,7 @@
               <path d="M16 9v7h6" class="gold" stroke-width="1.8"/>
             </svg>
           </div>
-          <div class="labels"><strong>Hours</strong><small>Quick options or enter up to 20 hours</small></div>
+          <div class="labels"><strong>Hours</strong></div>
         </div>
         <div class="input-wrap">
           <input id="productionHours" type="text" value="1" inputmode="decimal" autocomplete="off" aria-label="Production Time in Hours" aria-describedby="productionHoursError" />
@@ -481,7 +479,7 @@
     </section>
 
     <section class="panel step" id="productionTargetSection" hidden>
-      <div class="step-head"><h2>Target Oil</h2><span>How much oil you want to reach</span></div>
+      <div class="step-head"><h2>Target Oil</h2></div>
       <label class="field">
         <div class="field-head">
           <div class="icon" aria-label="Target oil icon">
@@ -559,7 +557,7 @@
               <path d="M16 10v7l5 3M7 25l4-4M25 25l-4-4" class="pink" stroke-width="1.7"/>
             </svg>
           </div>
-          <div class="labels"><strong>Drills Owned</strong><small>How many you own</small></div>
+          <div class="labels"><strong>Drills Owned</strong></div>
         </div>
         <input id="drillCount" value="1" inputmode="numeric" autocomplete="off" aria-label="Drills Owned" aria-describedby="drillCountError" />
         <div class="field-error" id="drillCountError" role="status" aria-live="polite"></div>
@@ -604,7 +602,7 @@
         <button id="copyDrillBtn" class="action primary">Copy</button>
         <button id="resetDrillBtn" class="action reset">Reset</button>
       </div>
-      <div class="formula-note">Assumption: each Basic Clock Drill starts at 1 oil/s, then gains +1 oil/s every second. Tier, drill count, and Production Multiplier scale the displayed production.</div>
+      <div class="formula-note">Basic starts at 1 oil/s and gains +1 oil/s each second. Tier, drill count, and Production Multiplier scale it.</div>
     </section>
   </div>
 
@@ -885,7 +883,7 @@
           "Choose <b>15</b>, <b>20</b>, or <b>50</b>, or type another price manually."
         ],
         [
-          "Result",
+          "Sale Result",
           "<b>Sale Value</b> is your expected sale total. <b>Cash per Oil</b> shows the value of each oil after your active bonuses."
         ],
         [
@@ -917,10 +915,6 @@
           "In Oil → Time mode, enter the amount you want to reach. The quick unit buttons are <b>x1 / K / M / B / T</b>. You can also type larger units manually."
         ],
         [
-          "Results",
-          "Time → Oil shows your <b>Oil Gain</b> plus per-hour and per-minute production. Oil → Time shows the <b>Time Needed</b>, total hours, and your hourly production."
-        ],
-        [
           "Copy / Reset",
           "<b>Copy</b> copies the result for the selected mode. <b>Reset</b> resets the Oil / Hour values while keeping the mode you selected."
         ]
@@ -933,16 +927,12 @@
         "Use this page to see how your Clock Drills grow and how much oil they produce.",
       items: [
         [
-          "Drill Tier",
-          "Choose the Clock Drill version you own: <b>Basic ×1</b>, <b>Gold ×2</b>, <b>Diamond ×3</b>, <b>Rainbow ×5</b>, or <b>Galaxy ×10</b>."
-        ],
-        [
           "How the Growth Works",
           "<b>Assumption used by this calculator:</b> one Basic Clock Drill starts at <b>1 oil/s</b> immediately, then gains <b>+1 oil/s every second</b>. The selected tier, drill count, and Production Multiplier scale that rate. Total Oil is the sum of the production generated during the selected time."
         ],
         [
           "Production Multiplier",
-          "Choose the multiplier for the area you are in: <b>×1 Standard</b>, <b>×2</b>, <b>×3</b>, <b>×5</b>, <b>×6</b>, or <b>×10</b>. This multiplier scales the Clock Drill production shown in Final Rate, Total Oil, and Growth per Second."
+          "Choose your area Production Multiplier. It scales the Clock Drill production."
         ],
         [
           "Drills Owned",
@@ -950,7 +940,7 @@
         ],
         [
           "Run Time",
-          "Choose <b>1h</b>, <b>3h</b>, <b>5h</b>, <b>7h</b>, or <b>9h</b> as a quick option, or type the time manually. The maximum allowed time is <b>20 hours</b>."
+          "Enter a run time up to <b>20 hours</b>."
         ],
         [
           "Final Rate",
