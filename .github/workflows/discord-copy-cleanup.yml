@@ -1,0 +1,142 @@
+name: One-time Discord copy cleanup
+
+on:
+  push:
+    branches: [discord-copy-cleanup]
+    paths:
+      - '.trigger-discord-copy-cleanup'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update copy summaries only
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          old_sale = '''  function saleSummary() {
+    return [
+      `Oil Amount: ${els.oil.value}`,
+      `Cash Boost: ${els.cashBoost.value}%`,
+      `Friend Boost: ${friendBoostValue}%`,
+      `Sell Price: ${els.market.value}`,
+      `Cash per Oil: ${els.cashPerOil.textContent}`,
+      `Sale Value: ${els.totalCash.textContent}`,
+    ].join("\\n");
+  }
+'''
+          new_sale = '''  function saleSummary() {
+    return [
+      "Sale",
+      `Oil: ${els.oil.value}`,
+      `Sell Price: ${els.market.value}`,
+      `Sell Value: ${els.totalCash.textContent}`,
+    ].join("\\n");
+  }
+'''
+
+          old_prod = '''  function productionSummary() {
+    if (productionMode === "oil-to-time") {
+      return [
+        "STEAL THE OIL TYCOON — Oil / Hour",
+        "Mode: Oil → Time",
+        `Oil per Second: ${els.productionRate.value}`,
+        `Target Oil: ${els.productionTarget.value}`,
+        `Time Needed: ${els.productionTotal.textContent}`,
+        `Total Hours: ${els.productionPerHour.textContent}`,
+        "Created by 1yono",
+      ].join("\\n");
+    }
+
+    return [
+      "STEAL THE OIL TYCOON — Oil / Hour",
+      "Mode: Time → Oil",
+      `Oil per Second: ${els.productionRate.value}`,
+      `Time: ${els.productionHours.value}h`,
+      `Oil Gain: ${els.productionTotal.textContent}`,
+      `Per Hour: ${els.productionPerHour.textContent}`,
+      `Per Minute: ${els.productionPerMinute.textContent}`,
+      "Created by 1yono",
+    ].join("\\n");
+  }
+'''
+          new_prod = '''  function productionSummary() {
+    if (productionMode === "oil-to-time") {
+      return [
+        "Oil / Hour",
+        `Rate: ${els.productionRate.value}/s`,
+        `Target: ${els.productionTarget.value}`,
+        `Time Needed: ${els.productionTotal.textContent}`,
+      ].join("\\n");
+    }
+
+    return [
+      "Oil / Hour",
+      `Rate: ${els.productionRate.value}/s`,
+      `Time: ${els.productionHours.value}h`,
+      `Oil Gain: ${els.productionTotal.textContent}`,
+    ].join("\\n");
+  }
+'''
+
+          old_drill = '''  function drillSummary() {
+    const tierLabel =
+      drillTier.charAt(0).toUpperCase() + drillTier.slice(1);
+
+    return [
+      "STEAL THE OIL TYCOON — Clock Drill",
+      `Tier: ${tierLabel} ×${drillMultiplier}`,
+      `Production Multiplier: ×${clockProductionMultiplier}`,
+      `Number of Drills: ${els.drillCount.value}`,
+      `Run Time: ${els.drillHours.value}h`,
+      `Growth per Second: ${els.drillGrowth.textContent}`,
+      `Rate After ${trimZeros(String(parsePlain(els.drillHours.value)))}H: ${els.drillFinalRate.textContent}`,
+      `Total Oil: ${els.drillTotalOil.textContent}`,
+      "Created by 1yono",
+    ].join("\\n");
+  }
+'''
+          new_drill = '''  function drillSummary() {
+    const tierLabel =
+      drillTier.charAt(0).toUpperCase() + drillTier.slice(1);
+
+    return [
+      "Clock Drill",
+      `${tierLabel} ×${drillMultiplier}`,
+      `Drills: ${els.drillCount.value}`,
+      `Run Time: ${els.drillHours.value}h`,
+      `Rate After ${trimZeros(String(parsePlain(els.drillHours.value)))}H: ${els.drillFinalRate.textContent}`,
+      `Total Oil: ${els.drillTotalOil.textContent}`,
+    ].join("\\n");
+  }
+'''
+
+          for name, old, new in [
+              ('saleSummary', old_sale, new_sale),
+              ('productionSummary', old_prod, new_prod),
+              ('drillSummary', old_drill, new_drill),
+          ]:
+              count = s.count(old)
+              if count != 1:
+                  raise SystemExit(f'{name}: expected exactly 1 match, found {count}')
+              s = s.replace(old, new, 1)
+
+          p.write_text(s, encoding='utf-8')
+          print('Updated copy summaries only')
+          PY
+      - name: Commit change
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet || git commit -m "Make copy output Discord-friendly"
+          git push
