@@ -1,19 +1,23 @@
 name: Unify tool icons
 
 on:
-  push:
+  pull_request:
     branches: [main]
     paths:
-      - '.trigger-unify-icons'
+      - '.trigger-icons-pr'
 
 permissions:
   contents: write
 
 jobs:
   update-icons:
+    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
       - name: Unify oil icons and update drill count icon
         shell: bash
         run: |
@@ -95,11 +99,11 @@ jobs:
 
           p.write_text(s, encoding='utf-8')
           PY
-      - name: Commit changes
+      - name: Commit changes to PR branch
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html
           git commit -m "Unify oil and drill icons"
-          git push
+          git push origin HEAD:${{ github.head_ref }}
