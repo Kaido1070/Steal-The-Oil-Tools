@@ -396,14 +396,14 @@
   </section>
 
   <section class="panel step">
-    <div class="step-head"><h2>Sell Rate</h2><span>Current in-game price</span></div>
+    <div class="step-head"><h2>Sell Price</h2><span>Current in-game price</span></div>
     <label class="field">
       <div class="field-head">
         <div class="icon" aria-label="Market icon"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="6" width="22" height="20" rx="4" class="pinkfill" stroke-width="1.4"/><path d="M9 22V18M14 22v-7M19 22v-10" class="gold" stroke-width="2"/><path d="M8 16l5-4 4 2 7-7" class="pink" stroke-width="2"/><path d="M20 7h4v4" class="pink" stroke-width="2"/></svg></div>
         <div class="labels"><strong>Sell Price</strong><small>Pick 15, 20 or 50</small></div>
       </div>
       <input id="market" value="50" inputmode="decimal" autocomplete="off" aria-label="Sell Price" aria-describedby="marketError" />
-      <div class="presets prices" aria-label="Sale rate presets">
+      <div class="presets prices" aria-label="Sell Price presets">
         <button class="chip" data-market="15">15</button>
         <button class="chip" data-market="20">20</button>
         <button class="chip active" data-market="50">50</button>
@@ -882,7 +882,7 @@
         ],
         [
           "Sell Price",
-          "Choose <b>15</b>, <b>20</b>, or <b>50</b>, or type another sell rate manually."
+          "Choose <b>15</b>, <b>20</b>, or <b>50</b>, or type another price manually."
         ],
         [
           "Result",
@@ -1065,11 +1065,11 @@
 
     let marketMessage = "";
     if (!normalize(els.market.value)) {
-      marketMessage = "Enter a sell rate.";
+      marketMessage = "Enter a sell price.";
     } else if (!Number.isFinite(sellRate)) {
-      marketMessage = "Enter a valid sell rate.";
+      marketMessage = "Enter a valid sell price.";
     } else if (sellRate < 0) {
-      marketMessage = "Sell rate cannot be negative.";
+      marketMessage = "Sell price cannot be negative.";
     }
 
     let cashBoostMessage = "";
