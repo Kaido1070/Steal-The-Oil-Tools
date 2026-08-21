@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/update-drill-count-icon.yml'
+      - '.trigger-drill-icon'
 
 permissions:
   contents: write
