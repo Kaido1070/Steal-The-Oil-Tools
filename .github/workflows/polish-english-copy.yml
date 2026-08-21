@@ -1,0 +1,64 @@
+name: Polish English copy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/polish-english-copy.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  polish-copy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update UI copy
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          s = path.read_text(encoding='utf-8')
+
+          replacements = [
+              ('Example: 2.6 + M', 'Example: 2.6M'),
+              ('Example: 300 + B', 'Example: 300B'),
+              ('Choose or type any duration', 'Choose a preset or enter up to 20 hours'),
+              ('<strong>Oil Target</strong>', '<strong>Target Oil</strong>'),
+              ('This field is entered manually.', 'Enter this value manually.'),
+              ('This value is selection only and is not entered manually.', 'Use the buttons to choose your Friend Boost.'),
+              ('<b>Copy</b> saves the result as text.', '<b>Copy</b> copies the result to your clipboard.'),
+              ('<b>Copy</b> saves the result for the active mode.', '<b>Copy</b> copies the result for the selected mode.'),
+              ('<b>Copy</b> saves the Clock Drill estimate as text.', '<b>Copy</b> copies the Clock Drill estimate to your clipboard.'),
+              ('Use this page to estimate how fast your Clock Drills will become and how much oil they generate while growing.', 'Use this page to see how your Clock Drills grow and how much oil they produce.'),
+              ('Larger supported suffixes can also be typed manually.', 'You can also type larger units manually.'),
+              ('How many of this tier', 'How many you own'),
+              ('Drills + running time', 'Drills + run time'),
+              ('Growth Each Second', 'Growth per Second'),
+              ('Community made tool', 'Community tool'),
+          ]
+
+          for old, new in replacements:
+              if old not in s:
+                  print(f'Warning: text not found: {old}')
+                  continue
+              s = s.replace(old, new)
+
+          path.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Commit changes
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Polish English UI copy"
+          git push
