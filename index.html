@@ -441,7 +441,7 @@
               <path d="M8 25h16M21 8l4-3M23 12h4" class="gold" stroke-width="1.6"/>
             </svg>
           </div>
-          <div class="labels"><strong>Oil per Second</strong><small>Example: 2.6 + M</small></div>
+          <div class="labels"><strong>Oil per Second</strong><small>Example: 2.6M</small></div>
         </div>
         <input id="productionRate" value="50" inputmode="decimal" autocomplete="off" aria-label="Oil per Second" aria-describedby="productionRateError" />
         <div class="presets rate-units" aria-label="Production rate units">
@@ -454,7 +454,7 @@
     </section>
 
     <section class="panel step" id="productionTimeSection">
-      <div class="step-head"><h2>Time</h2><span>Choose or type any duration</span></div>
+      <div class="step-head"><h2>Time</h2><span>Choose a preset or enter up to 20 hours</span></div>
       <label class="field">
         <div class="field-head">
           <div class="icon" aria-label="Production time icon">
@@ -491,7 +491,7 @@
               <circle cx="16" cy="16" r="1.8" class="goldfill"/>
             </svg>
           </div>
-          <div class="labels"><strong>Oil Target</strong><small>Example: 300 + B</small></div>
+          <div class="labels"><strong>Target Oil</strong><small>Example: 300B</small></div>
         </div>
         <input id="productionTarget" value="300B" inputmode="decimal" autocomplete="off" aria-label="Target Oil" aria-describedby="productionTargetError" />
         <div class="presets target-units" aria-label="Target oil units">
@@ -549,7 +549,7 @@
     </section>
 
     <section class="panel step">
-      <div class="step-head"><h2>Setup</h2><span>Drills + running time</span></div>
+      <div class="step-head"><h2>Setup</h2><span>Drills + run time</span></div>
 
       <label class="field">
         <div class="field-head">
@@ -559,7 +559,7 @@
               <path d="M16 10v7l5 3M7 25l4-4M25 25l-4-4" class="pink" stroke-width="1.7"/>
             </svg>
           </div>
-          <div class="labels"><strong>Drills Owned</strong><small>How many of this tier</small></div>
+          <div class="labels"><strong>Drills Owned</strong><small>How many you own</small></div>
         </div>
         <input id="drillCount" value="1" inputmode="numeric" autocomplete="off" aria-label="Drills Owned" aria-describedby="drillCountError" />
         <div class="field-error" id="drillCountError" role="status" aria-live="polite"></div>
@@ -598,7 +598,7 @@
       </div>
       <div class="result-mini dual">
         <div class="metric"><span>Total Oil</span><strong id="drillTotalOil">6.48M</strong></div>
-        <div class="metric"><span>Growth Each Second</span><strong id="drillGrowth">+1/s</strong></div>
+        <div class="metric"><span>Growth per Second</span><strong id="drillGrowth">+1/s</strong></div>
       </div>
       <div class="actions two">
         <button id="copyDrillBtn" class="action primary">Copy</button>
@@ -608,7 +608,7 @@
     </section>
   </div>
 
-  <div class="community-note">Community made tool • Game values may change with updates • Last updated Aug 20 2026</div>
+  <div class="community-note">Community tool • Game values may change with updates • Last updated Aug 20 2026</div>
 </main>
 <div class="share-modal" id="shareModal" aria-hidden="true">
   <div class="share-shell">
@@ -874,11 +874,11 @@
         ],
         [
           "Cash Boost",
-          "Enter the <b>Cash Boost</b> value shown in game. This field is entered manually."
+          "Enter the <b>Cash Boost</b> value shown in game. Enter this value manually."
         ],
         [
           "Friend Boost",
-          "Choose your current Friend Boost using the percentage buttons. This value is selection only and is not entered manually."
+          "Choose your current Friend Boost using the percentage buttons. Use the buttons to choose your Friend Boost."
         ],
         [
           "Current Sell Rate",
@@ -890,7 +890,7 @@
         ],
         [
           "Copy / Share / Reset",
-          "<b>Copy</b> saves the result as text. <b>Share</b> opens the screenshot card. <b>Reset</b> returns Cash Boost to <b>100%</b>, Friend Boost to <b>0%</b>, Current Sell Rate to <b>15</b>, and Oil to <b>50 (x1)</b>."
+          "<b>Copy</b> copies the result to your clipboard. <b>Share</b> opens the screenshot card. <b>Reset</b> returns Cash Boost to <b>100%</b>, Friend Boost to <b>0%</b>, Current Sell Rate to <b>15</b>, and Oil to <b>50 (x1)</b>."
         ]
       ]
     },
@@ -914,7 +914,7 @@
         ],
         [
           "Target Oil",
-          "In Oil → Time mode, enter the amount you want to reach. The quick unit buttons are <b>x1 / K / M / B / T</b>. Larger supported suffixes can also be typed manually."
+          "In Oil → Time mode, enter the amount you want to reach. The quick unit buttons are <b>x1 / K / M / B / T</b>. You can also type larger units manually."
         ],
         [
           "Results",
@@ -922,7 +922,7 @@
         ],
         [
           "Copy / Reset",
-          "<b>Copy</b> saves the result for the active mode. <b>Reset</b> resets the Oil / Hour values while keeping the mode you selected."
+          "<b>Copy</b> copies the result for the selected mode. <b>Reset</b> resets the Oil / Hour values while keeping the mode you selected."
         ]
       ]
     },
@@ -930,7 +930,7 @@
     "clock-drill": {
       title: "Clock Drill Guide",
       intro:
-        "Use this page to estimate how fast your Clock Drills will become and how much oil they generate while growing.",
+        "Use this page to see how your Clock Drills grow and how much oil they produce.",
       items: [
         [
           "Drill Tier",
@@ -942,7 +942,7 @@
         ],
         [
           "Production Multiplier",
-          "Choose the multiplier for the area you are in: <b>×1 Standard</b>, <b>×2</b>, <b>×3</b>, <b>×5</b>, <b>×6</b>, or <b>×10</b>. This multiplier scales the Clock Drill production shown in Final Rate, Total Oil, and Growth Each Second."
+          "Choose the multiplier for the area you are in: <b>×1 Standard</b>, <b>×2</b>, <b>×3</b>, <b>×5</b>, <b>×6</b>, or <b>×10</b>. This multiplier scales the Clock Drill production shown in Final Rate, Total Oil, and Growth per Second."
         ],
         [
           "Drills Owned",
@@ -961,12 +961,12 @@
           "This is the total oil generated while the drill rate is increasing throughout the selected time."
         ],
         [
-          "Growth Each Second",
+          "Growth per Second",
           "This shows how much the combined rate increases every second after applying the tier multiplier and drill count."
         ],
         [
           "Copy / Reset",
-          "<b>Copy</b> saves the Clock Drill estimate as text. <b>Reset</b> returns the Clock Drill calculator to <b>Basic</b>, <b>×1 Standard</b>, <b>1 drill</b>, and <b>1 hour</b>."
+          "<b>Copy</b> copies the Clock Drill estimate to your clipboard. <b>Reset</b> returns the Clock Drill calculator to <b>Basic</b>, <b>×1 Standard</b>, <b>1 drill</b>, and <b>1 hour</b>."
         ]
       ]
     }
@@ -1505,7 +1505,7 @@
       `Production Multiplier: ×${clockProductionMultiplier}`,
       `Drills Owned: ${els.drillCount.value}`,
       `Run Time: ${els.drillHours.value}h`,
-      `Growth Each Second: ${els.drillGrowth.textContent}`,
+      `Growth per Second: ${els.drillGrowth.textContent}`,
       `Final Rate: ${els.drillFinalRate.textContent}`,
       `Total Oil: ${els.drillTotalOil.textContent}`,
       "Made by 1yono",
