@@ -2,6 +2,8 @@
 
 I created this to keep the tools I use for **STEAL THE OIL TYCOON** in one place and make them available to other players.
 
+🌐 **Live Site:** https://stealoiltools.xyz
+
 ## What's here
 
 - **Sale Calculator** — calculate your Sell Value using Oil Amount, Sell Price, Cash Boost, and Friend Boost.
