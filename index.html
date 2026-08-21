@@ -605,7 +605,7 @@
     <section class="panel result">
       <div class="result-head"><h2>Clock Drill Result</h2><span class="live-status">Live</span></div>
       <div class="result-main">
-        <span>Final Rate</span>
+        <span id="drillRateLabel">Rate After 1H</span>
         <strong id="drillFinalRate">3.6K/s</strong>
       </div>
       <div class="result-mini dual">
@@ -716,6 +716,7 @@
     drillCount: document.getElementById("drillCount"),
     drillHours: document.getElementById("drillHours"),
     drillFinalRate: document.getElementById("drillFinalRate"),
+    drillRateLabel: document.getElementById("drillRateLabel"),
     drillTotalOil: document.getElementById("drillTotalOil"),
     drillGrowth: document.getElementById("drillGrowth"),
     drillCountError: document.getElementById("drillCountError"),
@@ -956,8 +957,8 @@
           "Enter a run time up to <b>20 hours</b>."
         ],
         [
-          "Final Rate",
-          "This is the combined oil-per-second rate your selected drills reach at the end of the chosen time."
+          "Rate After Time",
+          "Shows the combined oil-per-second rate your drills reach after the selected run time."
         ],
         [
           "Total Oil",
@@ -1486,6 +1487,8 @@
     const totalOil =
       effectiveGrowthPerSecond * seconds * (seconds + 1) / 2;
 
+    const displayHours = trimZeros(String(hours));
+    els.drillRateLabel.textContent = `Rate After ${displayHours}H`;
     els.drillFinalRate.textContent = formatCompact(finalRate) + "/s";
     els.drillTotalOil.textContent = formatCompact(totalOil);
     els.drillGrowth.textContent =
@@ -1516,7 +1519,7 @@
       `Number of Drills: ${els.drillCount.value}`,
       `Run Time: ${els.drillHours.value}h`,
       `Growth per Second: ${els.drillGrowth.textContent}`,
-      `Final Rate: ${els.drillFinalRate.textContent}`,
+      `Rate After ${trimZeros(String(parsePlain(els.drillHours.value)))}H: ${els.drillFinalRate.textContent}`,
       `Total Oil: ${els.drillTotalOil.textContent}`,
       "Made by 1yono",
     ].join("\n");
