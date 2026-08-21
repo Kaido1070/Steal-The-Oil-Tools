@@ -339,7 +339,7 @@
         <h1>STEAL THE OIL TYCOON</h1>
         <span class="calc-badge" id="calcBadge">Sale Calculator</span>
       </div>
-      <p>Created by 1yono</p>
+      <p>Made by 1yono</p>
     </div>
     <button class="help-btn" id="helpBtn" aria-label="How to use">?</button>
   </header>
@@ -629,7 +629,7 @@
           <small>Sale calculator</small>
           <h3>STEAL THE OIL TYCOON</h3>
         </div>
-        <div class="share-credit">Created by <b>1yono</b><span class="share-domain">StealOilTools.xyz</span></div>
+        <div class="share-credit">Made by <b>1yono</b><span class="share-domain">StealOilTools.xyz</span></div>
       </div>
 
       <div class="share-hero">
@@ -716,7 +716,6 @@
     drillCount: document.getElementById("drillCount"),
     drillHours: document.getElementById("drillHours"),
     drillFinalRate: document.getElementById("drillFinalRate"),
-    drillRateLabel: document.getElementById("drillRateLabel"),
     drillRateLabel: document.getElementById("drillRateLabel"),
     drillTotalOil: document.getElementById("drillTotalOil"),
     drillGrowth: document.getElementById("drillGrowth"),
@@ -1146,7 +1145,7 @@
       `Sell Price: ${els.market.value}`,
       `Cash Boost: ${els.cashBoost.value}%`,
       `Friend Boost: ${friendBoostValue}%`,
-      "Created by 1yono",
+      "Made by 1yono",
     ].join("\n");
   }
 
@@ -1379,7 +1378,7 @@
         `Target Oil: ${els.productionTarget.value}`,
         `Time Needed: ${els.productionTotal.textContent}`,
         `Total Hours: ${els.productionPerHour.textContent}`,
-        "Created by 1yono",
+        "Made by 1yono",
       ].join("\n");
     }
 
@@ -1391,7 +1390,7 @@
       `Oil Gain: ${els.productionTotal.textContent}`,
       `Per Hour: ${els.productionPerHour.textContent}`,
       `Per Minute: ${els.productionPerMinute.textContent}`,
-      "Created by 1yono",
+      "Made by 1yono",
     ].join("\n");
   }
 
@@ -1490,8 +1489,6 @@
 
     const displayHours = trimZeros(String(hours));
     els.drillRateLabel.textContent = `Rate After ${displayHours}H`;
-    const displayHours = trimZeros(String(hours));
-    els.drillRateLabel.textContent = `Rate After ${displayHours}H`;
     els.drillFinalRate.textContent = formatCompact(finalRate) + "/s";
     els.drillTotalOil.textContent = formatCompact(totalOil);
     els.drillGrowth.textContent =
@@ -1524,7 +1521,7 @@
       `Growth per Second: ${els.drillGrowth.textContent}`,
       `Rate After ${trimZeros(String(parsePlain(els.drillHours.value)))}H: ${els.drillFinalRate.textContent}`,
       `Total Oil: ${els.drillTotalOil.textContent}`,
-      "Created by 1yono",
+      "Made by 1yono",
     ].join("\n");
   }
 
