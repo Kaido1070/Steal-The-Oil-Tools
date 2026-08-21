@@ -902,11 +902,11 @@
       items: [
         [
           "Time → Oil",
-          "Enter your oil-per-second rate and a duration to see how much oil you will produce. The time you enter is limited to <b>20 hours</b>."
+          "Enter your oil-per-second rate and a duration to see your <b>Oil Gain</b>. The time you enter is limited to <b>20 hours</b>."
         ],
         [
           "Oil → Time",
-          "Enter your oil-per-second rate and a <b>Target Oil</b> amount to calculate how long it takes to reach that target. The calculated time can be more than 20 hours because it is a result, not a manual time input."
+          "Enter your oil-per-second rate and a <b>Target Oil</b> amount to see the <b>Time Needed</b> to reach it. The calculated time can be more than 20 hours because it is a result, not a manual time input."
         ],
         [
           "Oil per Second",
@@ -918,7 +918,7 @@
         ],
         [
           "Results",
-          "Time → Oil shows your total oil plus per-hour and per-minute production. Oil → Time shows the required time, total hours, and your hourly production."
+          "Time → Oil shows your <b>Oil Gain</b> plus per-hour and per-minute production. Oil → Time shows the <b>Time Needed</b>, total hours, and your hourly production."
         ],
         [
           "Copy / Reset",
@@ -1341,7 +1341,7 @@
       const totalSeconds = target / rate;
       const totalHours = totalSeconds / 3600;
 
-      els.productionTotalLabel.textContent = "Time Required";
+      els.productionTotalLabel.textContent = "Time Needed";
       els.productionTotal.textContent = formatRequiredTime(totalSeconds);
 
       els.productionMetricOneLabel.textContent = "Total Hours";
@@ -1372,7 +1372,7 @@
         "Mode: Oil → Time",
         `Oil per Second: ${els.productionRate.value}`,
         `Target Oil: ${els.productionTarget.value}`,
-        `Time Required: ${els.productionTotal.textContent}`,
+        `Time Needed: ${els.productionTotal.textContent}`,
         `Total Hours: ${els.productionPerHour.textContent}`,
         "Made by 1yono",
       ].join("\n");
@@ -1383,7 +1383,7 @@
       "Mode: Time → Oil",
       `Oil per Second: ${els.productionRate.value}`,
       `Time: ${els.productionHours.value}h`,
-      `Total Oil: ${els.productionTotal.textContent}`,
+      `Oil Gain: ${els.productionTotal.textContent}`,
       `Per Hour: ${els.productionPerHour.textContent}`,
       `Per Minute: ${els.productionPerMinute.textContent}`,
       "Made by 1yono",
