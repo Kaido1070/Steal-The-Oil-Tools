@@ -1,0 +1,32 @@
+name: Update Clock Drill rate label
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update label everywhere
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text()
+          s = s.replace('<span>Final Rate</span>\n        <strong id="drillFinalRate">', '<span id="drillRateLabel">Rate After 1H</span>\n        <strong id="drillFinalRate">')
+          s = s.replace('drillFinalRate: document.getElementById("drillFinalRate"),', 'drillFinalRate: document.getElementById("drillFinalRate"),\n    drillRateLabel: document.getElementById("drillRateLabel"),')
+          s = s.replace('[\n          "Final Rate",\n          "This is the combined oil-per-second rate your selected drills reach at the end of the chosen time."\n        ],', '[\n          "Rate After Time",\n          "Shows the combined oil-per-second rate your drills reach after the selected run time."\n        ],')
+          s = s.replace('els.drillFinalRate.textContent = formatCompact(finalRate) + "/s";', 'const displayHours = trimZeros(String(hours));\n    els.drillRateLabel.textContent = `Rate After ${displayHours}H`;\n    els.drillFinalRate.textContent = formatCompact(finalRate) + "/s";')
+          s = s.replace('`Final Rate: ${els.drillFinalRate.textContent}`,', '`Rate After ${trimZeros(String(parsePlain(els.drillHours.value)))}H: ${els.drillFinalRate.textContent}`,')
+          p.write_text(s)
+          PY
+      - name: Commit change
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git diff --cached --quiet || git commit -m "Use dynamic Clock Drill rate label"
+          git push
