@@ -6,17 +6,21 @@ I created this to keep the tools I use for **STEAL THE OIL TYCOON** in one place
 
 ## What's here
 
-- **Sale Calculator** — calculate your Sell Value using Oil Amount, Sell Price, Cash Boost, and Friend Boost.
+- **Sale Calculator** — calculate your Sale Value using Oil Amount, Sell Price, Cash Boost, and Friend Boost.
 - **Oil / Hour** — see how much oil you can make over time or how long it takes to reach a Target Oil amount.
-- **Clock Drill** — calculate your Clock Drill rate over time and Total Oil using different tiers, production multipliers, and drill counts.
+- **Drill Calculator** — calculate drill production using Drill Tier, Production Area, Number of Drills, Run Time, and supported pet boosts.
+- **Database** — browse game data for Pets, Drills, Decorations, Solar Panels, Refineries, Totems, and Lootboxes.
+- **Pet Bonus Calculator** — check a pet's effect at different levels.
 
 Results update as you change the values, and your settings are saved in your browser.
 
 Game values may change with updates, so results may need to be updated too.
 
-This is a community made tool and is not official.
+This is a community-made tool and is not official.
 
 Created by **1yono**.
+
+**Last updated: Aug 30 2026**
 
 ## Source Code
 
