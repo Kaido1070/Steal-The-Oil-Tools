@@ -1,0 +1,31 @@
+name: STOT one-time title fix
+on:
+  push:
+    paths:
+      - '.stot-title-fix-20260830-trigger'
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix production title
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text()
+          old='<title>STEAL THE OIL TYCOON — Local V2 Preview</title>'
+          new='<title>STEAL THE OIL TYCOON — Community Tools</title>'
+          if s.count(old)!=1:
+              raise SystemExit(f'Expected exactly one title match, found {s.count(old)}')
+          p.write_text(s.replace(old,new), encoding='utf-8')
+          PY
+          git config user.name '1Yono'
+          git config user.email 'actions@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Fix production page title'
+          git push
