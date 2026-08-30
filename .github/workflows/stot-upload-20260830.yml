@@ -1,0 +1,30 @@
+name: STOT one-time upload
+on:
+  push:
+    paths:
+      - '.stot-upload-20260830-trigger'
+permissions:
+  contents: write
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rebuild index
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .tmp-upload-20260830/chunk00 .tmp-upload-20260830/chunk01 .tmp-upload-20260830/chunk02 .tmp-upload-20260830/chunk03 | base64 -d | xz -d > /tmp/index.html
+          echo '10ff477df19dd0cf19d2302185faf69b56a94ba07bf10a3881f5832649d5dac1  /tmp/index.html' | sha256sum -c -
+          test "$(wc -c < /tmp/index.html)" -eq 70940
+          mv /tmp/index.html index.html
+      - name: Commit site update
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name '1Yono'
+          git config user.email 'actions@users.noreply.github.com'
+          git add index.html
+          git diff --cached --quiet && exit 0
+          git commit -m 'Update site tools and database'
+          git push
