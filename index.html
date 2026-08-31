@@ -5,169 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0b0d14">
 <title>STEAL THE OIL TYCOON — Community Tools</title>
-<style>
-:root{
-  --bg:#0b0d14;--stroke:#2f374d;--text:#f7f8fb;--muted:#9ea7b9;--cyan:#5fe1cc;
-  --pink:#ff4fc3;--purple:#8b7cff;--gold:#ffd166;--shadow:0 16px 44px rgba(0,0,0,.32);
-}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:var(--bg)}
-body{
-  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  color:var(--text);
-  background:
-    radial-gradient(420px 180px at 12% -3%,rgba(255,79,195,.14),transparent 65%),
-    radial-gradient(460px 220px at 100% 10%,rgba(123,108,255,.10),transparent 62%),
-    linear-gradient(180deg,#0b0d14 0%,#101420 100%);
-  padding:max(7px,env(safe-area-inset-top)) 10px max(16px,env(safe-area-inset-bottom));
-}
-button,input,select{font:inherit}
-button{cursor:pointer;touch-action:manipulation}
-button:focus-visible,input:focus-visible,select:focus-visible{
-  outline:2px solid #c783ff;outline-offset:2px;box-shadow:0 0 0 4px rgba(199,131,255,.16)
-}
-.app{width:min(620px,100%);margin:0 auto}
-.header{display:flex;align-items:center;justify-content:center;padding:7px 8px 10px;min-height:62px}
-.header-main{text-align:center}
-.title-row{display:flex;justify-content:center;align-items:center;gap:7px;flex-wrap:wrap}
-.header h1{margin:0;font-size:clamp(17px,4.7vw,22px);line-height:1;font-weight:1000;letter-spacing:.2px;white-space:nowrap}
-.calc-badge{display:inline-flex;align-items:center;min-height:20px;padding:0 7px;border-radius:999px;border:1px solid #4a3d61;background:linear-gradient(180deg,rgba(255,79,195,.12),rgba(123,108,255,.10));color:#d9d4e8;font-size:8px;font-weight:950;letter-spacing:.65px;text-transform:uppercase;white-space:nowrap}
-.header p{margin:5px 0 0;color:#aeb5c7;font-size:10px;font-weight:800}
-.panel{background:linear-gradient(180deg,rgba(21,25,37,.98),rgba(17,21,32,.97));border:1px solid var(--stroke);border-radius:17px;box-shadow:var(--shadow)}
-.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:5px;margin-bottom:7px;position:sticky;top:6px;z-index:10;backdrop-filter:blur(10px)}
-.tabs button{min-width:0;height:37px;border:0;border-radius:11px;background:transparent;color:#8792a7;font-size:9.5px;font-weight:950;white-space:nowrap;padding:0 4px;transition:background .16s ease,color .16s ease,transform .12s ease}
-.tabs button.active{color:#fff;background:linear-gradient(180deg,rgba(255,79,195,.27),rgba(123,108,255,.23));box-shadow:inset 0 0 0 1px #635578}
-@media(hover:hover){.tabs button:hover,.db-category-tabs button:hover{color:#d9deea;background:#171e2c}}
-.tabs button:active,.db-category-tabs button:active,.pick-item:active{transform:scale(.98)}
-.view{display:none}.view.active{display:block}
-.step{padding:8px;margin-bottom:7px}
-.step-head{display:flex;align-items:center;gap:7px;margin-bottom:7px}
-.step-head h2{margin:0;font-size:11px;font-weight:950;letter-spacing:.25px}
-.step-head span{margin-left:auto;color:#7f899c;font-size:9px;font-weight:800}
-.field{
-  background:linear-gradient(180deg,#1a1f2e,#171c29);border:1px solid #30384c;border-radius:13px;
-  padding:7px;display:grid;grid-template-columns:minmax(0,1fr) 128px;gap:5px 7px;align-items:center;
-}
-.field+.field{margin-top:6px}
-.field-head{display:flex;align-items:center;gap:7px;min-width:0}
-.icon{width:28px;height:28px;border-radius:9px;flex:0 0 auto;display:grid;place-items:center;background:#11151f;border:1px solid #353d52;color:#c783ff;font-size:11px;font-weight:1000}
-.labels{min-width:0}.labels strong{display:block;font-size:12.5px;line-height:1.05;white-space:nowrap}
-.labels small{display:block;margin-top:3px;color:var(--muted);font-size:8.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-input,select{width:100%;height:35px;border-radius:10px;border:1px solid #3b445d;background:#0d1119;color:var(--text);outline:none;padding:0 9px;font-size:15px;font-weight:900}
-input{text-align:right;font-variant-numeric:tabular-nums}
-select{font-size:11px}
-.presets{grid-column:1/-1;display:grid;gap:4px;margin-top:1px}
-.units{grid-template-columns:repeat(5,minmax(0,1fr))}
-.prices{grid-template-columns:repeat(3,minmax(0,1fr))}
-.percent{grid-template-columns:repeat(6,minmax(0,1fr))}
-.tiers{grid-template-columns:repeat(5,minmax(0,1fr))}
-.areas{grid-template-columns:repeat(6,minmax(0,1fr))}
-.times{grid-template-columns:repeat(5,minmax(0,1fr))}
-.chip{appearance:none;width:100%;min-height:28px;border-radius:8px;border:1px solid #394056;background:#111520;color:#d5dbea;font-size:10px;font-weight:900;padding:3px}
-.chip.active{background:linear-gradient(180deg,rgba(255,79,195,.34),rgba(123,108,255,.30));border-color:#a979ff;color:#fff;box-shadow:0 0 0 1px rgba(169,121,255,.28),0 0 14px rgba(123,108,255,.16)}
-.result{padding:8px;position:relative;overflow:hidden;margin-bottom:7px}
-.result::before{content:"";position:absolute;right:-60px;bottom:-90px;width:190px;height:190px;border-radius:50%;background:radial-gradient(circle,rgba(255,79,195,.16),transparent 68%);pointer-events:none}
-.result-main{position:relative;z-index:1;background:linear-gradient(135deg,rgba(255,79,195,.16),rgba(123,108,255,.15) 58%,rgba(18,23,34,.95));border:1px solid #51466a;border-radius:13px;padding:10px}
-.result-main span,.metric span{display:block;color:#f2b8db;font-size:8.2px;font-weight:900;letter-spacing:.75px;text-transform:uppercase}
-.result-main strong{display:block;margin-top:3px;font-size:29px;line-height:1;font-weight:1000;letter-spacing:-1px}
-.result-mini{position:relative;z-index:1;display:grid;grid-template-columns:repeat(2,1fr);gap:5px;margin-top:6px}
-.metric{background:#121722;border:1px solid #30374a;border-radius:10px;padding:7px}
-.metric span{color:#94a4ac}.metric strong{display:block;margin-top:4px;color:var(--cyan);font-size:15px;line-height:1;font-weight:950}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:7px}
-.action{min-height:35px;border-radius:10px;border:1px solid #47516b;background:#1a2030;color:#dce4f2;font-size:10px;font-weight:900}
-.action.primary{border-color:#8a6fee;background:linear-gradient(180deg,#756eff,#6259de);color:#fff}
-.mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:7px;padding:4px}
-.mode-tabs button{height:32px;border-radius:9px;border:1px solid transparent;background:transparent;color:#8490a5;font-size:10px;font-weight:950}
-.mode-tabs button.active{color:#fff;border-color:#4f4668;background:linear-gradient(180deg,rgba(255,79,195,.16),rgba(123,108,255,.14))}
-.picker-btn{
-  grid-column:1/-1;width:100%;height:39px;border-radius:10px;border:1px solid #3b445d;background:#0d1119;color:#fff;
-  display:flex;align-items:center;justify-content:space-between;padding:0 11px;font-size:11.5px;font-weight:950;text-align:left
-}
-.picker-btn:after{content:"⌄";color:#8590a5;font-size:16px;margin-top:-3px}
-.setup-pack{display:grid;grid-template-columns:1fr;gap:6px}
-.compact-row{
-  display:grid;
-  grid-template-columns:minmax(88px,1fr) 92px;
-  gap:6px;
-  align-items:center;
-  padding:7px;
-  border:1px solid #30384c;
-  border-radius:11px;
-  background:#121722;
-}
-.compact-row.two-col{grid-template-columns:minmax(0,1fr) 92px}
-.compact-label{min-width:0}
-.compact-label strong{display:block;font-size:11px;line-height:1.05}
-.compact-label small{display:block;margin-top:3px;color:var(--muted);font-size:7.8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.compact-input{height:32px;font-size:14px;padding:0 8px}
-.compact-presets{
-  grid-column:1/-1;
-  display:grid;
-  grid-template-columns:repeat(6,minmax(0,1fr));
-  gap:4px;
-}
-.compact-time{grid-template-columns:repeat(5,minmax(0,1fr))}
-.compact-presets .chip{min-height:25px;font-size:9.5px}
-.dynamic{display:none}.dynamic.show{display:grid}
-.db-category-tabs{
-  display:flex;gap:5px;padding:6px;margin-bottom:7px;overflow-x:auto;scrollbar-width:none;
-  -webkit-overflow-scrolling:touch;scroll-snap-type:x proximity;overscroll-behavior-x:contain;
-}
-.db-category-tabs::-webkit-scrollbar{display:none}
-.db-category-tabs button{
-  flex:0 0 auto;min-width:78px;height:38px;border:1px solid transparent;border-radius:11px;background:#111722;color:#8792a7;
-  font-size:9px;font-weight:950;padding:0 10px;white-space:nowrap;scroll-snap-align:start;transition:background .16s ease,color .16s ease,border-color .16s ease,transform .12s ease
-}
-.db-category-tabs button.active{
-  color:#fff;background:linear-gradient(180deg,rgba(255,79,195,.27),rgba(123,108,255,.23));
-  box-shadow:inset 0 0 0 1px #635578
-}
-.loot-rates{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
-.loot-rates span{border:1px solid #30384b;background:#111722;border-radius:9px;padding:7px 5px;text-align:center;color:#9aa6ba;font-size:8px;font-weight:850}
-.loot-rates b{display:block;color:var(--cyan);font-size:12px;margin-bottom:2px}
-.drop-list{grid-column:1/-1;border:1px solid #2d3548;border-radius:9px;padding:7px;background:#0e141e}
-.drop-list div{display:flex;justify-content:space-between;gap:8px;padding:3px 0;font-size:8.7px;color:#c4cddd;border-bottom:1px solid rgba(48,56,75,.55)}
-.drop-list div:last-child{border-bottom:0}
-.drop-list b{color:#fff;font-weight:900;white-space:nowrap}
-.db-tools{padding:8px;margin-bottom:7px}
-.search-wrap{position:relative}.search-wrap:before{content:"⌕";position:absolute;left:12px;top:7px;color:#8490a6;font-size:20px}
-.search-wrap input{text-align:left;padding-left:37px;font-size:11px}
-.filters{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-top:6px}
-.filters select{font-size:9px;padding:0 6px}
-.db-meta{display:flex;justify-content:space-between;margin:8px 2px 0;color:#7f899c;font-size:8.5px;font-weight:850}
-.drill-list{display:grid;gap:6px}
-.drill-card{border:1px solid #30394d;background:linear-gradient(180deg,#171d2a,#131824);border-radius:14px;overflow:hidden}
-.drill-head{display:grid;grid-template-columns:35px minmax(0,1fr) auto;gap:8px;align-items:center;padding:8px}
-.drill-logo{width:35px;height:35px;border-radius:10px;background:#101621;border:1px solid #374158;display:grid;place-items:center;color:#c8b6ff;font-size:9px;font-weight:1000}
-.drill-info{min-width:0}.drill-info strong{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.meta{display:flex;gap:4px;margin-top:4px;overflow:hidden}.pill{font-size:7px;font-weight:950;padding:3px 5px;border:1px solid #3a455c;border-radius:999px;color:#9ea9bc;white-space:nowrap}
-.oil-rate{text-align:right}.oil-rate strong{display:block;font-size:14px;color:var(--cyan)}.oil-rate small{display:block;color:#7f899b;font-size:7px;font-weight:900;margin-top:2px}
-.details{display:none;border-top:1px solid #2c3447;padding:8px;background:#101620;grid-template-columns:repeat(2,1fr);gap:5px}
-.drill-card.open .details{display:grid}
-.detail{border:1px solid #2d3548;border-radius:9px;padding:6px;background:#0e141e}
-.detail span{display:block;font-size:7px;color:#7f8b9f;text-transform:uppercase;letter-spacing:.45px;font-weight:900}
-.detail strong{display:block;font-size:10px;margin-top:3px}
-.details-note{grid-column:1/-1;color:#aeb7c7;font-size:8.7px;line-height:1.45;border:1px solid #2d3548;border-radius:9px;padding:7px;background:#0e141e}
-.picker-backdrop{position:fixed;inset:0;background:rgba(5,7,12,.84);backdrop-filter:blur(6px);z-index:50;display:flex;align-items:flex-end;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s ease,visibility .18s ease}
-.picker-backdrop.show{opacity:1;visibility:visible;pointer-events:auto}
-.picker{width:min(620px,100%);max-height:82vh;background:#111722;border:1px solid #3a435a;border-radius:22px 22px 0 0;box-shadow:0 -20px 70px rgba(0,0,0,.5);overflow:hidden;display:flex;flex-direction:column;transform:translateY(18px);transition:transform .2s cubic-bezier(.2,.8,.2,1)}
-.picker-backdrop.show .picker{transform:translateY(0)}
-.picker-top{padding:10px;border-bottom:1px solid #2c3445}
-.grab{width:38px;height:4px;border-radius:10px;background:#3f485d;margin:0 auto 10px}
-.picker-row{display:flex;align-items:center;gap:8px}.picker-row strong{font-size:13px}
-.close{margin-left:auto;width:31px;height:31px;border:1px solid #3a4359;background:#171d2a;color:white;border-radius:10px;font-weight:900}
-.picker-search{margin-top:9px;text-align:left;padding:0 11px;font-size:11px}
-.picker-list{overflow:auto;padding:7px;overscroll-behavior:contain}
-.pick-item{width:100%;border:1px solid transparent;background:transparent;color:white;border-radius:11px;padding:8px;display:flex;align-items:center;gap:8px;text-align:left}
-.pick-item:hover,.pick-item.selected{background:#171e2c;border-color:#4b456a}
-.pick-mark{width:31px;height:31px;border:1px solid #364158;background:#0e141e;border-radius:9px;display:grid;place-items:center;font-size:8px;font-weight:1000;color:#c8b6ff}
-.pick-copy{min-width:0;flex:1}.pick-copy strong{display:block;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pick-copy small{display:block;font-size:8px;color:#8995a9;margin-top:3px}
-.pick-rate{font-size:10px;color:var(--cyan);font-weight:950}
-.footer{text-align:center;margin-top:9px;color:#657084;font-size:8.5px;font-weight:700}
-@media(min-width:700px){
-  body{padding-top:18px}.picker{border-radius:22px;max-height:75vh;margin:20px}.picker-backdrop{align-items:center}
-}
-</style>
+
+
+<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
 <div class="app">
@@ -175,14 +15,19 @@ select{font-size:11px}
   <div class="header-main">
     <div class="title-row"><h1>STEAL THE OIL TYCOON</h1><span id="badge" class="calc-badge">Sale Calculator</span></div>
     <p>Created by 1yono</p>
+
   </div>
+  <button id="helpBtn" class="header-help" type="button" aria-label="Help">?</button>
 </header>
 
 <nav class="panel tabs">
   <button class="active" data-view="sale">Sale</button>
   <button data-view="oil">Oil / Hour</button>
-  <button data-view="drills">Drills</button>
-  <button data-view="database">Database</button>
+  <button data-view="drills" data-i18n="nav.drills">Drills</button>
+  <button data-view="compare" data-i18n="nav.compare">Compare</button>
+  <button data-view="database" data-i18n="nav.database">Database</button>
+  <button data-view="events" data-i18n="nav.events">Events</button>
+  <button data-view="codes">Codes</button>
 </nav>
 
 <main>
@@ -191,7 +36,7 @@ select{font-size:11px}
     <div class="step-head"><h2>Your Oil</h2><span>Sale setup</span></div>
     <div class="field">
       <div class="field-head"><div class="icon">O</div><div class="labels"><strong>Oil Amount</strong><small>Amount you want to sell</small></div></div>
-      <input id="saleOil" inputmode="decimal" value="50">
+      <input id="saleOil" type="number" inputmode="decimal" min="0" step="any" value="50">
       <div id="saleUnits" class="presets units">
         <button class="chip active" data-unit="1">×1</button><button class="chip" data-unit="1000">K</button><button class="chip" data-unit="1000000">M</button><button class="chip" data-unit="1000000000">B</button><button class="chip" data-unit="1000000000000">T</button>
       </div>
@@ -202,7 +47,7 @@ select{font-size:11px}
     <div class="step-head"><h2>Boosts</h2><span>Cash bonuses</span></div>
     <div class="field">
       <div class="field-head"><div class="icon">%</div><div class="labels"><strong>Cash Boost</strong><small>100% is the normal baseline</small></div></div>
-      <input id="cashBoost" inputmode="decimal" value="420">
+      <input id="cashBoost" type="number" inputmode="decimal" min="0" step="any" value="420">
     </div>
     <div class="field">
       <div class="field-head"><div class="icon">F</div><div class="labels"><strong>Friend Boost</strong><small>Choose the active friend bonus</small></div></div>
@@ -216,7 +61,7 @@ select{font-size:11px}
     <div class="step-head"><h2>Sell Price</h2><span>Market value</span></div>
     <div class="field">
       <div class="field-head"><div class="icon">$</div><div class="labels"><strong>Sell Price</strong><small>Cash per Oil before boosts</small></div></div>
-      <input id="sellPrice" inputmode="decimal" value="50">
+      <input id="sellPrice" type="number" inputmode="decimal" min="0" step="any" value="50">
       <div id="sellPrices" class="presets prices">
         <button class="chip" data-price="15">$15</button><button class="chip" data-price="20">$20</button><button class="chip active" data-price="50">$50</button>
       </div>
@@ -229,46 +74,37 @@ select{font-size:11px}
       <div class="metric"><span>Cash per Oil</span><strong id="cashPerOil">$235</strong></div>
       <div class="metric"><span>Total Boost</span><strong id="totalBoost">470%</strong></div>
     </div>
-    <div class="actions"><button id="saleCopy" class="action primary">Copy Summary</button><button id="saleReset" class="action">Reset</button></div>
+    <div class="actions"><button id="saleShare" class="action primary">Share Result</button><button id="saleCopy" class="action">Copy Summary</button><button id="saleReset" class="action">Reset</button></div>
   </div>
 </section>
 
 <section id="oilView" class="view">
-  <div class="panel mode-tabs">
-    <button class="active" data-oilmode="time-to-oil">Time → Oil</button>
-    <button data-oilmode="oil-to-time">Oil → Time</button>
-  </div>
   <div class="panel step">
-    <div class="step-head"><h2>Oil / Hour</h2><span>Production calculator</span></div>
-    <div class="field">
-      <div class="field-head"><div class="icon">/s</div><div class="labels"><strong>Oil per Second</strong><small>Your current production rate</small></div></div>
-      <input id="prodRate" inputmode="decimal" value="50">
-      <div id="prodUnits" class="presets prices">
-        <button class="chip active" data-produnit="1">×1</button><button class="chip" data-produnit="1000">K</button><button class="chip" data-produnit="1000000">M</button>
+    <div class="oil-layout-intro">
+      <div>
+        <h2 style="margin:0">Oil Layout</h2>
+        <p>Build your drill layout and calculate your total oil production.</p>
       </div>
-    </div>
-    <div id="timeModeField" class="field">
-      <div class="field-head"><div class="icon">H</div><div class="labels"><strong>Production Time</strong><small>How long you will produce</small></div></div>
-      <input id="prodHours" type="number" min="0" max="20" step="0.1" value="1">
-      <div id="prodTimes" class="presets times">
-        <button class="chip active" data-prodhours="1">1H</button><button class="chip" data-prodhours="2">2H</button><button class="chip" data-prodhours="4">4H</button><button class="chip" data-prodhours="8">8H</button><button class="chip" data-prodhours="12">12H</button>
-      </div>
-    </div>
-    <div id="targetModeField" class="field" style="display:none">
-      <div class="field-head"><div class="icon">T</div><div class="labels"><strong>Target Oil</strong><small>Oil amount you want to reach</small></div></div>
-      <input id="targetOil" inputmode="decimal" value="300">
-      <div id="targetUnits" class="presets units">
-        <button class="chip" data-targetunit="1">×1</button><button class="chip" data-targetunit="1000">K</button><button class="chip" data-targetunit="1000000">M</button><button class="chip active" data-targetunit="1000000000">B</button><button class="chip" data-targetunit="1000000000000">T</button>
-      </div>
+      <span class="layout-badge">1 Layout</span>
     </div>
   </div>
-  <div class="panel result">
-    <div class="result-main"><span id="prodMainLabel">Oil Gain</span><strong id="prodMain">180K</strong></div>
-    <div class="result-mini">
-      <div class="metric"><span id="prodMetric1Label">Per Hour</span><strong id="prodMetric1">180K</strong></div>
-      <div class="metric"><span id="prodMetric2Label">Per Minute</span><strong id="prodMetric2">3K</strong></div>
+
+  <div class="panel layout-controls">
+    <div class="layout-control-card"><div class="layout-control-head"><strong>Pet Boosts</strong><small>Whole layout</small></div><div class="layout-two">
+      <label class="field"><div class="field-head"><div class="labels"><strong>Mole Level</strong><small>All drills</small></div></div><input id="layoutMole" type="number" min="0" max="100" step="1" value="0" inputmode="numeric" placeholder="0 - 100"></label>
+      <label class="field"><div class="field-head"><div class="labels"><strong>Fruit Level</strong><small>Banana Drill only</small></div></div><input id="layoutFruit" type="number" min="0" max="100" step="1" value="0" inputmode="numeric" placeholder="0 - 100"></label>
+    </div><label class="field" style="margin-top:9px"><div class="field-head"><div class="labels"><strong>Heart Drill Likes</strong><small>Used for all Heart Drills</small></div></div><input id="layoutLikes" type="number" min="0" step="any" inputmode="numeric" value="0"></label></div>
+    <div class="layout-control-card layout-x2"><div class="layout-x2-copy"><strong>Weekend x2 Lobby</strong><small>Enable only while you are still in an x2 lobby.</small></div><div id="layoutX2" class="layout-toggle"><button class="active" data-layoutx2="1">Off</button><button data-layoutx2="2">x2</button></div></div>
+    <div class="layout-control-card"><div class="layout-control-head"><strong>Oil Calculator</strong><small>Dynamic drills included</small></div><div id="layoutModeTabs" class="layout-mode-tabs"><button class="active" data-layoutmode="time">Time → Oil</button><button data-layoutmode="target">Oil → Time</button></div>
+      <div id="layoutTimePane" class="layout-mode-pane active"><label class="field"><div class="field-head"><div class="labels"><strong>Run Time</strong><small>Hours</small></div></div><input id="layoutHours" inputmode="decimal" value="1"></label><div class="layout-time-result"><div class="metric"><span>Oil/s at Start</span><strong id="layoutTimeStart">0/s</strong></div><div class="metric"><span>Oil/s at End</span><strong id="layoutTimeEnd">0/s</strong></div><div class="metric"><span>Oil Gained</span><strong id="layoutTimeOil">0</strong></div></div></div>
+      <div id="layoutTargetPane" class="layout-mode-pane"><div class="target-box" style="margin-top:0"><div class="field"><div class="field-head"><div class="icon">T</div><div class="labels"><strong>Target Oil</strong><small>Time needed to reach target</small></div></div><input id="layoutTarget" inputmode="decimal" value="1"></div><div id="layoutTargetUnits" class="target-units presets units"><button class="chip" data-layouttarget="1000">K</button><button class="chip" data-layouttarget="1000000">M</button><button class="chip active" data-layouttarget="1000000000">B</button><button class="chip" data-layouttarget="1000000000000">T</button></div></div><div class="result-mini" style="margin-top:9px"><div class="metric"><span>Time Needed</span><strong id="layoutTargetTime">—</strong></div><div class="metric"><span>Target</span><strong id="layoutTargetDisplay">1B</strong></div></div></div>
     </div>
   </div>
+  <div class="panel result"><div class="result-main"><span>Current Oil / Second</span><strong id="layoutNowRate">0/s</strong></div><div class="layout-summary"><div class="metric"><span>After 1 Hour</span><strong id="layoutHourRate">0/s</strong></div><div class="metric"><span>Oil in 1 Hour</span><strong id="layoutHourOil">0</strong></div><div class="metric"><span>Plots Used</span><strong id="layoutPlotsUsed">0 / 15</strong></div></div><div class="result-mini" style="margin-top:9px"><div class="metric"><span>Cells Used</span><strong id="layoutCellsUsed">0 / 375</strong></div><div class="metric"><span>Lobby Multiplier</span><strong id="layoutLobbyMult">×1</strong></div></div><div class="actions"><button id="layoutShare" class="action primary">Share Layout</button></div><div id="layoutError" class="layout-error">One or more plots are over capacity. Fix the highlighted plots to calculate the full layout.</div></div>
+
+  <div id="layoutCopyBar" class="panel layout-copy-bar"><div><strong>Plot Copy</strong><small id="layoutCopyStatus">Copy a plot to reuse its drill setup.</small></div><button id="layoutPasteEmpty" type="button" disabled>Paste to All Empty</button></div>
+  <div id="layoutAreas"></div>
+  <div class="layout-note">Only drills are included. Every large plot has its own 5×5 boundary, so unused space cannot be borrowed from another plot.</div>
 </section>
 
 <section id="drillsView" class="view">
@@ -366,7 +202,49 @@ select{font-size:11px}
   </div>
 </section>
 
+
+<section id="compareView" class="view">
+  <div class="panel section-intro">
+    <div><h2>Drill Compare</h2><p>Compare production now, after time, and total oil using the same setup.</p></div><span class="section-tag">Drills only</span>
+  </div>
+  <div class="panel compare-selects">
+    <label>Drill A<select id="compareA"></select></label>
+    <button id="swapCompare" class="swap-btn" type="button" aria-label="Swap drills">⇄</button>
+    <label>Drill B<select id="compareB"></select></label>
+  </div>
+  <div class="panel compare-setup">
+    <div class="compare-setup-head"><strong>Production Setup</strong><span>Shared by both drills</span></div>
+    <div class="compare-setup-grid">
+      <label class="compare-control"><span>Drill Tier</span><select id="compareTier"><option value="1">Basic ×1</option><option value="2">Gold ×2</option><option value="3">Diamond ×3</option><option value="5">Rainbow ×5</option><option value="10">Galaxy ×10</option></select></label>
+      <label class="compare-control"><span>Production Area</span><select id="compareArea"><option value="1">×1</option><option value="2">×2</option><option value="3">×3</option><option value="5">×5</option><option value="6">×6</option><option value="10">×10</option></select></label>
+      <label class="compare-control"><span>Mole Level</span><input id="compareMole" type="number" min="0" max="100" step="1" value="0" inputmode="numeric" placeholder="0 - 100"></label>
+      <label class="compare-control"><span>Fruit Level</span><input id="compareFruit" type="number" min="0" max="100" step="1" value="0" inputmode="numeric" placeholder="0 - 100"></label>
+    </div>
+    <label id="compareHeartField" class="compare-control compare-heart" style="margin-top:8px"><span>Heart Drill Likes</span><input id="compareLikes" type="number" min="0" step="1" value="0" inputmode="numeric"></label>
+  </div>
+
+  <div class="panel compare-count-panel">
+    <div class="compare-setup-head"><strong>Drill Counts</strong><span>Set each side separately</span></div>
+    <div class="compare-count-grid">
+      <label class="compare-control count-control"><span>Drill A</span><input id="compareCountA" type="number" min="1" step="1" value="1" inputmode="numeric"></label>
+      <label class="compare-control count-control"><span>Drill B</span><input id="compareCountB" type="number" min="1" step="1" value="1" inputmode="numeric"></label>
+    </div>
+  </div>
+
+  <div class="panel compare-time-panel">
+    <div class="compare-time-copy"><strong>Comparison Time</strong><span>Used for both drills</span></div>
+    <label class="compare-control compare-time-control"><span>Run Time (hours)</span><input id="compareHours" type="number" min="0" max="20" step="0.25" value="5" inputmode="decimal"></label>
+  </div>
+  <div id="compareCards" class="compare-cards"></div>
+  <div id="compareTable" class="panel compare-table"></div>
+  <div id="compareInsight" class="panel compare-insight"></div>
+  <div class="actions compare-actions"><button id="compareShare" class="action primary">Share Comparison</button></div>
+</section>
+
 <section id="databaseView" class="view">
+  <div class="panel section-intro">
+    <div><h2>Game Database</h2><p>Browse items, search quickly, and open a card for the full details.</p></div><span class="section-tag">Game data</span>
+  </div>
   <div class="panel db-category-tabs" id="databaseTabs">
     <button class="active" data-dbview="pets">Pets</button>
     <button data-dbview="drills">Drills</button>
@@ -486,6 +364,38 @@ select{font-size:11px}
     <div id="petList" class="drill-list"></div>
   </div>
 </section>
+
+<section id="eventsView" class="view">
+  <div class="panel timezone-note">
+    <div class="timezone-icon">TZ</div>
+    <div class="timezone-copy"><strong>All event times are shown in your local date &amp; time</strong><small>Your timezone: <b id="localTimezone">—</b></small></div>
+  </div>
+  <div class="panel next-event">
+    <div><span class="eyebrow">NEXT EVENT</span><h2 id="nextEventName">—</h2><p id="nextEventTime">—</p></div>
+    <div class="countdown"><strong id="nextEventCountdown">—</strong><small>UNTIL START</small></div>
+  </div>
+  <div id="eventList" class="event-list"></div>
+  <div class="panel admin-card">
+    <h3>Admin Abuse</h3><p>Weekend waves only • shown in your local date &amp; time.</p>
+    <div id="adminTimes" class="admin-times"></div>
+  </div>
+</section>
+
+<section id="codesView" class="view">
+  <div class="panel codes-toolbar">
+    <div class="codes-title-row"><div><h2>Codes</h2><p>Useful in-game codes and rewards.</p></div><span id="codesCount" class="mini-pill">0 codes</span></div>
+    <input id="codesSearch" class="db-search" type="search" placeholder="Search code or reward..." autocomplete="off" dir="ltr">
+    <div id="codesFilters" class="codes-filters">
+      <button class="chip active" data-code-filter="all">All</button>
+      <button class="chip" data-code-filter="cash">Cash</button>
+      <button class="chip" data-code-filter="gasoline">Gasoline</button>
+      <button class="chip" data-code-filter="energy">Energy</button>
+      <button class="chip" data-code-filter="items">Items</button>
+    </div>
+  </div>
+  <div id="codesList" class="codes-list"></div>
+</section>
+
 </main>
 <div class="footer">Community tool • Game values may change with updates • Last updated Aug 30 2026</div>
 </div>
@@ -501,446 +411,20 @@ select{font-size:11px}
   </div>
 </div>
 
-<script>
-const drills=[
-{id:"basic",name:"Basic Drill",category:"regular",rarity:"Common",oil:1,cash:"$500",vbucks:"50",footprint:"1x1"},
-{id:"strong",name:"Strong Drill",category:"regular",rarity:"Common",oil:3,cash:"$1.8K",vbucks:"100",footprint:"1x1"},
-{id:"enhanced",name:"Enhanced Drill",category:"regular",rarity:"Common",oil:4,cash:"$3.6K",vbucks:"150",footprint:"1x1"},
-{id:"speed",name:"Speed Drill",category:"regular",rarity:"Common",oil:6,cash:"$7.2K",vbucks:"200",footprint:"1x1"},
-{id:"reinforced",name:"Reinforced Drill",category:"regular",rarity:"Uncommon",oil:8,cash:"$12K",vbucks:"250",footprint:"1x1"},
-{id:"industrial",name:"Industrial Drill",category:"regular",rarity:"Uncommon",oil:10,cash:"$20K",vbucks:"300",footprint:"1x1"},
-{id:"double-industrial",name:"Double Industrial Drill",category:"regular",rarity:"Uncommon",oil:12,cash:"$30K",vbucks:"350",footprint:"2x1"},
-{id:"turbo",name:"Turbo Drill",category:"regular",rarity:"Rare",oil:16,cash:"$80K",vbucks:"400",footprint:"1x1"},
-{id:"mega",name:"Mega Drill",category:"regular",rarity:"Rare",oil:20,cash:"$140K",vbucks:"450",footprint:"1x1"},
-{id:"ice",name:"Ice Drill",category:"regular",rarity:"Rare",oil:25,cash:"$400K",vbucks:"500",footprint:"1x1"},
-{id:"lava",name:"Lava Drill",category:"regular",rarity:"Legendary",oil:35,cash:"$1.22M",vbucks:"550",footprint:"1x1"},
-{id:"rocket",name:"Rocket Drill",category:"regular",rarity:"Legendary",oil:50,cash:"$4.5M",vbucks:"650",footprint:"1x1"},
-{id:"mega-laser",name:"Mega Laser Drill",category:"regular",rarity:"Legendary",oil:220,cash:"$40M",vbucks:"700",footprint:"2x2"},
-{id:"scifi-double",name:"Scifi Double Drill",category:"regular",rarity:"Mythical",oil:275,cash:"$95M",vbucks:"800",footprint:"2x1"},
-{id:"scifi-quad",name:"Scifi Quad Drill",category:"regular",rarity:"Mythical",oil:350,cash:"$280M",vbucks:"850",footprint:"2x2"},
-{id:"lunar",name:"Lunar Drill",category:"regular",rarity:"Mythical",oil:600,cash:"$900M",vbucks:"950",footprint:"2x2"},
-{id:"alien-tech",name:"Alien Tech Drill",category:"regular",rarity:"Mythical",oil:800,cash:"$2.4B",vbucks:"1K",footprint:"2x2"},
-{id:"ufo",name:"UFO Drill",category:"regular",rarity:"Mythical",oil:1500,cash:"$9B",vbucks:"1.1K",footprint:"2x2"},
-{id:"solar",name:"Solar Drill",category:"regular",rarity:"Divine",oil:2750,cash:"$27.5B",vbucks:"1.15K",footprint:"2x2"},
-{id:"antimatter",name:"Antimatter Drill",category:"regular",rarity:"Divine",oil:4500,cash:"$85.5B",vbucks:"1.3K",footprint:"2x2"},
-{id:"black-hole",name:"Black Hole Drill",category:"regular",rarity:"Divine",oil:7500,cash:"$187.5B",vbucks:"1.45K",footprint:"2x2"},
-{id:"angel",name:"Angel Drill",category:"regular",rarity:"Divine",oil:12500,cash:"$437.5B",vbucks:"1.6K",footprint:"2x2"},
-{id:"demonic",name:"Demonic Drill",category:"regular",rarity:"Prismatic",oil:32000,cash:"$2T",vbucks:"1.85K",footprint:"3x2"},
-{id:"candy",name:"Candy Drill",category:"event",rarity:"Special",oil:67,eventPrice:"50 Candy",footprint:"1x1"},
-{id:"volcano",name:"Volcano Drill",category:"event",rarity:"Special",oil:83,eventPrice:"62 Lava Crystals",footprint:"1x1"},
-{id:"disco",name:"Disco Drill",category:"event",rarity:"Special",oil:104,eventPrice:"78 Music Notes",footprint:"1x1"},
-{id:"hacker",name:"Hacker Drill",category:"event",rarity:"Special",oil:550,minOil:100,maxOil:1000,eventPrice:"N/A",footprint:"2x2",special:"hacker",notes:"Given away during the admin event. Produces a random 100–1K Oil/s each second; average 550 Oil/s."},
-{id:"super-rocket",name:"Super Rocket Drill",category:"special",rarity:"Legendary",oil:220,vbucks:"700",footprint:"1x1",notes:"Legacy item. Unobtainable. Created with a 1x1 footprint but 2x2 stats, then removed and replaced by the Mega Laser Drill."},
-{id:"pagoda",name:"Pagoda Drill",category:"special",rarity:"Special",oil:500,vbucks:"550",footprint:"2x2"},
-{id:"drake",name:"Drake Drill",category:"special",rarity:"Special",oil:520,vbucks:"550",footprint:"2x1"},
-{id:"ketchup-mustard",name:"Ketchup and Mustard Drill",category:"special",rarity:"Special",oil:275,vbucks:"N/A",footprint:"1x1",notes:"Exclusive to lootbox drops."},
-{id:"heart",name:"Heart Drill",category:"special",rarity:"Special",oil:null,vbucks:"N/A",footprint:"1x1",special:"heart",notes:"Achievement reward. Production scales with Likes at 1 Oil/s per Like."},
-{id:"clock",name:"Clock Drill",category:"special",rarity:"Special",oil:null,vbucks:"N/A",footprint:"1x1",special:"clock",notes:"Production increases by 1 Oil/s for every second spent in the current session. Exclusive to lootbox drops (0.2% jackpot)."},
-{id:"banana",name:"Banana Drill",category:"special",rarity:"Special",oil:5000,vbucks:"N/A",footprint:"2x2",notes:"Reward from the Season 1 Season Pass."}
-];
 
-const pets=[
-{name:"Penny",rarity:"Common",effect:"Generates flat Cash per second",min:5,max:1000000,kind:"flat",unit:"Cash/s"},
-{name:"Snooze",rarity:"Common",effect:"+% offline gains",min:1,max:150,kind:"percent",unit:"Offline gains"},
-{name:"Breezy",rarity:"Rare",effect:"+% Wind Turbine output",min:1,max:100,kind:"percent",unit:"Wind Turbine"},
-{name:"Bandit",rarity:"Rare",effect:"+% steal rewards from raiding",min:1,max:50,kind:"percent",unit:"Steal rewards"},
-{name:"Clover",rarity:"Rare",effect:"Multiply Rare Lootbox drop odds by X",min:1.1,max:2,kind:"multiplier",unit:"Rare Lootbox odds"},
-{name:"Vault",rarity:"Legendary",effect:"+% gasoline market sell price",min:1,max:100,kind:"percent",unit:"Market sell price"},
-{name:"Dash",rarity:"Legendary",effect:"-% to all active timers",min:1,max:30,kind:"percentMinus",unit:"Active timers"},
-{name:"Sunny",rarity:"Legendary",effect:"Generates flat Energy per second",min:1,max:200,kind:"flat",unit:"Energy/s"},
-{name:"Tank",rarity:"Mythical",effect:"+% Refinery max capacity",min:1,max:100,kind:"percent",unit:"Refinery capacity"},
-{name:"Mole",rarity:"Mythical",effect:"+% Drill production speed",min:1,max:50,kind:"percent",unit:"Drill production"},
-{name:"Astro",rarity:"Mythical",effect:"+% Shuttle Station rewards",min:1,max:100,kind:"percent",unit:"Shuttle rewards"},
-{name:"Nova",rarity:"Divine",effect:"Generates flat Pearls per minute",min:1,max:10,kind:"flat",unit:"Pearls/min"},
-{name:"Piper",rarity:"Divine",effect:"Auto-collects from Refineries",min:200,max:50000000,kind:"flat",unit:"Gas/trip"},
-{name:"Volt",rarity:"Divine",effect:"Auto-collects from Solar Panels",min:50,max:25000,kind:"flat",unit:"Energy/trip"},
-{name:"Fruit",rarity:"Special",effect:"+% Banana Drill & Fruit Basket Refinery output",min:5,max:500,kind:"percent",unit:"Banana/Fruit output"}
-];
-
-const refineries=[
-{name:"Basic Refinery",type:"regular",rarity:"Common",capacity:"50",cash:"$500",vbucks:"50",footprint:"1x1"},
-{name:"Enhanced Refinery",type:"regular",rarity:"Common",capacity:"150",cash:"$2.5K",vbucks:"100",footprint:"1x1"},
-{name:"Reinforced Refinery",type:"regular",rarity:"Common",capacity:"250",cash:"$6.25K",vbucks:"150",footprint:"1x1"},
-{name:"Advanced Refinery",type:"regular",rarity:"Common",capacity:"500",cash:"$20K",vbucks:"200",footprint:"1x1"},
-{name:"Plasma Refinery",type:"regular",rarity:"Uncommon",capacity:"800",cash:"$50K",vbucks:"250",footprint:"1x1"},
-{name:"Industrial Refinery",type:"regular",rarity:"Uncommon",capacity:"1.5K",cash:"$200K",vbucks:"300",footprint:"2x1"},
-{name:"Energy Refinery",type:"regular",rarity:"Uncommon",capacity:"2K",cash:"$700K",vbucks:"550",footprint:"1x1"},
-{name:"Mega Refinery",type:"regular",rarity:"Rare",capacity:"5K",cash:"$3M",vbucks:"700",footprint:"2x1"},
-{name:"Quantum Refinery",type:"regular",rarity:"Rare",capacity:"7.5K",cash:"$5M",vbucks:"800",footprint:"1x1"},
-{name:"Ice Refinery",type:"regular",rarity:"Legendary",capacity:"12.5K",cash:"$8M",vbucks:"850",footprint:"1x1"},
-{name:"Hell Refinery",type:"regular",rarity:"Legendary",capacity:"20K",cash:"$16M",vbucks:"950",footprint:"1x1"},
-{name:"Nuclear Power Plant Refinery",type:"regular",rarity:"Legendary",capacity:"100K",cash:"$90M",vbucks:"1K",footprint:"2x1"},
-{name:"Nuclear Reactor Refinery",type:"regular",rarity:"Legendary",capacity:"150K",cash:"$150M",vbucks:"1.1K",footprint:"2x2"},
-{name:"Photon Refinery",type:"regular",rarity:"Mythical",capacity:"275K",cash:"$360M",vbucks:"1.15K",footprint:"2x2"},
-{name:"Crystal Core Refinery",type:"regular",rarity:"Mythical",capacity:"400K",cash:"$600M",vbucks:"1.3K",footprint:"2x2"},
-{name:"Moon Base Refinery",type:"regular",rarity:"Mythical",capacity:"1M",cash:"$5B",vbucks:"1.35K",footprint:"2x2"},
-{name:"Solar Refinery",type:"regular",rarity:"Divine",capacity:"5M",cash:"$50B",vbucks:"1.45K",footprint:"2x2"},
-{name:"Antimatter Refinery",type:"regular",rarity:"Divine",capacity:"15M",cash:"$285B",vbucks:"1.5K",footprint:"2x2"},
-{name:"Black Hole Refinery",type:"regular",rarity:"Divine",capacity:"25M",cash:"$625B",vbucks:"1.6K",footprint:"2x2"},
-{name:"Angel Refinery",type:"regular",rarity:"Divine",capacity:"35M",cash:"$1.1T",vbucks:"1.65K",footprint:"2x2"},
-{name:"Demonic Refinery",type:"regular",rarity:"Prismatic",capacity:"100M",cash:"$4T",vbucks:"1.95K",footprint:"3x2"},
-{name:"Pagoda Refinery",type:"special",rarity:"Special",capacity:"50K",vbucks:"600",footprint:"2x2"},
-{name:"Castle Refinery",type:"special",rarity:"Special",capacity:"75K",vbucks:"600",footprint:"2x1"},
-{name:"Burger Refinery",type:"special",rarity:"Special",capacity:"850K",vbucks:"N/A",footprint:"1x1",notes:"Exclusive to lootbox drops."},
-{name:"Infinity Refinery",type:"special",rarity:"Special",capacity:"∞",vbucks:"5,000",footprint:"2x2",notes:"Premium item. Infinite storage, immune to stealing, cannot be sold back."},
-{name:"Fruit Basket Refinery",type:"special",rarity:"Special",capacity:"22.5M",vbucks:"N/A",footprint:"2x2",notes:"Reward from the Season 1 Season Pass."}
-];
-
-const solarPanels=[
-{name:"Copper Solar Panel",rarity:"Legendary",generation:"1/s",storage:"50",gasoline:"10M",vbucks:"250"},
-{name:"Iron Solar Panel",rarity:"Mythical",generation:"10/s",storage:"750",gasoline:"250M",vbucks:"500"},
-{name:"Golden Solar Panel",rarity:"Divine",generation:"50/s",storage:"5,000",gasoline:"5B",vbucks:"950"},
-{name:"Emerald Solar Panel",rarity:"Prismatic",generation:"250/s",storage:"15,000",gasoline:"125B",vbucks:"1,350"}
-];
-
-const totems=[
-{name:"Wooden Cash Totem",type:"cash",rarity:"Common",boost:"+5%",price:"FREE",footprint:"1x1"},
-{name:"Stone Cash Totem",type:"cash",rarity:"Uncommon",boost:"+10%",price:"2.5K",footprint:"1x1"},
-{name:"Copper Cash Totem",type:"cash",rarity:"Uncommon",boost:"+20%",price:"15K",footprint:"1x1"},
-{name:"Iron Cash Totem",type:"cash",rarity:"Rare",boost:"+25%",price:"100K",footprint:"1x1"},
-{name:"Golden Cash Totem",type:"cash",rarity:"Legendary",boost:"+50%",price:"350K",footprint:"2x2"},
-{name:"Ruby Cash Totem",type:"cash",rarity:"Mythical",boost:"+75%",price:"1.5M",footprint:"2.5x2.5"},
-{name:"Angel Cash Totem",type:"cash",rarity:"Divine",boost:"+100%",price:"100M",footprint:"2.5x2.5"},
-{name:"Wooden AFK Totem",type:"afk",rarity:"Common",boost:"+15%",price:"200",footprint:"1x1"},
-{name:"Stone AFK Totem",type:"afk",rarity:"Uncommon",boost:"+35%",price:"2.5K",footprint:"1x1"},
-{name:"Copper AFK Totem",type:"afk",rarity:"Uncommon",boost:"+50%",price:"15K",footprint:"1x1"},
-{name:"Iron AFK Totem",type:"afk",rarity:"Rare",boost:"+100%",price:"100K",footprint:"1x1"},
-{name:"Golden AFK Totem",type:"afk",rarity:"Legendary",boost:"+200%",price:"350K",footprint:"2x2"},
-{name:"Ruby AFK Totem",type:"afk",rarity:"Mythical",boost:"+300%",price:"1.5M",footprint:"2.5x2.5"},
-{name:"Angel AFK Totem",type:"afk",rarity:"Divine",boost:"+500%",price:"100M",footprint:"2.5x2.5"},
-{name:"Hacker Totem",type:"special",rarity:"Special",boost:"+15% Energy Boost",price:"N/A",footprint:"1x1",notes:"Given away as a reward for attending the admin event."}
-];
-
-const decorations=[
-{name:"Radio Station",type:"utility",rarity:"Legendary",effect:"Notifies you when the market price changes.",cash:"$1M",footprint:"1x1"},
-{name:"Shuttle Station",type:"utility",rarity:"Mythical",effect:"Interactive mission station for exclusive loot and Galaxy Pearls for the Black Market. Requires Energy to operate.",cash:"$1B",footprint:"2x2"},
-{name:"Fusion Radio",type:"utility",rarity:"Mythical",effect:"Notifies you when your machine fusion is finished.",cash:"$1.5B",footprint:"1x1"},
-{name:"Lootbox Radio",type:"utility",rarity:"Mythical",effect:"Notifies you when a selected lootbox spawns.",cash:"$1.5B",footprint:"1x1"},
-{name:"Wood Wind Turbine",type:"turbine",rarity:"Uncommon",effect:"+$250/s",cash:"$900K",footprint:"1x2"},
-{name:"Iron Wind Turbine",type:"turbine",rarity:"Rare",effect:"+$1K/s",cash:"$5.4M",footprint:"1x2"},
-{name:"Gold Wind Turbine",type:"turbine",rarity:"Legendary",effect:"+$10K/s",cash:"$60M",footprint:"2x2"},
-{name:"Emerald Wind Turbine",type:"turbine",rarity:"Mythical",effect:"+$100K/s",cash:"$600M",footprint:"2x3"},
-{name:"Basic Incubator",type:"pet",rarity:"—",effect:"Hatches eggs at standard timers.",cash:"5M Cash",footprint:"—"},
-{name:"Heated Incubator",type:"pet",rarity:"—",effect:"Halves the total incubation time.",cash:"200K Energy",footprint:"—"},
-{name:"Genetic Incubator",type:"pet",rarity:"—",effect:"Increases the odds of hatching a higher Tier pet. Incubation timer is unchanged.",cash:"500 Pearls",footprint:"—"},
-{name:"Work Station",type:"pet",rarity:"—",effect:"Permanent structure. Assign pets here to passively bake Biscuits.",cash:"10B Gasoline",footprint:"—"}
-];
-
-const lootboxes=[
-{name:"Basic Drill Lootbox",type:"drill",rarity:"Common",cash:"$5.7K",drops:[["Strong Drill","45%"],["Enhanced Drill","30%"],["Speed Drill","17%"],["Reinforced Drill","7%"],["Industrial Drill [Gold Variant]","1%"]]},
-{name:"Gold Drill Lootbox",type:"drill",rarity:"Uncommon",cash:"$31.7K",drops:[["Reinforced Drill","45%"],["Industrial Drill","30%"],["Double Industrial Drill","18%"],["Turbo Drill","6%"],["Mega Drill [Gold Variant]","1%"]]},
-{name:"Diamond Drill Lootbox",type:"drill",rarity:"Rare",cash:"$358.1K",drops:[["Turbo Drill","45%"],["Mega Drill","32%"],["Ice Drill","18%"],["Lava Drill","4.5%"],["Rocket Drill [Diamond Variant]","0.5%"]]},
-{name:"Rainbow Drill Lootbox",type:"drill",rarity:"Legendary",cash:"$9.71M",drops:[["Ice Drill","44%"],["Lava Drill","33%"],["Rocket Drill","18%"],["Mega Laser Drill","4.7%"],["Scifi Quad Drill [Rainbow Variant]","0.3%"]]},
-{name:"Galaxy Drill Lootbox",type:"drill",rarity:"Mythical",cash:"$650.72M",drops:[["Scifi Double Drill","45%"],["Scifi Quad Drill","30%"],["Lunar Drill","18%"],["Alien Tech Drill","6.95%"],["UFO Drill [Galaxy Variant]","0.05%"]]},
-{name:"Burger Drill Lootbox",type:"drill",rarity:"Special",cash:"$2.5B",drops:[["Lunar Drill","40%"],["Alien Tech Drill","35%"],["UFO Drill","20%"],["Antimatter Drill","4.5%"],["Mustard and Mayo Drill","0.5%"]]},
-{name:"Clock Drill Lootbox",type:"drill",rarity:"Special",cash:"$120B",drops:[["Solar Drill","45%"],["Antimatter Drill","35%"],["Black Hole Drill","17%"],["Angel Drill","2.8%"],["Clock Drill","0.2%"]]},
-{name:"Basic Refinery Lootbox",type:"refinery",rarity:"Common",cash:"$15.5K",drops:[["Enhanced Refinery","45%"],["Reinforced Refinery","30%"],["Advanced Refinery","17%"],["Plasma Refinery","7%"],["Industrial Refinery","1%"]]},
-{name:"Gold Refinery Lootbox",type:"refinery",rarity:"Uncommon",cash:"$171.6K",drops:[["Advanced Refinery","45%"],["Plasma Refinery","30%"],["Industrial Refinery","18%"],["Energy Refinery","6%"],["Mega Refinery","1%"]]},
-{name:"Diamond Refinery Lootbox",type:"refinery",rarity:"Rare",cash:"$7.23M",drops:[["Mega Refinery","45%"],["Quantum Refinery","32%"],["Ice Refinery","18%"],["Lava Refinery","4.5%"],["Nuclear Power Plant Refinery","0.5%"]]},
-{name:"Rainbow Refinery Lootbox",type:"refinery",rarity:"Legendary",cash:"$107.2M",drops:[["Lava Refinery","44%"],["Nuclear Power Plant Refinery","33%"],["Nuclear Reactor Refinery","18%"],["Photon Refinery","4.7%"],["Crystal Core Refinery","0.3%"]]},
-{name:"Galaxy Refinery Lootbox",type:"refinery",rarity:"Mythical",cash:"$6.54B",drops:[["Photon Refinery","45%"],["Crystal Core Refinery","30%"],["Moon Base Refinery","18%"],["Solar Refinery","6.95%"],["Black Hole Refinery","0.05%"]]},
-{name:"Burger Refinery Lootbox",type:"refinery",rarity:"Special",cash:"$1.7B",drops:[["Nuclear Reactor Refinery","30%"],["Photon Refinery","30%"],["Crystal Core Refinery","20%"],["Moon Base Refinery","18%"],["Burger Refinery","2%"]]}
-];
-
-const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-const trimZeros=s=>s.includes(".")?s.replace(/0+$/,"").replace(/\.$/,""):s;
-const fmt=n=>{
-  if(!Number.isFinite(n))return"—";
-  const a=Math.abs(n),u=[["Dc",1e33],["No",1e30],["Oc",1e27],["Sp",1e24],["Sx",1e21],["Qi",1e18],["Qa",1e15],["T",1e12],["B",1e9],["M",1e6],["K",1e3]];
-  for(const [s,v] of u)if(a>=v){let x=n/v;return trimZeros(Math.abs(x)>=100?x.toFixed(0):Math.abs(x)>=10?x.toFixed(1):x.toFixed(2))+s}
-  return trimZeros(a>=100?n.toFixed(0):a>=10?n.toFixed(1):n.toFixed(2));
-};
-const money=n=>"$"+fmt(n);
-function activate(container,selector,value){
-  container.querySelectorAll("button").forEach(b=>b.classList.toggle("active",String(b.dataset[selector])===String(value)));
-}
-
-/* tabs */
-const badges={sale:"Sale Calculator",oil:"Oil / Hour",drills:"Drill Calculator",database:"Drill Database"};
-$$(".tabs button").forEach(b=>b.onclick=()=>{
-  $$(".tabs button").forEach(x=>x.classList.toggle("active",x===b));
-  $$(".view").forEach(v=>v.classList.remove("active"));
-  $("#"+b.dataset.view+"View").classList.add("active");
-  $("#badge").textContent=badges[b.dataset.view];
-  if(b.dataset.view==="database")renderDb();
-});
-
-/* sale */
-let saleUnit=1,friendBoost=50;
-function calcSale(){
-  const oil=Math.max(0,Number($("#saleOil").value)||0)*saleUnit;
-  const cash=Math.max(0,Number($("#cashBoost").value)||0);
-  const price=Math.max(0,Number($("#sellPrice").value)||0);
-  const bonus=(cash+friendBoost)/100;
-  const cpo=price*bonus;
-  $("#cashPerOil").textContent=money(cpo);
-  $("#saleValue").textContent=money(oil*cpo);
-  $("#totalBoost").textContent=fmt(cash+friendBoost)+"%";
-}
-$("#saleUnits").onclick=e=>{let b=e.target.closest("[data-unit]");if(!b)return;saleUnit=Number(b.dataset.unit);activate($("#saleUnits"),"unit",b.dataset.unit);calcSale()};
-$("#friendBoosts").onclick=e=>{let b=e.target.closest("[data-friend]");if(!b)return;friendBoost=Number(b.dataset.friend);activate($("#friendBoosts"),"friend",b.dataset.friend);calcSale()};
-$("#sellPrices").onclick=e=>{let b=e.target.closest("[data-price]");if(!b)return;$("#sellPrice").value=b.dataset.price;activate($("#sellPrices"),"price",b.dataset.price);calcSale()};
-["#saleOil","#cashBoost","#sellPrice"].forEach(s=>$(s).addEventListener("input",calcSale));
-$("#saleReset").onclick=()=>{$("#saleOil").value=50;saleUnit=1;$("#cashBoost").value=100;friendBoost=0;$("#sellPrice").value=15;activate($("#saleUnits"),"unit",1);activate($("#friendBoosts"),"friend",0);activate($("#sellPrices"),"price",15);calcSale()};
-$("#saleCopy").onclick=async()=>{try{await navigator.clipboard.writeText(`Sale\nOil: ${$("#saleOil").value}\nSell Price: ${$("#sellPrice").value}\nSell Value: ${$("#saleValue").textContent}`);$("#saleCopy").textContent="Copied";setTimeout(()=>$("#saleCopy").textContent="Copy Summary",1000)}catch{}};
-
-/* oil/hour */
-let prodUnit=1,targetUnit=1e9,oilMode="time-to-oil";
-function calcProduction(){
-  const rate=Math.max(0,Number($("#prodRate").value)||0)*prodUnit;
-  if(oilMode==="time-to-oil"){
-    const h=Math.max(0,Number($("#prodHours").value)||0);
-    $("#prodMainLabel").textContent="Oil Gain";$("#prodMain").textContent=fmt(rate*h*3600);
-    $("#prodMetric1Label").textContent="Per Hour";$("#prodMetric1").textContent=fmt(rate*3600);
-    $("#prodMetric2Label").textContent="Per Minute";$("#prodMetric2").textContent=fmt(rate*60);
-  }else{
-    const target=Math.max(0,Number($("#targetOil").value)||0)*targetUnit;
-    const secs=rate>0?target/rate:Infinity;
-    const hrs=secs/3600;
-    const whole=Math.ceil(secs);
-    const d=Math.floor(whole/86400),h=Math.floor((whole%86400)/3600),m=Math.floor((whole%3600)/60),s=whole%60;
-    $("#prodMainLabel").textContent="Time Needed";$("#prodMain").textContent=Number.isFinite(secs)?[d&&`${d}d`,h&&`${h}h`,m&&`${m}m`,`${s}s`].filter(Boolean).join(" "):"—";
-    $("#prodMetric1Label").textContent="Total Hours";$("#prodMetric1").textContent=Number.isFinite(hrs)?fmt(hrs):"—";
-    $("#prodMetric2Label").textContent="Per Hour";$("#prodMetric2").textContent=fmt(rate*3600);
-  }
-}
-$$("[data-oilmode]").forEach(b=>b.onclick=()=>{
-  oilMode=b.dataset.oilmode;$$("[data-oilmode]").forEach(x=>x.classList.toggle("active",x===b));
-  $("#timeModeField").style.display=oilMode==="time-to-oil"?"grid":"none";$("#targetModeField").style.display=oilMode==="oil-to-time"?"grid":"none";calcProduction()
-});
-$("#prodUnits").onclick=e=>{let b=e.target.closest("[data-produnit]");if(!b)return;prodUnit=Number(b.dataset.produnit);activate($("#prodUnits"),"produnit",b.dataset.produnit);calcProduction()};
-$("#prodTimes").onclick=e=>{let b=e.target.closest("[data-prodhours]");if(!b)return;$("#prodHours").value=b.dataset.prodhours;activate($("#prodTimes"),"prodhours",b.dataset.prodhours);calcProduction()};
-$("#targetUnits").onclick=e=>{let b=e.target.closest("[data-targetunit]");if(!b)return;targetUnit=Number(b.dataset.targetunit);activate($("#targetUnits"),"targetunit",b.dataset.targetunit);calcProduction()};
-["#prodRate","#prodHours","#targetOil"].forEach(s=>$(s).addEventListener("input",calcProduction));
-
-/* drills */
-const ds={id:"basic",tier:1,area:1,hacker:550};
-const getDrill=()=>drills.find(d=>d.id===ds.id)||drills[0];
-function calcDrill(){
-  const d=getDrill(),count=Math.max(1,Math.floor(Number($("#drillCount").value)||1)),hours=Math.max(0,Number($("#drillHours").value)||0),seconds=hours*3600;
-  let base=d.oil||0;
-  if(d.special==="heart")base=Math.max(0,Number($("#likesInput").value)||0);
-  if(d.special==="hacker")base=ds.hacker;
-  const moleLevel=Math.max(0,Math.min(100,Math.floor(Number($("#moleLevel").value)||0)));
-  const fruitLevel=Math.max(0,Math.min(100,Math.floor(Number($("#fruitLevel").value)||0)));
-  const moleBonus=moleLevel>0 ? petValue(pets.find(p=>p.name==="Mole"),moleLevel)/100 : 0;
-  const fruitBonus=(d.id==="banana" && fruitLevel>0) ? petValue(pets.find(p=>p.name==="Fruit"),fruitLevel)/100 : 0;
-  const petMult=(1+moleBonus)*(1+fruitBonus);
-  const mult=ds.tier*ds.area*count;
-  let rate,total,perHour,label="Production Rate";
-  if(d.special==="clock"){
-    const sec=Math.floor(seconds),growth=mult*petMult;
-    rate=growth*(sec+1);total=growth*sec*(sec+1)/2;perHour=hours?total/hours:0;label=`Rate After ${fmt(hours)}H`;base=1;
-  }else{rate=base*mult*petMult;perHour=rate*3600;total=rate*seconds}
-  $("#drillMainLabel").textContent=label;$("#drillMainRate").textContent=fmt(rate)+"/s";$("#drillPerHour").textContent=fmt(perHour);$("#drillTotal").textContent=fmt(total);$("#drillBase").textContent=fmt(base)+"/s";$("#drillMultiplier").textContent="×"+fmt(mult*petMult);
-  $("#drillPickerBtn").textContent=d.name;
-  $("#heartControl").classList.toggle("show",d.special==="heart");$("#hackerControl").classList.toggle("show",d.special==="hacker");
-  $("#fruitLevelField").style.display=d.id==="banana"?"grid":"none";
-}
-$("#tierButtons").onclick=e=>{let b=e.target.closest("[data-tier]");if(!b)return;ds.tier=Number(b.dataset.tier);activate($("#tierButtons"),"tier",b.dataset.tier);calcDrill()};
-$("#areaButtons").onclick=e=>{let b=e.target.closest("[data-area]");if(!b)return;ds.area=Number(b.dataset.area);activate($("#areaButtons"),"area",b.dataset.area);calcDrill()};
-$("#drillTimes").onclick=e=>{let b=e.target.closest("[data-drilltime]");if(!b)return;$("#drillHours").value=b.dataset.drilltime;activate($("#drillTimes"),"drilltime",b.dataset.drilltime);calcDrill()};
-$("#hackerButtons").onclick=e=>{let b=e.target.closest("[data-hacker]");if(!b)return;ds.hacker=Number(b.dataset.hacker);activate($("#hackerButtons"),"hacker",b.dataset.hacker);calcDrill()};
-$("#moleLevels").onclick=e=>{let b=e.target.closest("[data-molelevel]");if(!b)return;$("#moleLevel").value=b.dataset.molelevel;activate($("#moleLevels"),"molelevel",b.dataset.molelevel);calcDrill()};
-$("#fruitLevels").onclick=e=>{let b=e.target.closest("[data-fruitlevel]");if(!b)return;$("#fruitLevel").value=b.dataset.fruitlevel;activate($("#fruitLevels"),"fruitlevel",b.dataset.fruitlevel);calcDrill()};
-$("#moleLevel").addEventListener("input",()=>{const v=Math.max(0,Math.min(100,Math.floor(Number($("#moleLevel").value)||0)));const match=[0,20,40,60,80,100].includes(v)?v:null;$("#moleLevels").querySelectorAll("button").forEach(b=>b.classList.toggle("active",match!==null&&Number(b.dataset.molelevel)===match));calcDrill()});
-$("#fruitLevel").addEventListener("input",()=>{const v=Math.max(0,Math.min(100,Math.floor(Number($("#fruitLevel").value)||0)));const match=[0,20,40,60,80,100].includes(v)?v:null;$("#fruitLevels").querySelectorAll("button").forEach(b=>b.classList.toggle("active",match!==null&&Number(b.dataset.fruitlevel)===match));calcDrill()});
-["#drillCount","#drillHours","#likesInput"].forEach(s=>$(s).addEventListener("input",calcDrill));
-
-/* picker */
-function catLabel(c){return c==="regular"?"Regular Shop":c==="event"?"Event":"Special & Legacy"}
-function petValue(p,level){
-  const l=Math.max(1,Math.min(100,Math.floor(Number(level)||1)));
-  return p.min+((p.max-p.min)*(l-1)/99);
-}
-function petValueText(p,level){
-  const v=petValue(p,level);
-  if(p.kind==="percent") return "+"+fmt(v)+"%";
-  if(p.kind==="percentMinus") return "-"+fmt(v)+"%";
-  if(p.kind==="multiplier") return "×"+(Math.round(v*100)/100).toFixed(2).replace(/0+$/,"").replace(/\.$/,"");
-  return fmt(v)+" "+p.unit;
-}
-function rarityRank(r){return ({Common:1,Rare:2,Legendary:3,Mythical:4,Divine:5,Special:6})[r]||99}
-
-function renderPicker(){
-  const q=$("#pickerSearch").value.trim().toLowerCase();
-  $("#pickerList").innerHTML=drills.filter(d=>d.name.toLowerCase().includes(q)).map(d=>`
-  <button class="pick-item ${d.id===ds.id?"selected":""}" data-pick="${d.id}">
-    <span class="pick-mark">${d.name.split(/\s+/).filter(x=>x!=="Drill").slice(0,2).map(x=>x[0]).join("").toUpperCase()}</span>
-    <span class="pick-copy"><strong>${d.name}</strong><small>${d.rarity} • ${catLabel(d.category)}</small></span>
-    <span class="pick-rate">${d.oil==null?"Dynamic":fmt(d.oil)+"/s"}</span>
-  </button>`).join("")
-}
-$("#drillPickerBtn").onclick=()=>{$("#pickerBackdrop").classList.add("show");$("#pickerSearch").value="";renderPicker();setTimeout(()=>$("#pickerSearch").focus(),80)};
-$("#pickerClose").onclick=()=>$("#pickerBackdrop").classList.remove("show");
-$("#pickerBackdrop").onclick=e=>{if(e.target===$("#pickerBackdrop"))$("#pickerBackdrop").classList.remove("show")};
-$("#pickerSearch").oninput=renderPicker;
-$("#pickerList").onclick=e=>{let b=e.target.closest("[data-pick]");if(!b)return;ds.id=b.dataset.pick;$("#pickerBackdrop").classList.remove("show");calcDrill()};
-document.addEventListener("keydown",e=>{if(e.key==="Escape")$("#pickerBackdrop").classList.remove("show")});
-
-/* database */
-function renderDb(){
-  const q=$("#dbSearch").value.trim().toLowerCase(),cat=$("#categoryFilter").value,rar=$("#rarityFilter").value,sort=$("#sortFilter").value;
-  let list=drills.filter(d=>(!q||d.name.toLowerCase().includes(q)||d.rarity.toLowerCase().includes(q))&&(cat==="all"||d.category===cat)&&(rar==="all"||d.rarity===rar));
-  if(sort==="oil-desc")list.sort((a,b)=>(b.oil??-1)-(a.oil??-1));if(sort==="oil-asc")list.sort((a,b)=>(a.oil??Infinity)-(b.oil??Infinity));if(sort==="name")list.sort((a,b)=>a.name.localeCompare(b.name));
-  $("#dbCount").textContent=`${list.length} drill${list.length===1?"":"s"}`;
-  $("#drillList").innerHTML=list.map(d=>`
-  <article class="drill-card">
-    <div class="drill-head">
-      <div class="drill-logo">${d.name.split(/\s+/).filter(x=>x!=="Drill").slice(0,2).map(x=>x[0]).join("").toUpperCase()}</div>
-      <div class="drill-info"><strong>${d.name}</strong><div class="meta"><span class="pill">${d.rarity}</span><span class="pill">${catLabel(d.category)}</span><span class="pill">${d.footprint}</span></div></div>
-      <div class="oil-rate"><strong>${d.oil==null?"Dynamic":fmt(d.oil)}</strong><small>OIL / SEC</small></div>
+<div id="helpPreview" class="help-preview" aria-hidden="true">
+  <div class="help-sheet" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <div class="help-head">
+      <div><h2 id="helpTitle">How It Works</h2></div>
+      <button id="helpClose" class="share-close" type="button" aria-label="Close">×</button>
     </div>
-    <div class="details">
-      <div class="detail"><span>Cash / Event Price</span><strong>${d.cash||d.eventPrice||"—"}</strong></div>
-      <div class="detail"><span>V-Bucks</span><strong>${d.vbucks||"—"}</strong></div>
-      <div class="detail"><span>Footprint</span><strong>${d.footprint}</strong></div>
-      <div class="detail"><span>Base Oil/s</span><strong>${d.oil==null?"Dynamic":fmt(d.oil)}</strong></div>
-      ${d.notes?`<div class="details-note">${d.notes}</div>`:""}
-    </div>
-  </article>`).join("")||'<div class="panel" style="padding:25px;text-align:center;color:#7f899c;font-size:11px">No drills found.</div>';
-}
-["#dbSearch","#categoryFilter","#rarityFilter","#sortFilter"].forEach(s=>$(s).addEventListener("input",renderDb));
-$("#drillList").onclick=e=>{const c=e.target.closest(".drill-card");if(c)c.classList.toggle("open")};
+    <div id="helpContent" class="help-content"></div>
+  </div>
+</div>
+
+<div id="sharePreview" class="share-preview" aria-hidden="true"><div class="share-sheet" role="dialog" aria-modal="true" aria-labelledby="sharePreviewTitle"><div class="share-brand"><div class="share-game-name">STEAL THE OIL TYCOON</div><div class="share-credit">Created by <b>1yono</b></div></div><div class="share-sheet-head"><div><h2 id="sharePreviewTitle">Result Preview</h2></div><button id="sharePreviewClose" class="share-close" type="button" aria-label="Close">×</button></div><div id="sharePreviewContent" class="share-content"></div><div class="share-sheet-actions"><button id="sharePreviewCopy" class="primary" type="button">Copy Summary</button><button id="sharePreviewDone" type="button">Done</button></div></div></div>
 
 
-function initials(name){return name.split(/\s+/).filter(x=>!["Drill","Refinery","Panel","Totem","Lootbox","Station","Turbine"].includes(x)).slice(0,2).map(x=>x[0]).join("").toUpperCase()||name.slice(0,2).toUpperCase()}
-function genericCard(name,rarity,badges,headline,headlineLabel,details,notes=""){
-  return `<article class="drill-card">
-    <div class="drill-head">
-      <div class="drill-logo">${initials(name)}</div>
-      <div class="drill-info"><strong>${name}</strong><div class="meta">${badges.map(x=>`<span class="pill">${x}</span>`).join("")}</div></div>
-      <div class="oil-rate"><strong>${headline}</strong><small>${headlineLabel}</small></div>
-    </div>
-    <div class="details">
-      ${details.map(([k,v])=>`<div class="detail"><span>${k}</span><strong>${v??"—"}</strong></div>`).join("")}
-      ${notes?`<div class="details-note">${notes}</div>`:""}
-    </div>
-  </article>`;
-}
-function wireCards(listSelector){$(listSelector).onclick=e=>{const c=e.target.closest(".drill-card");if(c)c.classList.toggle("open")}}
-
-function renderRefineries(){
-  const q=$("#refinerySearch").value.trim().toLowerCase(),type=$("#refineryTypeFilter").value,rar=$("#refineryRarityFilter").value;
-  const list=refineries.filter(x=>(!q||x.name.toLowerCase().includes(q)||x.rarity.toLowerCase().includes(q))&&(type==="all"||x.type===type)&&(rar==="all"||x.rarity===rar));
-  $("#refineryCount").textContent=`${list.length} refiner${list.length===1?"y":"ies"}`;
-  $("#refineryList").innerHTML=list.map(x=>genericCard(x.name,x.rarity,[x.rarity,x.type==="regular"?"Regular Shop":"Special",x.footprint],x.capacity,"CAPACITY",[["Cash Price",x.cash||"—"],["V-Bucks",x.vbucks||"—"],["Footprint",x.footprint],["Storage",x.capacity]],x.notes||"")).join("")||'<div class="panel empty">No refineries found.</div>';
-}
-function renderSolar(){
-  const q=$("#solarSearch").value.trim().toLowerCase();
-  const list=solarPanels.filter(x=>!q||x.name.toLowerCase().includes(q)||x.rarity.toLowerCase().includes(q));
-  $("#solarCount").textContent=`${list.length} solar panel${list.length===1?"":"s"}`;
-  $("#solarList").innerHTML=list.map(x=>genericCard(x.name,x.rarity,[x.rarity],x.generation,"GENERATION",[["Max Storage",x.storage],["Gasoline Price",x.gasoline],["V-Bucks",x.vbucks],["Generation",x.generation]])).join("")||'<div class="panel empty">No solar panels found.</div>';
-}
-function renderTotems(){
-  const q=$("#totemSearch").value.trim().toLowerCase(),type=$("#totemTypeFilter").value;
-  const list=totems.filter(x=>(!q||x.name.toLowerCase().includes(q)||x.rarity.toLowerCase().includes(q)||x.boost.toLowerCase().includes(q))&&(type==="all"||x.type===type));
-  $("#totemCount").textContent=`${list.length} totem${list.length===1?"":"s"}`;
-  $("#totemList").innerHTML=list.map(x=>genericCard(x.name,x.rarity,[x.rarity,x.type==="cash"?"Cash":x.type==="afk"?"AFK":"Special",x.footprint],x.boost,x.type==="afk"?"AFK BOOST":x.type==="cash"?"CASH BOOST":"BOOST",[["Gasoline Price",x.price],["Footprint",x.footprint],["Rarity",x.rarity],["Boost",x.boost]],x.notes||"")).join("")||'<div class="panel empty">No totems found.</div>';
-}
-function renderDecorations(){
-  const q=$("#decorationSearch").value.trim().toLowerCase(),type=$("#decorationTypeFilter").value;
-  const list=decorations.filter(x=>(!q||x.name.toLowerCase().includes(q)||x.rarity.toLowerCase().includes(q)||x.effect.toLowerCase().includes(q))&&(type==="all"||x.type===type));
-  $("#decorationCount").textContent=`${list.length} structure${list.length===1?"":"s"}`;
-  $("#decorationList").innerHTML=list.map(x=>{
-    const typeLabel=x.type==="utility"?"Utility & Info":x.type==="turbine"?"Wind Turbine":"Pet Structure";
-    const badges=[x.rarity,typeLabel,x.footprint].filter(v=>v&&v!=="—");
-    const headline=x.type==="turbine"?x.effect:x.cash;
-    const headlineLabel=x.type==="turbine"?"CASH / SEC":x.type==="pet"?"COST":"CASH PRICE";
-    return genericCard(x.name,x.rarity,badges,headline,headlineLabel,[["Cost",x.cash],["Footprint",x.footprint],["Rarity",x.rarity],["Type",typeLabel]],x.effect);
-  }).join("")||'<div class="panel empty">No structures found.</div>';
-}
-function renderLootboxes(){
-  const q=$("#lootboxSearch").value.trim().toLowerCase(),type=$("#lootboxTypeFilter").value;
-  const list=lootboxes.filter(x=>(!q||x.name.toLowerCase().includes(q)||x.rarity.toLowerCase().includes(q)||x.drops.some(d=>d[0].toLowerCase().includes(q)))&&(type==="all"||x.type===type));
-  $("#lootboxCount").textContent=`${list.length} lootbox${list.length===1?"":"es"}`;
-  $("#lootboxList").innerHTML=list.map(x=>{
-    const drops=`<div class="drop-list">${x.drops.map(d=>`<div><span>${d[0]}</span><b>${d[1]}</b></div>`).join("")}</div>`;
-    return `<article class="drill-card">
-      <div class="drill-head">
-        <div class="drill-logo">${initials(x.name)}</div>
-        <div class="drill-info"><strong>${x.name}</strong><div class="meta"><span class="pill">${x.rarity}</span><span class="pill">${x.type==="drill"?"Drill":"Refinery"}</span></div></div>
-        <div class="oil-rate"><strong>${x.cash}</strong><small>CASH PRICE</small></div>
-      </div>
-      <div class="details">
-        <div class="detail"><span>Rarity</span><strong>${x.rarity}</strong></div>
-        <div class="detail"><span>Type</span><strong>${x.type==="drill"?"Drill Lootbox":"Refinery Lootbox"}</strong></div>
-        ${drops}
-      </div>
-    </article>`;
-  }).join("")||'<div class="panel empty">No lootboxes found.</div>';
-}
-
-["#refinerySearch","#refineryTypeFilter","#refineryRarityFilter"].forEach(s=>$(s).addEventListener("input",renderRefineries));
-$("#solarSearch").addEventListener("input",renderSolar);
-["#totemSearch","#totemTypeFilter"].forEach(s=>$(s).addEventListener("input",renderTotems));
-["#decorationSearch","#decorationTypeFilter"].forEach(s=>$(s).addEventListener("input",renderDecorations));
-["#lootboxSearch","#lootboxTypeFilter"].forEach(s=>$(s).addEventListener("input",renderLootboxes));
-wireCards("#refineryList");wireCards("#solarList");wireCards("#totemList");wireCards("#decorationList");wireCards("#lootboxList");
-
-/* pet database */
-$("#petSelect").innerHTML=pets.map((p,i)=>`<option value="${i}">${p.name}</option>`).join("");
-function calcPet(){
-  const p=pets[Number($("#petSelect").value)||0];
-  const level=Math.max(1,Math.min(100,Math.floor(Number($("#petLevel").value)||1)));
-  $("#petLevel").value=level;
-  $("#petResultLabel").textContent=p.unit;
-  $("#petResultValue").textContent=petValueText(p,level);
-  $("#petResultName").textContent=p.name;
-  $("#petResultRarity").textContent=p.rarity;
-}
-function renderPets(){
-  const q=$("#petSearch").value.trim().toLowerCase(),rar=$("#petRarityFilter").value,sort=$("#petSortFilter").value;
-  let list=pets.map((p,i)=>({...p,index:i})).filter(p=>(!q||p.name.toLowerCase().includes(q)||p.effect.toLowerCase().includes(q)||p.rarity.toLowerCase().includes(q))&&(rar==="all"||p.rarity===rar));
-  if(sort==="name")list.sort((a,b)=>a.name.localeCompare(b.name));
-  if(sort==="rarity")list.sort((a,b)=>rarityRank(a.rarity)-rarityRank(b.rarity)||a.name.localeCompare(b.name));
-  $("#petCount").textContent=`${list.length} pet${list.length===1?"":"s"}`;
-  $("#petList").innerHTML=list.map(p=>`
-  <article class="drill-card" data-pet-index="${p.index}">
-    <div class="drill-head">
-      <div class="drill-logo">${p.name.slice(0,2).toUpperCase()}</div>
-      <div class="drill-info"><strong>${p.name}</strong><div class="meta"><span class="pill">${p.rarity}</span><span class="pill">${p.unit}</span></div></div>
-      <div class="oil-rate"><strong>${petValueText(p,100)}</strong><small>LV100</small></div>
-    </div>
-    <div class="details">
-      <div class="detail"><span>Level 1</span><strong>${petValueText(p,1)}</strong></div>
-      <div class="detail"><span>Level 100</span><strong>${petValueText(p,100)}</strong></div>
-      <div class="details-note">${p.effect}</div>
-    </div>
-  </article>`).join("")||'<div class="panel" style="padding:25px;text-align:center;color:#7f899c;font-size:11px">No pets found.</div>';
-}
-$("#databaseTabs").onclick=e=>{
-  const b=e.target.closest("[data-dbview]"); if(!b)return;
-  $$("[data-dbview]").forEach(x=>x.classList.toggle("active",x===b));
-  const key=b.dataset.dbview;
-  const panes={drills:"#drillDbPane",refineries:"#refineriesDbPane",solar:"#solarDbPane",totems:"#totemsDbPane",decorations:"#decorationsDbPane",lootboxes:"#lootboxesDbPane",pets:"#petDbPane"};
-  Object.values(panes).forEach(sel=>$(sel).style.display="none");
-  $(panes[key]).style.display="block";
-  if(key==="drills")renderDb();
-  if(key==="refineries")renderRefineries();
-  if(key==="solar")renderSolar();
-  if(key==="totems")renderTotems();
-  if(key==="decorations")renderDecorations();
-  if(key==="lootboxes")renderLootboxes();
-  if(key==="pets"){renderPets();calcPet()}
-};
-$("#petSelect").addEventListener("change",calcPet);
-$("#petLevel").addEventListener("input",calcPet);
-["#petSearch","#petRarityFilter","#petSortFilter"].forEach(s=>$(s).addEventListener("input",renderPets));
-$("#petList").onclick=e=>{
-  const c=e.target.closest(".drill-card");
-  if(!c)return;
-  c.classList.toggle("open");
-  if(e.target.closest(".drill-head")){
-    const idx=Number(c.dataset.petIndex);
-    if(Number.isInteger(idx)){
-      $("#petSelect").value=idx;
-      calcPet();
-    }
-  }
-};
-
-calcSale();calcProduction();calcDrill();renderDb();renderRefineries();renderSolar();renderTotems();renderDecorations();renderLootboxes();renderPets();calcPet();
-</script>
+<script src="js/app.js"></script>
 </body>
 </html>
