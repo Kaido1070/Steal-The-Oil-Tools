@@ -14,13 +14,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 2
-      - name: Recover and apply verified release
+          fetch-depth: 0
+      - name: Apply verified release
         shell: bash
         run: |
           set -euo pipefail
-          git show HEAD^:.github/workflows/apply-v53-split.yml | awk 'BEGIN{p=0} /^\/Td6WFo/{p=1} p{if($0=="EOF") exit; print}' > /tmp/release.b64
-          test -s /tmp/release.b64
+          cat .deploy/v53/chunk-00.txt .deploy/v53/chunk-01.txt .deploy/v53/chunk-02.txt .deploy/v53/chunk-03.txt > /tmp/release.b64
+          test "$(wc -c < /tmp/release.b64)" -eq 44268
           base64 -d /tmp/release.b64 > /tmp/release.tar.xz
           echo '5afe35f1562597dc77019331762d4b182d5163ea5eca3f310d408c0431c01d0b  /tmp/release.tar.xz' | sha256sum -c -
           tar -xJf /tmp/release.tar.xz -C .
