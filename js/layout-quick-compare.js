@@ -1,0 +1,75 @@
+(()=>{
+  const q=s=>document.querySelector(s);
+  const oilView=q('#oilView');
+  if(!oilView || typeof layoutShareData!=='function') return;
+
+  const style=document.createElement('style');
+  style.textContent=`
+    .layout-quick-compare{padding:10px;margin-bottom:7px;overflow:hidden;position:relative}
+    .layout-quick-head{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+    .layout-quick-head>div{min-width:0;flex:1}.layout-quick-head strong{display:block;font-size:12px}.layout-quick-head small{display:block;color:#9ea7b9;font-size:8.5px;margin-top:3px}
+    .layout-save-btn{min-height:34px;border-radius:10px;border:1px solid #8a6fee;background:linear-gradient(180deg,#756eff,#6259de);color:#fff;font-size:9.5px;font-weight:950;padding:0 13px;white-space:nowrap}
+    .layout-compare-empty{border:1px dashed #3b445d;border-radius:12px;padding:12px;text-align:center;color:#8f99ad;font-size:9px;line-height:1.5;background:#10151f}
+    .layout-compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.layout-compare-side{border:1px solid #30384c;background:#121722;border-radius:12px;padding:9px;min-width:0}.layout-compare-side.current{border-color:#4c685f}.layout-compare-side span{display:block;color:#8995aa;font-size:7.5px;font-weight:900;letter-spacing:.65px;text-transform:uppercase}.layout-compare-side strong{display:block;color:#5fe1cc;font-size:17px;line-height:1.05;margin-top:5px;overflow-wrap:anywhere}.layout-compare-side small{display:block;color:#9ea7b9;font-size:8px;margin-top:4px}
+    .layout-compare-winner{margin-top:7px;border:1px solid #4b405f;border-radius:12px;background:linear-gradient(135deg,rgba(255,79,195,.12),rgba(123,108,255,.13),#121722);padding:9px;display:flex;align-items:center;justify-content:space-between;gap:10px}.layout-compare-winner span{font-size:9px;color:#b7bfd0;font-weight:850}.layout-compare-winner strong{font-size:13px;color:#fff;text-align:right}
+    .layout-compare-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:6px}.layout-compare-mini div{border:1px solid #2f374a;border-radius:10px;background:#10151f;padding:7px;min-width:0}.layout-compare-mini span{display:block;color:#818da2;font-size:7px;text-transform:uppercase;font-weight:900;letter-spacing:.4px}.layout-compare-mini strong{display:block;margin-top:4px;color:#d9e2f0;font-size:9.5px;overflow-wrap:anywhere}
+    .layout-compare-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:7px}.layout-compare-actions button{min-height:31px;border-radius:9px;border:1px solid #3c455c;background:#171d2a;color:#cbd4e3;font-size:8.5px;font-weight:900}.layout-compare-actions button.danger{color:#f0b9d6}
+    .help-preview{padding-top:max(10px,env(safe-area-inset-top))!important;padding-bottom:max(10px,env(safe-area-inset-bottom))!important;height:100dvh!important;max-height:100dvh!important;align-items:stretch!important}
+    .help-sheet{height:calc(100dvh - max(20px,env(safe-area-inset-top)) - max(20px,env(safe-area-inset-bottom)))!important;max-height:none!important;margin:auto!important;display:flex!important;flex-direction:column!important;overflow:hidden!important}
+    .help-head{flex:0 0 auto!important}.help-content{flex:1 1 auto!important;min-height:0!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;padding-bottom:calc(18px + env(safe-area-inset-bottom))!important;overscroll-behavior:contain!important}
+    @supports not (height:100dvh){.help-preview{height:100vh!important}.help-sheet{height:calc(100vh - 24px)!important}}
+    @media(max-width:430px){.layout-quick-head{align-items:stretch;flex-direction:column}.layout-save-btn{width:100%}.layout-compare-mini{grid-template-columns:1fr 1fr}.layout-compare-mini div:last-child{grid-column:1/-1}}
+  `;
+  document.head.appendChild(style);
+
+  const result=q('#layoutError')?.closest('.panel.result');
+  if(!result) return;
+  const card=document.createElement('div');
+  card.className='panel layout-quick-compare';
+  card.innerHTML=`<div class="layout-quick-head"><div><strong>Quick Layout Compare</strong><small>Save this result, change the layout, and see the difference instantly.</small></div><button id="layoutCompareSave" class="layout-save-btn" type="button">Save Current</button></div><div id="layoutCompareBody" class="layout-compare-empty">1. Tap <b>Save Current</b><br>2. Change anything in your layout<br>3. The better setup appears here automatically</div>`;
+  result.insertAdjacentElement('afterend',card);
+
+  let saved=null;
+  try{saved=JSON.parse(localStorage.getItem('stot-layout-compare-v1')||'null')}catch(e){}
+
+  const readCore=()=>{
+    let staticRate=0,clockGrowth=0,cells=0,plots=0,valid=true;
+    for(const p of layoutPlots){
+      const info=pieceList(p);if(info.area>0)plots++;cells+=Math.min(info.area,25);
+      if(!canPack5x5(p)){valid=false;continue}
+      const st=plotStats(p,0);staticRate+=st.staticRate;clockGrowth+=st.clockGrowth;
+    }
+    return {staticRate,clockGrowth,cells,plots,valid};
+  };
+  const metrics=(core,hours)=>{
+    if(!core?.valid)return null;
+    const sec=Math.max(0,Math.floor(hours*3600));
+    return {now:core.staticRate+core.clockGrowth,end:core.staticRate+core.clockGrowth*(sec+1),total:totalOilForSeconds(core.staticRate,core.clockGrowth,sec),hour:totalOilForSeconds(core.staticRate,core.clockGrowth,3600)};
+  };
+  const pct=(a,b)=>b>0?((a/b)-1)*100:(a>0?Infinity:0);
+  const pctText=n=>!Number.isFinite(n)?'+∞%':`${n>=0?'+':''}${Math.abs(n)<10?n.toFixed(1):Math.round(n)}%`;
+  const render=()=>{
+    const body=q('#layoutCompareBody');if(!body)return;
+    if(!saved){body.className='layout-compare-empty';body.innerHTML='1. Tap <b>Save Current</b><br>2. Change anything in your layout<br>3. The better setup appears here automatically';return}
+    const hours=Math.max(0,Number(q('#layoutHours')?.value)||0);
+    const cur=readCore(),a=metrics(saved.core,hours),b=metrics(cur,hours);
+    if(!a||!b){body.className='layout-compare-empty';body.textContent='Fix any plot that does not fit before comparing.';return}
+    const diff=pct(b.total,a.total),bWins=b.total>a.total,aWins=a.total>b.total;
+    const verdict=bWins?`Current is ${pctText(diff)} better`:aWins?`Saved is ${pctText(-diff)} better`:'Both layouts are equal';
+    body.className='';
+    body.innerHTML=`<div class="layout-compare-grid"><div class="layout-compare-side"><span>Saved A</span><strong>${rateFmt(a.now)}/s</strong><small>${fmt(a.total)} in ${fmt(hours)}h</small></div><div class="layout-compare-side current"><span>Current B</span><strong>${rateFmt(b.now)}/s</strong><small>${fmt(b.total)} in ${fmt(hours)}h</small></div></div><div class="layout-compare-winner"><span>Best result</span><strong>${verdict}</strong></div><div class="layout-compare-mini"><div><span>Oil difference</span><strong>${b.total===a.total?'0':(b.total>a.total?'+':'-')+fmt(Math.abs(b.total-a.total))}</strong></div><div><span>1 hour</span><strong>${b.hour===a.hour?'Same':(b.hour>a.hour?'+':'-')+fmt(Math.abs(b.hour-a.hour))}</strong></div><div><span>Space</span><strong>A ${saved.core.cells}/375 • B ${cur.cells}/375</strong></div></div><div class="layout-compare-actions"><button id="layoutCompareReplace" type="button">Replace Saved with Current</button><button id="layoutCompareClear" class="danger" type="button">Clear Saved</button></div>`;
+    q('#layoutCompareReplace').onclick=save;
+    q('#layoutCompareClear').onclick=()=>{saved=null;localStorage.removeItem('stot-layout-compare-v1');render()};
+  };
+  const save=()=>{
+    const core=readCore();if(!core.valid){render();return}
+    saved={core,at:Date.now()};
+    try{localStorage.setItem('stot-layout-compare-v1',JSON.stringify(saved))}catch(e){}
+    const b=q('#layoutCompareSave');const old=b.textContent;b.textContent='Saved ✓';setTimeout(()=>b.textContent=old,900);render();
+  };
+  q('#layoutCompareSave').onclick=save;
+  oilView.addEventListener('input',()=>requestAnimationFrame(render),true);
+  oilView.addEventListener('change',()=>requestAnimationFrame(render),true);
+  oilView.addEventListener('click',()=>setTimeout(render,0),true);
+  render();
+})();
