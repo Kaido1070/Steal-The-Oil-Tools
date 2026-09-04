@@ -2,7 +2,6 @@
 
 I created this site to keep the tools I use for **STEAL THE OIL TYCOON** in one place and make them available to other players.
 
-🌐 **Live Site:** https://stealoiltools.xyz
 
 ## Tools
 
